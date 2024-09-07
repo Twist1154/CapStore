@@ -8,9 +8,9 @@
       <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/controller/OrderController.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/test/java/za/ac/cput/controller/OrderControllerTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/domain/Orders.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/domain/Orders.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/repository/IOrderRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/repository/IOrderRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/OrderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/OrderService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,6 +57,7 @@
     "HTTP Request.generated-requests | #37.executor": "Run",
     "HTTP Request.generated-requests | #38.executor": "Run",
     "HTTP Request.generated-requests | #39.executor": "Run",
+    "HTTP Request.generated-requests | #40.executor": "Run",
     "JUnit.OrderControllerTest.executor": "Run",
     "JUnit.OrderControllerTest.getOrdersByTotalPriceGreaterThan.executor": "Run",
     "JUnit.OrderFactoryTest.executor": "Run",
@@ -93,25 +94,18 @@
       <recent name="za.ac.cput.factory" />
     </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.OnlineClothingStoreApp">
+  <component name="RunManager" selected="HTTP Request.generated-requests | #35">
+    <configuration name="generated-requests | #35" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="35" requestIdentifier="#35" runType="Run single request">
+      <method v="2" />
+    </configuration>
+    <configuration name="generated-requests | #36" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="36" requestIdentifier="#36" runType="Run single request">
+      <method v="2" />
+    </configuration>
     <configuration name="generated-requests | #39" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="39" requestIdentifier="#39" runType="Run single request">
       <method v="2" />
     </configuration>
-    <configuration name="OrderControllerTest.getOrdersByTotalPriceGreaterThan" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="T-shirts" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="za.ac.cput.controller.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="za.ac.cput.controller" />
-      <option name="MAIN_CLASS_NAME" value="za.ac.cput.controller.OrderControllerTest" />
-      <option name="METHOD_NAME" value="getOrdersByTotalPriceGreaterThan" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
+    <configuration name="generated-requests | #40" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="40" requestIdentifier="#40" runType="Run single request">
+      <method v="2" />
     </configuration>
     <configuration name="OnlineClothingStoreApp" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
       <module name="T-shirts" />
@@ -128,9 +122,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="HTTP Request.generated-requests | #35" />
         <item itemvalue="Spring Boot.OnlineClothingStoreApp" />
+        <item itemvalue="HTTP Request.generated-requests | #36" />
         <item itemvalue="HTTP Request.generated-requests | #39" />
-        <item itemvalue="JUnit.OrderControllerTest.getOrdersByTotalPriceGreaterThan" />
+        <item itemvalue="HTTP Request.generated-requests | #40" />
       </list>
     </recent_temporary>
   </component>
@@ -152,7 +148,7 @@
       <option name="presentableId" value="Default" />
       <updated>1725698940723</updated>
       <workItem from="1725698941896" duration="915000" />
-      <workItem from="1725699892797" duration="23292000" />
+      <workItem from="1725699892797" duration="27805000" />
     </task>
     <task id="LOCAL-00001" summary="initial">
       <option name="closed" value="true" />
@@ -178,7 +174,23 @@
       <option name="project" value="LOCAL" />
       <updated>1725716671538</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Services order and orderitems service done">
+      <option name="closed" value="true" />
+      <created>1725725346499</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1725725346499</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Services order and orderitems service done">
+      <option name="closed" value="true" />
+      <created>1725725377865</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1725725377865</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
