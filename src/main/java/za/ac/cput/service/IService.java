@@ -46,4 +46,3 @@ public interface IService<T, ID> {
      */
     List<T> findAll();
 }
-

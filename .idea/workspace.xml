@@ -3,6 +3,7 @@
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
+  
   <component name="ChangeListManager">
     <list default="true" id="beb02c30-a586-400a-8512-1256548bff54" name="Changes" comment="repo">
       <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/CartItemService.java" afterDir="false" />
@@ -12,128 +13,40 @@
       <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/IService.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/test/java/za/ac/cput/service/CartItemServiceTest.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/test/java/za/ac/cput/service/CartServiceTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/controller/OrderController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/za/ac/cput/controller/OrderControllerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/domain/Orders.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/repository/IOrderRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/OrderService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
         <option value="Class" />
         <option value="JUnit5 Test Class" />
+        <option value="Class" />
       </list>
     </option>
   </component>
+
   <component name="Git.Settings">
+    <option name="PREVIEW_PUSH_PROTECTED_ONLY" value="true" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+
   <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 6
-}</component>
-  <component name="ProjectId" id="2ljgXhJH0PTyD9XyUBh5AmohWZs" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
-    <ConfirmationsSetting value="2" id="Add" />
-  </component>
-  <component name="ProjectViewState">
-    <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showLibraryContents" value="true" />
-  </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "Application.Unnamed.executor": "Run",
-    "JUnit.CartFactoryTest.executor": "Run",
-    "JUnit.CartItemFactoryTest.executor": "Run",
-    "JUnit.CartItemServiceTest.executor": "Run",
-    "JUnit.CartServiceTest.executor": "Run",
-    "JUnit.OrderFactoryTest.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "MavenSettings",
-    "vue.rearranger.settings.migration": "true"
-  }
-}]]></component>
-  <component name="RecentsManager">
-    <key name="CreateTestDialog.Recents.Supers">
-      <recent name="" />
-    </key>
-    <key name="CreateTestDialog.RecentsKey">
-      <recent name="za.ac.cput.service" />
-      <recent name="za.ac.cput.factory" />
-    </key>
-  </component>
+    &quot;associatedIndex&quot;: 6
+  }</component>
+
   <component name="RunManager" selected="JUnit.CartServiceTest">
-    <configuration name="Unnamed" type="Application" factoryName="Application" nameIsGenerated="true">
-      <option name="ALTERNATIVE_JRE_PATH" value="jbr-17" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
-      <option name="MAIN_CLASS_NAME" value="za.ac.cput.OnlineClothingStoreApp" />
-      <module name="T-shirts" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="CartFactoryTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="T-shirts" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="za.ac.cput.factory.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="za.ac.cput.factory" />
-      <option name="MAIN_CLASS_NAME" value="za.ac.cput.factory.CartFactoryTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="CartItemFactoryTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="T-shirts" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="za.ac.cput.factory.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="za.ac.cput.factory" />
-      <option name="MAIN_CLASS_NAME" value="za.ac.cput.factory.CartItemFactoryTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="CartItemServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="T-shirts" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="za.ac.cput.service.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="za.ac.cput.service" />
-      <option name="MAIN_CLASS_NAME" value="za.ac.cput.service.CartItemServiceTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="CartServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="T-shirts" />
       <extension name="coverage">
@@ -149,78 +62,37 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="OrderItemFactoryTest.buildOrderItem" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+
+    <configuration name="OrderControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="T-shirts" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="za.ac.cput.factory.*" />
+          <option name="PATTERN" value="za.ac.cput.controller.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="za.ac.cput.factory" />
-      <option name="MAIN_CLASS_NAME" value="za.ac.cput.factory.OrderItemFactoryTest" />
-      <option name="METHOD_NAME" value="buildOrderItem" />
+      <option name="MAIN_CLASS_NAME" value="za.ac.cput.controller.OrderControllerTest" />
+      <option name="METHOD_NAME" value="getOrdersByTotalPriceGreaterThan" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="JUnit.CartServiceTest" />
-        <item itemvalue="JUnit.CartItemServiceTest" />
-        <item itemvalue="JUnit.CartItemFactoryTest" />
-        <item itemvalue="JUnit.CartFactoryTest" />
-        <item itemvalue="JUnit.OrderItemFactoryTest.buildOrderItem" />
-      </list>
-    </recent_temporary>
+
+    <configuration name="OnlineClothingStoreApp" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="T-shirts" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="za.ac.cput.OnlineClothingStoreApp" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
   </component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="jdk-17.0.9-jbr-17.0.9-f644763e9732-e10f1064" />
-      </set>
-    </attachedChunks>
-  </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
-  <component name="TaskManager">
-    <task active="true" id="Default" summary="Default task">
-      <changelist id="beb02c30-a586-400a-8512-1256548bff54" name="Changes" comment="" />
-      <created>1725698940723</created>
-      <option name="number" value="Default" />
-      <option name="presentableId" value="Default" />
-      <updated>1725698940723</updated>
-      <workItem from="1725698941896" duration="915000" />
-      <workItem from="1725699892797" duration="774000" />
-      <workItem from="1725709845390" duration="6853000" />
-      <workItem from="1725718535346" duration="4580000" />
-    </task>
-    <task id="LOCAL-00001" summary="factory">
-      <option name="closed" value="true" />
-      <created>1725713246519</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1725713246519</updated>
-    </task>
-    <task id="LOCAL-00002" summary="repo">
-      <option name="closed" value="true" />
-      <created>1725719664061</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1725719664061</updated>
-    </task>
-    <option name="localTasksCounter" value="3" />
-    <servers />
-  </component>
-  <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="3" />
-  </component>
-  <component name="VcsManagerConfiguration">
-    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="factory" />
-    <MESSAGE value="repo" />
-    <option name="LAST_COMMIT_MESSAGE" value="repo" />
+
+  <component name="RecentsManager">
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="za.ac.cput.controller" />
+      <recent name="za.ac.cput.service" />
+      <recent name="za.ac.cput.factory" />
+    </key>
   </component>
 </project>
