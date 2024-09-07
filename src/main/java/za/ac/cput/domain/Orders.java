@@ -26,7 +26,7 @@ public class Orders implements Serializable {
     private LocalDateTime orderDate;
 
     // ElementCollection for OrderItems
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "order_items", joinColumns = @JoinColumn(name = "order_id"))
     private List<OrderItem> orderItems = new ArrayList<>();  // Initialize the list
 

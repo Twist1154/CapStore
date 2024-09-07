@@ -62,7 +62,8 @@ public interface IOrderRepository extends JpaRepository<Orders, Long> {
      * @param totalPrice The minimum total price.
      * @return A list of orders with a total price greater than the specified amount.
      */
-    List<Orders> findByTotalPriceGreaterThan(double totalPrice);
+    List<Orders> findByTotalPriceGreaterThan(double total_price);
+
 
     /**
      * Deletes an order by its ID.
