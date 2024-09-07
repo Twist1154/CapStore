@@ -24,7 +24,7 @@ class CategoryFactoryTest {
 
     @Test
     @Order(1)
-    //This test will pass, all parameters are not null
+    //This test will pass and print category, all parameters are not null
     void buildCategory() {
         Category category = CategoryFactory.buildCategory(categoryId, categoryName, subCategoryName);
         assertNotNull(category);
@@ -33,10 +33,10 @@ class CategoryFactoryTest {
 
     @Test
     @Order(2)
-    //This test will fail, as categoryName is null
+    //This test will print null, as categoryName is null
     void buildCategoryWithNullCategoryName() {
         Category category = CategoryFactory.buildCategory(categoryId, null, subCategoryName);
-        assertNotNull(category);
+        assertNull(category);
         System.out.println(category);
     }
 
