@@ -4,23 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="beb02c30-a586-400a-8512-1256548bff54" name="Changes" comment="initial">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/repository/IOrderRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/IOrderService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/IService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/OrderService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/za/ac/cput/service/OrderItemServiceTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/za/ac/cput/service/OrdersServiceTest.java" afterDir="false" />
+    <list default="true" id="beb02c30-a586-400a-8512-1256548bff54" name="Changes" comment="Services order and orderitems service done">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/domain/OrderItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/domain/OrderItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/domain/Orders.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/domain/Orders.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/factory/OrderFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/factory/OrderFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/factory/OrderItemFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/factory/OrderItemFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/za/ac/cput/factory/OrderFactoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/za/ac/cput/factory/OrderFactoryTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/za/ac/cput/factory/OrderItemFactoryTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/za/ac/cput/service/OrdersServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/za/ac/cput/service/OrdersServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,6 +44,7 @@
     "JUnit.OrderFactoryTest.executor": "Run",
     "JUnit.OrderItemFactoryTest.buildOrderItem.executor": "Run",
     "JUnit.OrdersServiceTest.executor": "Run",
+    "JUnit.OrdersServiceTest.read.executor": "Run",
     "RequestMappingsPanelOrder0": "0",
     "RequestMappingsPanelOrder1": "1",
     "RequestMappingsPanelWidth0": "75",
@@ -143,6 +130,22 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="OrdersServiceTest.read" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="T-shirts" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="za.ac.cput.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="za.ac.cput.service" />
+      <option name="MAIN_CLASS_NAME" value="za.ac.cput.service.OrdersServiceTest" />
+      <option name="METHOD_NAME" value="read" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="OnlineClothingStoreApp" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
       <module name="T-shirts" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="za.ac.cput.OnlineClothingStoreApp" />
@@ -159,6 +162,7 @@
     <recent_temporary>
       <list>
         <item itemvalue="JUnit.OrdersServiceTest" />
+        <item itemvalue="JUnit.OrdersServiceTest.read" />
         <item itemvalue="Spring Boot.OnlineClothingStoreApp" />
         <item itemvalue="JUnit.OrderFactoryTest" />
         <item itemvalue="JUnit.OrderItemFactoryTest.buildOrderItem" />
@@ -183,7 +187,7 @@
       <option name="presentableId" value="Default" />
       <updated>1725698940723</updated>
       <workItem from="1725698941896" duration="915000" />
-      <workItem from="1725699892797" duration="8879000" />
+      <workItem from="1725699892797" duration="14832000" />
     </task>
     <task id="LOCAL-00001" summary="initial">
       <option name="closed" value="true" />
@@ -193,7 +197,15 @@
       <option name="project" value="LOCAL" />
       <updated>1725701070997</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Services order and orderitems service done">
+      <option name="closed" value="true" />
+      <created>1725709167286</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1725709167286</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -202,6 +214,7 @@
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="initial" />
-    <option name="LAST_COMMIT_MESSAGE" value="initial" />
+    <MESSAGE value="Services order and orderitems service done" />
+    <option name="LAST_COMMIT_MESSAGE" value="Services order and orderitems service done" />
   </component>
 </project>
