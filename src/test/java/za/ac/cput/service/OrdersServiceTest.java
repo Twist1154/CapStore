@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 import za.ac.cput.domain.OrderItem;
 import za.ac.cput.domain.Orders;
 import za.ac.cput.factory.OrderFactory;
@@ -24,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Student Num: 220455430
  * @date 07-Sep-24
  */
+@Transactional
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.MethodName.class)
 class OrdersServiceTest {
@@ -37,7 +39,7 @@ class OrdersServiceTest {
     void setUp() {
         // Create an initial order without items
         order = OrderFactory.buildOrder(
-                null,  // ID should be null for auto-generation
+                1L,  // ID should be null for auto-generation
                 1L,  // userID
                 1L,  // addressID
                 "Pending",  // status
@@ -93,6 +95,7 @@ class OrdersServiceTest {
         Orders createdOrder = orderService.create(order);
         assertNotNull(createdOrder);
         assertEquals(order.getOrderID(), createdOrder.getOrderID());
+        System.out.println("created \n" + createdOrder+ "\n");
     }
 
     @Test
@@ -100,6 +103,7 @@ class OrdersServiceTest {
         Orders readOrder = orderService.read(order.getOrderID());
         assertNotNull(readOrder);
         assertEquals(order.getOrderID(), readOrder.getOrderID());
+        System.out.println("read\n"+ readOrder+ "\n");
     }
 
     @Test
@@ -119,11 +123,14 @@ class OrdersServiceTest {
         assertNotNull(result);
         assertEquals(updatedOrder.getTotalPrice(), result.getTotalPrice());
         assertEquals(updatedOrder.getStatus(), result.getStatus());
+        System.out.println("\n"+result+"\n");
     }
 
+    @Transactional
     @Test
     void getAll() {
         List<Orders> orders = orderService.findAll();
+        System.out.println("all \n"+ orders);
         assertFalse(orders.isEmpty());
     }
 
