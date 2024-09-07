@@ -1,7 +1,6 @@
 package za.ac.cput.domain;
 
 import jakarta.persistence.*;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -26,9 +25,10 @@ public class Orders implements Serializable {
 
     private LocalDateTime orderDate;
 
-    // One order has many order items
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "orders")
-    private List<OrderItem> orderItems; // Updated to reflect the relationship
+    // ElementCollection for OrderItems
+    @ElementCollection
+    @CollectionTable(name = "order_items", joinColumns = @JoinColumn(name = "order_id"))
+    private List<OrderItem> orderItems = new ArrayList<>();  // Initialize the list
 
     public Orders() {}
 
@@ -70,8 +70,12 @@ public class Orders implements Serializable {
         return orderDate;
     }
 
-    public List<OrderItem> getOrderItems() { // Getter for order items
+    public List<OrderItem> getOrderItems() {
         return orderItems;
+    }
+
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
     }
 
     @Override
@@ -90,7 +94,7 @@ public class Orders implements Serializable {
     public String toString() {
         return "Orders{" +
                 "orderID=" + orderID + '\n' +
-                ", userID='" + userID + '\n' +  // Fixed the ++ to +
+                ", userID='" + userID + '\n' +
                 ", addressID='" + addressID + '\n' +
                 ", status='" + status + '\n' +
                 ", orderDate=" + orderDate + '\n' +
@@ -148,7 +152,7 @@ public class Orders implements Serializable {
             this.addressID = orders.getAddressID();
             this.totalPrice = orders.getTotalPrice();
             this.status = orders.getStatus();
-            this.orderItems = orders.getOrderItems(); // Copy orderItems
+            this.orderItems = orders.getOrderItems();
             this.orderDate = orders.getOrderDate();
             return this;
         }
@@ -158,4 +162,3 @@ public class Orders implements Serializable {
         }
     }
 }
-
