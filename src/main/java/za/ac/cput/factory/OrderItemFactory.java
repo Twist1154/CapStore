@@ -36,6 +36,10 @@ public class OrderItemFactory {
             throw new IllegalArgumentException("Price and quantity must be greater than zero.");
         }
 
-        return new OrderItem(productID, quantity, price);
+        return new OrderItem(
+                productID,
+                quantity,
+                price
+        );
     }
 }

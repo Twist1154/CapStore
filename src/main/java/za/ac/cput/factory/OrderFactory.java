@@ -49,7 +49,7 @@ public class OrderFactory {
                 .setAddressID(addressID)
                 .setStatus(status)
                 .setTotalPrice(totalPrice)
-                .setOrderDate(orderDate)
+                .setOrderDate(LocalDateTime.now())
                 .setOrderItems(orderItems)
                 .build();
     }

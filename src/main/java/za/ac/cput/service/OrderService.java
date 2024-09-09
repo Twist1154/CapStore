@@ -2,7 +2,9 @@ package za.ac.cput.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import za.ac.cput.domain.Orders;
+import za.ac.cput.factory.OrderFactory;
 import za.ac.cput.repository.IOrderRepository;
 
 import java.time.LocalDateTime;
@@ -18,7 +20,7 @@ import java.util.logging.Logger;
  * Student Num: 220455430
  * Date: 07-Sep-24
  */
-
+@Transactional
 @Service
 public class OrderService implements IOrderService {
     private final IOrderRepository repository;
@@ -32,7 +34,22 @@ public class OrderService implements IOrderService {
 
     @Override
     public Orders create(Orders orders) {
-        return repository.save(orders);
+        if (orders.getOrderDate() == null) {
+            Orders  orders1 = new Orders.Builder()
+                    .copy(orders)
+                    .setOrderID(orders.getOrderID())
+                    .setUserID(orders.getUserID())
+                    .setAddressID(orders.getAddressID())
+                    .setOrderDate(LocalDateTime.now())
+                    .setTotalPrice(orders.getTotalPrice())
+                    .setStatus(orders.getStatus())
+                    .build();
+            return repository.save(orders1);
+        }
+        // Log warning if the order to update does not exist
+        logger.warning("Attempt to create order without date: " + orders.getOrderDate());
+        return null;
+
     }
 
     @Override
