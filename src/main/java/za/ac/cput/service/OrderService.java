@@ -3,19 +3,19 @@ package za.ac.cput.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import za.ac.cput.domain.OrderItem;
 import za.ac.cput.domain.Orders;
-import za.ac.cput.factory.OrderFactory;
 import za.ac.cput.repository.IOrderRepository;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.logging.Logger;
 
 /**
  * OrderService.java
- *
+ * <p>
  * Service class to manage Orders.
- *
+ * <p>
  * Author: Rethabile Ntsekhe
  * Student Num: 220455430
  * Date: 07-Sep-24
@@ -34,22 +34,7 @@ public class OrderService implements IOrderService {
 
     @Override
     public Orders create(Orders orders) {
-        if (orders.getOrderDate() == null) {
-            Orders  orders1 = new Orders.Builder()
-                    .copy(orders)
-                    .setOrderID(orders.getOrderID())
-                    .setUserID(orders.getUserID())
-                    .setAddressID(orders.getAddressID())
-                    .setOrderDate(LocalDateTime.now())
-                    .setTotalPrice(orders.getTotalPrice())
-                    .setStatus(orders.getStatus())
-                    .build();
-            return repository.save(orders1);
-        }
-        // Log warning if the order to update does not exist
-        logger.warning("Attempt to create order without date: " + orders.getOrderDate());
-        return null;
-
+        return repository.save(orders);
     }
 
     @Override
@@ -63,13 +48,12 @@ public class OrderService implements IOrderService {
         if (existingOrder != null) {
             Orders updatedOrder = new Orders.Builder()
                     .copy(existingOrder)
-                    .setOrderID(existingOrder.getOrderID())
                     .setUserID(orders.getUserID())
                     .setAddressID(orders.getAddressID())
                     .setOrderDate(orders.getOrderDate())
                     .setTotalPrice(orders.getTotalPrice())
                     .setStatus(orders.getStatus())
-                    .setOrderItems(orders.getOrderItems())
+                    .setOrderItems(orders.getOrderItems()) // Ensure this is handled as per your requirements
                     .build();
             return repository.save(updatedOrder);
         } else {
@@ -95,7 +79,7 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public List<Orders> findByOrderDateBetween(LocalDateTime startDate, LocalDateTime endDate) {
+    public List<Orders> findByOrderDateBetween(LocalDate startDate, LocalDate endDate) {
         return repository.findByOrderDateBetween(startDate, endDate);
     }
 

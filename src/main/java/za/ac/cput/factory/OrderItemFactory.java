@@ -24,22 +24,25 @@ public class OrderItemFactory {
      * @throws IllegalArgumentException if any parameter is invalid.
      */
     public static OrderItem buildOrderItem(
+            Long orderItemID,
             Long productID,
             int quantity,
             double price) {
 
+        // Validating input fields
         if (Helper.isNullOrEmpty(productID)) {
-            throw new IllegalArgumentException("Product ID must not be null.");
+            throw new IllegalArgumentException("Product ID must not be null or empty.");
         }
 
         if (quantity <= 0 || price <= 0) {
-            throw new IllegalArgumentException("Price and quantity must be greater than zero.");
+            throw new IllegalArgumentException("Quantity and price must be greater than zero.");
         }
 
-        return new OrderItem(
-                productID,
-                quantity,
-                price
-        );
+        return new OrderItem.Builder()
+                .setOrderItemID(orderItemID)
+                .setProductID(productID)
+                .setQuantity(quantity)
+                .setPrice(price)
+                .build();
     }
 }

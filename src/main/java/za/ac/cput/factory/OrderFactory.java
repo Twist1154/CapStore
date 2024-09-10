@@ -4,7 +4,7 @@ import za.ac.cput.domain.Orders;
 import za.ac.cput.domain.OrderItem;
 import za.ac.cput.util.Helper;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -18,13 +18,13 @@ public class OrderFactory {
 
     /**
      * Creates an Orders object.
-     *
+     * @param orderID     The ID of the Order being placed
      * @param userID      The ID of the customer placing the order.
-     * @param orderDate   The date and time when the order was placed.
-     * @param orderItems  The list of order items included in the order.
+     * @param addressID   The ID of the address where the order should be delivered.
      * @param totalPrice  The total price of the order.
      * @param status      The status of the order.
-     * @param addressID   The ID of the address where the order should be delivered.
+     * @param orderDate   The date and time when the order was placed.
+     * @param orderItems  The list of order items included in the order.
      * @return            The created Orders object.
      * @throws IllegalArgumentException if any parameter is invalid.
      */
@@ -34,13 +34,19 @@ public class OrderFactory {
             Long addressID,
             String status,
             double totalPrice,
-            LocalDateTime orderDate,
+            LocalDate orderDate,
             List<OrderItem> orderItems
     ) {
 
         // Validating input fields
-        if (orderDate == null || totalPrice <= 0 || Helper.isNullOrEmpty(status)) {
-            throw new IllegalArgumentException("Invalid input: fields must not be null or empty.");
+        if (Helper.isNullOrEmpty(userID) ||
+            Helper.isNullOrEmpty(addressID) ||
+            Helper.isNullOrEmpty(status)) {
+            throw new IllegalArgumentException("UserID, AddressID, and Status must not be null or empty.");
+        }
+
+        if (Helper.isOrderNullorEmpty(totalPrice)){
+            throw new IllegalArgumentException("Total price must be positive and order must contain at least one item.");
         }
 
         return new Orders.Builder()
@@ -49,7 +55,7 @@ public class OrderFactory {
                 .setAddressID(addressID)
                 .setStatus(status)
                 .setTotalPrice(totalPrice)
-                .setOrderDate(LocalDateTime.now())
+                .setOrderDate(orderDate != null ? orderDate : LocalDate.now())
                 .setOrderItems(orderItems)
                 .build();
     }

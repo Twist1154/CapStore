@@ -2,6 +2,7 @@ package za.ac.cput.service;
 
 import za.ac.cput.domain.Orders;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -41,7 +42,7 @@ public interface IOrderService extends IService<Orders, Long> {
      * @param endDate   The end of the date range.
      * @return A list of orders placed within the given date range.
      */
-    List<Orders> findByOrderDateBetween(LocalDateTime startDate, LocalDateTime endDate);
+    List<Orders> findByOrderDateBetween(LocalDate startDate, LocalDate endDate);
 
     /**
      * Finds orders by the address ID associated with them.

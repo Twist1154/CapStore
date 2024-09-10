@@ -9,6 +9,7 @@ import za.ac.cput.service.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -147,8 +148,8 @@ public class OrderController {
 
     // Get orders by date range
     @GetMapping("/date-range")
-    public ResponseEntity<List<Orders>> getOrdersByDateRange(@RequestParam LocalDateTime startDate,
-                                                             @RequestParam LocalDateTime endDate) {
+    public ResponseEntity<List<Orders>> getOrdersByDateRange(@RequestParam LocalDate startDate,
+                                                             @RequestParam LocalDate endDate) {
         try {
             if (startDate == null || endDate == null || startDate.isAfter(endDate)) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -181,7 +182,7 @@ public class OrderController {
 
     // Get orders with a total price greater than a specified value
     @GetMapping("/total-price/{totalPrice}")
-    public ResponseEntity<List<Orders>> getOrdersByTotalPriceGreaterThan(@RequestParam double totalPrice) {
+    public ResponseEntity<List<Orders>> getOrdersByTotalPriceGreaterThan(@PathVariable  double totalPrice) {
     logger.info("Fetching orders with totalPrice greater than: " + totalPrice);
         try {
             if (totalPrice < 0) {

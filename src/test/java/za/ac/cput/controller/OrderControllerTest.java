@@ -12,7 +12,7 @@ import za.ac.cput.factory.OrderFactory;
 import za.ac.cput.factory.OrderItemFactory;
 import za.ac.cput.service.OrderService;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,9 +23,8 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  * Test class for OrderController.
  *
- * Author: Rethabile Ntsekhe
- * Student Num: 220455430
- * Date: 07-Sep-24
+ * Author: [Your Name]
+ * Date: [Current Date]
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
@@ -45,12 +44,12 @@ class OrderControllerTest {
         // Create an initial order without items
         order = OrderFactory.buildOrder(
                 1L,  // ID should be null for auto-generation
-                1L,  // userID
-                1L,  // addressID
-                "Pending",  // status
-                150.0,  // totalPrice
-                LocalDateTime.now(),  // orderDate
-                new ArrayList<>()  // Empty list of orderItems initially
+                1L,
+                1L,
+                "Pending",
+                150.0,
+                LocalDate.now(),
+                new ArrayList<>()
         );
 
         // Save the order to generate an orderID
@@ -58,18 +57,21 @@ class OrderControllerTest {
 
         // Create test OrderItems for the saved order
         OrderItem orderItem1 = OrderItemFactory.buildOrderItem(
-                1L,  // null for auto-generated orderItemID
-                12,  // quantity
-                12.00  // price
+                1L,
+                1L,
+                12,
+                12.00
         );
 
         OrderItem orderItem2 = OrderItemFactory.buildOrderItem(
+                4L,
                 1L,
                 5,
                 10.00
         );
 
         OrderItem orderItem3 = OrderItemFactory.buildOrderItem(
+                null,
                 1L,
                 20,
                 20.00
@@ -106,21 +108,23 @@ class OrderControllerTest {
     @Test
     @Order(1)
     void createOrder() {
-
-        // Create test OrderItems for the saved order
+        // Arrange
         OrderItem orderItem1 = OrderItemFactory.buildOrderItem(
+                null,
                 1L,  // null for auto-generated orderItemID
-                12,  // quantity
-                12.00  // price
+                12,
+                12.00
         );
 
         OrderItem orderItem2 = OrderItemFactory.buildOrderItem(
+                null,
                 1L,
                 5,
                 10.00
         );
 
         OrderItem orderItem3 = OrderItemFactory.buildOrderItem(
+                null,
                 1L,
                 20,
                 20.00
@@ -132,14 +136,13 @@ class OrderControllerTest {
         orderItems.add(orderItem2);
         orderItems.add(orderItem3);
 
-        // Arrange
         Orders newOrder = OrderFactory.buildOrder(
                 12L,
                 124L,
                 1L,
                 "pending",
                 234,
-                LocalDateTime.now(),
+                LocalDate.now(),
                 orderItems
         );
 
@@ -148,11 +151,12 @@ class OrderControllerTest {
 
         // Assert
         assertNotNull(response.getBody());
-        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertEquals(newOrder.getTotalPrice(), response.getBody().getTotalPrice());
+        System.out.println(response.getBody());
 
         // Cleanup
-        orderService.deleteByOrderID(response.getBody().getOrderID());
+        //orderService.deleteByOrderID(response.getBody().getOrderID());
     }
 
     @Test
@@ -160,6 +164,7 @@ class OrderControllerTest {
     void read() {
         // Act
         ResponseEntity<Orders> response = orderController.read(order.getOrderID());
+        System.out.println(response.getBody());
 
         // Assert
         assertNotNull(response.getBody());
@@ -171,19 +176,24 @@ class OrderControllerTest {
     @Order(3)
     void updateOrder() {
         // Arrange
+        Orders updatedOrder = new Orders.Builder()
+                .copy(order)
+                .setTotalPrice(200.0)
+                .build();
 
         // Act
-        ResponseEntity<Orders> response = orderController.updateOrder(order.getOrderID(), order);
-
+        ResponseEntity<Orders> response = orderController.updateOrder(order.getOrderID(), updatedOrder);
+        System.out.println(response.getBody());
         // Assert
         assertNotNull(response.getBody());
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(150.0, response.getBody().getTotalPrice());
+        assertEquals(200.0, response.getBody().getTotalPrice());
     }
 
     @Test
     @Order(4)
     void deleteOrder() {
+        System.out.println((order.getOrderID()));
         // Act
         ResponseEntity<Void> response = orderController.deleteOrder(order.getOrderID());
 
@@ -200,6 +210,7 @@ class OrderControllerTest {
     void getAllOrders() {
         // Act
         ResponseEntity<List<Orders>> response = orderController.getAllOrders();
+        System.out.println(response.getBody());
 
         // Assert
         assertNotNull(response.getBody());
@@ -213,6 +224,8 @@ class OrderControllerTest {
         // Act
         ResponseEntity<List<Orders>> response = orderController.getOrdersByUserID(order.getUserID());
 
+        System.out.println(response.getBody());
+
         // Assert
         assertNotNull(response.getBody());
         assertTrue(response.getBody().size() > 0);
@@ -224,7 +237,7 @@ class OrderControllerTest {
     void getOrdersByStatus() {
         // Act
         ResponseEntity<List<Orders>> response = orderController.getOrdersByStatus("Pending");
-
+        System.out.println(response.getBody());
         // Assert
         assertNotNull(response.getBody());
         assertTrue(response.getBody().size() > 0);
@@ -235,12 +248,11 @@ class OrderControllerTest {
     @Order(8)
     void getOrdersByDateRange() {
         // Arrange
-        LocalDateTime startDate = LocalDateTime.now().minusDays(10);
-        LocalDateTime endDate = LocalDateTime.now();
-
+        LocalDate startDate = LocalDate.now().minusDays(10);
+        LocalDate endDate = LocalDate.now();
         // Act
         ResponseEntity<List<Orders>> response = orderController.getOrdersByDateRange(startDate, endDate);
-
+        System.out.println(response.getBody());
         // Assert
         assertNotNull(response.getBody());
         assertTrue(response.getBody().size() > 0);
@@ -252,6 +264,7 @@ class OrderControllerTest {
     void getOrdersByAddressID() {
         // Act
         ResponseEntity<List<Orders>> response = orderController.getOrdersByAddressID(order.getAddressID());
+        System.out.println(response.getBody());
 
         // Assert
         assertNotNull(response.getBody());
@@ -265,6 +278,7 @@ class OrderControllerTest {
         // Act
         ResponseEntity<List<Orders>> response = orderController.getOrdersByTotalPriceGreaterThan(50.0);
         System.out.println(response.getBody());
+
         // Assert
         assertNotNull(response.getBody());
         assertTrue(response.getBody().size() > 0);

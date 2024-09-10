@@ -1,15 +1,18 @@
 package za.ac.cput.domain;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+
 import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Orders.java
  *
  * @author Rethabile Ntsekhe
- * Student Num: 220455430
  * @date 07-Sep-24
  */
 
@@ -18,19 +21,21 @@ public class Orders implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderID;
+
     private Long userID;
     private Long addressID;
     private double totalPrice;
     private String status;
 
-    private LocalDateTime orderDate;
+    @CreationTimestamp
+    private LocalDate orderDate;
 
-    // ElementCollection for OrderItems
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "order_items", joinColumns = @JoinColumn(name = "order_id"))
-    private List<OrderItem> orderItems = new ArrayList<>();  // Initialize the list
+    // OneToMany relationship with OrderItems
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderItem> orderItems = new ArrayList<>();
 
-    public Orders() {}
+    public Orders() {
+    }
 
     public Orders(Builder builder) {
         this.orderID = builder.orderID;
@@ -62,11 +67,7 @@ public class Orders implements Serializable {
         return status;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public LocalDateTime getOrderDate() {
+    public LocalDate getOrderDate() {
         return orderDate;
     }
 
@@ -81,25 +82,41 @@ public class Orders implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Orders orders)) return false;
-        return Double.compare(totalPrice, orders.totalPrice) == 0 && Objects.equals(orderID, orders.orderID) && Objects.equals(userID, orders.userID) && Objects.equals(addressID, orders.addressID) && Objects.equals(status, orders.status) && Objects.equals(orderDate, orders.orderDate) && Objects.equals(orderItems, orders.orderItems);
+        if (!(o instanceof Orders)) return false;
+        Orders orders = (Orders) o;
+        return Double.compare(orders.totalPrice, totalPrice) == 0 &&
+                Objects.equals(orderID, orders.orderID) &&
+                Objects.equals(userID, orders.userID) &&
+                Objects.equals(addressID, orders.addressID) &&
+                Objects.equals(status, orders.status) &&
+                Objects.equals(orderDate, orders.orderDate) &&
+                Objects.equals(orderItems, orders.orderItems);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(orderID, userID, addressID, totalPrice, status, orderDate, orderItems);
+        return Objects.hash(
+                orderID,
+                userID,
+                addressID,
+                totalPrice,
+                status,
+                orderDate,
+                orderItems
+        );
     }
 
     @Override
     public String toString() {
         return "Orders{" +
-                "orderID=" + orderID + '\n' +
-                ", userID='" + userID + '\n' +
-                ", addressID='" + addressID + '\n' +
-                ", status='" + status + '\n' +
-                ", orderDate=" + orderDate + '\n' +
-                ", orderItems=" + orderItems + '\n' +
-                '}' + '\n';
+                "orderID=" + orderID +
+                ", userID=" + userID +
+                ", addressID=" + addressID +
+                ", totalPrice=" + totalPrice +
+                ", status='" + status + '\'' +
+                ", orderDate=" + orderDate +
+                ", orderItems=" + orderItems +
+                '}';
     }
 
     public static class Builder {
@@ -108,7 +125,7 @@ public class Orders implements Serializable {
         private Long addressID;
         private String status;
         private double totalPrice;
-        private LocalDateTime orderDate;
+        private LocalDate orderDate;
         private List<OrderItem> orderItems;
 
         public Builder setOrderID(Long orderID) {
@@ -136,7 +153,7 @@ public class Orders implements Serializable {
             return this;
         }
 
-        public Builder setOrderDate(LocalDateTime orderDate) {
+        public Builder setOrderDate(LocalDate orderDate) {
             this.orderDate = orderDate;
             return this;
         }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import za.ac.cput.domain.Orders;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -46,7 +47,7 @@ public interface IOrderRepository extends JpaRepository<Orders, Long> {
      * @param endDate   The end date of the range.
      * @return A list of orders within the specified date range.
      */
-    List<Orders> findByOrderDateBetween(LocalDateTime startDate, LocalDateTime endDate);
+    List<Orders> findByOrderDateBetween(LocalDate startDate, LocalDate endDate);
 
     /**
      * Finds orders by address ID.
