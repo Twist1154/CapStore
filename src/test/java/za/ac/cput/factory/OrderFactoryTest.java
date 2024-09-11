@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import za.ac.cput.domain.OrderItem;
 import za.ac.cput.domain.Orders;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,19 +17,22 @@ public class OrderFactoryTest {
         // Create test OrderItems with valid data
         OrderItem orderItem1 = OrderItemFactory.buildOrderItem(
                 1L,
-                12,
+                12L,
+                2,
                 12.00
         );
 
         OrderItem orderItem2 = OrderItemFactory.buildOrderItem(
                 2L,
-                5,
+                5L,
+                1,
                 10.00
         );
 
         OrderItem orderItem3 = OrderItemFactory.buildOrderItem(
                 3L,
-                20,
+                20L,
+                3,
                 20.00
         );
 
@@ -50,7 +53,7 @@ public class OrderFactoryTest {
         Long addressID = 1L;
         double totalPrice = 150.0;
         String status = "Pending";
-        LocalDateTime orderDate = LocalDateTime.now();
+        LocalDate orderDate = LocalDate.now();
 
         // Build the Orders object
         Orders order = OrderFactory.buildOrder(
@@ -69,6 +72,7 @@ public class OrderFactoryTest {
         // Additional assertions to ensure the order details are correct
         assertEquals(orderID, order.getOrderID());
         assertEquals(userID, order.getUserID());
+        assertEquals(addressID, order.getAddressID());
         assertEquals(orderDate, order.getOrderDate());
         assertEquals(orderItems, order.getOrderItems());
         assertEquals(totalPrice, order.getTotalPrice());
@@ -86,7 +90,7 @@ public class OrderFactoryTest {
         Long addressID = 1L;
         double totalPrice = 0.0; // Assuming 0 for no items
         String status = "Pending";
-        LocalDateTime orderDate = LocalDateTime.now();
+        LocalDate orderDate = LocalDate.now();
 
         // Build the Orders object with an empty orderItems list
         List<OrderItem> emptyOrderItems = new ArrayList<>();
@@ -114,24 +118,24 @@ public class OrderFactoryTest {
         Long addressID = 1L;
         double totalPrice = -50.0;
         String status = "Pending";
-        LocalDateTime orderDate = LocalDateTime.now();
+        LocalDate orderDate = LocalDate.now();
 
         // Add empty order items for this test
         List<OrderItem> orderItems = new ArrayList<>();
 
-        // Build the Orders object
-        Orders order = OrderFactory.buildOrder(
-                orderID,
-                userID,
-                addressID,
-                status,
-                totalPrice,
-                orderDate,
-                orderItems
-        );
+        // Expecting IllegalArgumentException due to negative total price
+        IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> {
+            OrderFactory.buildOrder(
+                    orderID,
+                    userID,
+                    addressID,
+                    status,
+                    totalPrice,
+                    orderDate,
+                    orderItems
+            );
+        });
 
-        // Asserting that the order allows negative total price (this may vary depending on validation logic)
-        assertNotNull(order);
-        assertEquals(-50.0, order.getTotalPrice());
+        assertEquals("Total price must be positive and order must contain at least one item.", thrown.getMessage());
     }
 }

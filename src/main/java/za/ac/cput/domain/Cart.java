@@ -1,5 +1,6 @@
 package za.ac.cput.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.*;
 import java.util.ArrayList;
@@ -15,8 +16,8 @@ public class Cart {
 
     private Long customerID;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "cart_id")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<CartItem> cartItems = new ArrayList<>();
 
     private double totalAmount;
