@@ -29,8 +29,8 @@ class CartServiceTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
         cart = new Cart.Builder()
-                .setCartID(1L)
-                .setCustomerID(1L)
+                .setCartID(4L)
+                .setCustomerID(9L)
                 .setCartItems(new ArrayList<>())
                 .setTotalAmount(100.00)
                 .build();
