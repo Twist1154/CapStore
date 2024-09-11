@@ -14,7 +14,8 @@ class OrderItemFactoryTest {
                 1L,
                 12L,
                 2,
-                12.00
+                12.00,
+                79L
         );
 
         // Ensure that the OrderItem was created successfully and is not null
@@ -35,7 +36,8 @@ class OrderItemFactoryTest {
                     null,
                     null,
                     -1,
-                    -10.00
+                    -10.00,
+                    79L
             );
         });
 

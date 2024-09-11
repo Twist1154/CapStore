@@ -20,6 +20,7 @@ public class OrderItemFactory {
      * @param productID  The ID of the product associated with this order item.
      * @param quantity   The quantity of the product ordered.
      * @param price      The price of the product.
+     * @param order_id   the Order_Id of order
      * @return           The created OrderItem object.
      * @throws IllegalArgumentException if any parameter is invalid.
      */
@@ -27,7 +28,9 @@ public class OrderItemFactory {
             Long orderItemID,
             Long productID,
             int quantity,
-            double price) {
+            double price,
+            Long order_id
+    ) {
 
         // Validating input fields
         if (Helper.isNullOrEmpty(productID)) {
@@ -43,6 +46,7 @@ public class OrderItemFactory {
                 .setProductID(productID)
                 .setQuantity(quantity)
                 .setPrice(price)
+                .setOrder_id(order_id)
                 .build();
     }
 }
