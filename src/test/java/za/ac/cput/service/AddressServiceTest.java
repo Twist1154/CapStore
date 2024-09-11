@@ -180,4 +180,21 @@ class AddressServiceTest {
         assertFalse(allAddresses.isEmpty(), "Address list should not be empty");
         System.out.println(allAddresses);
     }
+
+    @Order(11)
+    @Test
+    void deleteByAddressID() {
+        // Ensure address is present before deletion
+        Address existingAddress = addressService.read(address.getAddressID());
+        assertNotNull(existingAddress, "Address should exist before deletion");
+
+        // Delete the address
+        addressService.deleteByAddressID(existingAddress.getAddressID());
+
+        // Try to fetch the deleted address
+        Address deletedAddress = addressService.read(existingAddress.getAddressID());
+        assertNull(deletedAddress, "Address should be null after deletion");
+
+        System.out.println("Address with ID " + existingAddress.getAddressID() + " was successfully deleted.");
+    }
 }

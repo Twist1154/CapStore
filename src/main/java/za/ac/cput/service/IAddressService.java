@@ -68,4 +68,6 @@ public interface IAddressService extends IService<Address, Long> {
      * @return a list of all addresses
      */
     List<Address> getAll();
+
+    void deleteByAddressID(Long id);
 }

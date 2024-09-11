@@ -7,16 +7,14 @@
 
 package za.ac.cput.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-public class Category implements Serializable {
+@Table(name = "category")
+public class Category  implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -95,5 +95,13 @@ public class AddressService implements IAddressService{
         return repository.findAll();
     }
 
+    @Override
+    public void deleteByAddressID(Long addressID) {
+        Optional<Address> address = repository.findById(addressID);
+        if (address.isEmpty()) {
+            throw new IllegalArgumentException("Address with the given ID does not exist.");
+        }
+        repository.deleteById(addressID);
+    }
 
 }
