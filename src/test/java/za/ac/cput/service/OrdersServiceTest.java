@@ -1,9 +1,6 @@
 package za.ac.cput.service;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,19 +9,12 @@ import za.ac.cput.domain.Orders;
 import za.ac.cput.factory.OrderFactory;
 import za.ac.cput.factory.OrderItemFactory;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * OrdersServiceTest.java
- *
- * @author Rethabile Ntsekhe
- * Student Num: 220455430
- * @date 07-Sep-24
- */
 @Transactional
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.MethodName.class)
@@ -33,89 +23,110 @@ class OrdersServiceTest {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private OrderItemService orderItemService;
+
     private Orders order;
+    private OrderItem orderItem1;
+    private OrderItem orderItem2;
+    private OrderItem orderItem3;
 
     @BeforeEach
     void setUp() {
-        // Create an initial order without items
+        // Create an initial order
         order = OrderFactory.buildOrder(
-                1L,  // ID should be null for auto-generation
-                1L,  // userID
-                1L,  // addressID
-                "Pending",  // status
-                150.0,  // totalPrice
-                LocalDateTime.now(),  // orderDate
-                new ArrayList<>()  // Empty list of orderItems initially
+                null,  // ID should be null for auto-generation
+                2L,    // userID
+                5L,    // addressID
+                "Pending",
+                150.0,
+                LocalDate.now(),
+                new ArrayList<>()
         );
 
         // Save the order to generate an orderID
         order = orderService.create(order);
 
-        // Create test OrderItems for the saved order
-        OrderItem orderItem1 = OrderItemFactory.buildOrderItem(
-                1L,  // null for auto-generated orderItemID
-                12,  // quantity
-                12.00  // price
+        // Create OrderItems
+        orderItem1 = OrderItemFactory.buildOrderItem(
+                null,  // ID should be null for auto-generation
+                order.getOrderID(),  // Link to the created order
+                12,
+                12.00
         );
 
-        OrderItem orderItem2 = OrderItemFactory.buildOrderItem(
-                1L,
+        orderItem2 = OrderItemFactory.buildOrderItem(
+                null,
+                order.getOrderID(),
                 5,
                 10.00
         );
 
-        OrderItem orderItem3 = OrderItemFactory.buildOrderItem(
-                1L,
+        orderItem3 = OrderItemFactory.buildOrderItem(
+                null,
+                order.getOrderID(),
                 20,
                 20.00
         );
 
-        // Add OrderItems to a list
+        // Save OrderItems
+        orderItem1 = orderItemService.create(orderItem1);
+        orderItem2 = orderItemService.create(orderItem2);
+        orderItem3 = orderItemService.create(orderItem3);
+
+        // Ensure OrderItems are associated with the Order
         List<OrderItem> orderItems = new ArrayList<>();
         orderItems.add(orderItem1);
         orderItems.add(orderItem2);
         orderItems.add(orderItem3);
 
-        // Update the order with OrderItems and save it
         order = new Orders.Builder()
-                .setOrderID(order.getOrderID())
-                .setUserID(order.getUserID())
-                .setAddressID(order.getAddressID())
-                .setTotalPrice(order.getTotalPrice())
-                .setStatus(order.getStatus())
-                .setOrderDate(order.getOrderDate())
-                .setOrderItems(orderItems)  // Set orderItems here
+                .copy(order)
+                .setOrderItems(orderItems)  // Add OrderItems
                 .build();
 
-        orderService.update(order);
+        order = orderService.update(order); // Ensure the updated order is persisted
     }
 
     @Test
+    @Order(1)
     void create() {
-        Orders createdOrder = orderService.create(order);
+        Orders newOrder = OrderFactory.buildOrder(
+                null,
+                2L,
+                5L,
+                "Pending",
+                200.0,
+                LocalDate.now(),
+                new ArrayList<>()
+        );
+
+        Orders createdOrder = orderService.create(newOrder);
         assertNotNull(createdOrder);
-        assertEquals(order.getOrderID(), createdOrder.getOrderID());
-        System.out.println("created \n" + createdOrder+ "\n");
+        assertNotNull(createdOrder.getOrderID());  // Check if ID is generated
+        System.out.println("Created: \n" + createdOrder + "\n");
     }
 
     @Test
+    @Order(2)
     void read() {
         Orders readOrder = orderService.read(order.getOrderID());
         assertNotNull(readOrder);
         assertEquals(order.getOrderID(), readOrder.getOrderID());
-        System.out.println("read\n"+ readOrder+ "\n");
+        System.out.println("Read: \n" + readOrder + "\n");
+
+        // Debugging OrderItems
+        List<OrderItem> orderItems = readOrder.getOrderItems();
+        System.out.println("Order Items: " + orderItems);
     }
 
     @Test
+    @Order(3)
     void update() {
-        // Update the order details
         Orders updatedOrder = new Orders.Builder()
-                .setOrderID(order.getOrderID())
-                .setUserID(1L) // Updated userID
-                .setAddressID(order.getAddressID())
-                .setOrderDate(order.getOrderDate())
-                .setOrderItems(order.getOrderItems())
-                .setTotalPrice(200.0) // Updated totalPrice
+                .copy(order)
+                .setUserID(3L) // Updated userID
+                .setTotalPrice(300.0) // Updated totalPrice
                 .setStatus("Shipped") // Updated status
                 .build();
 
@@ -123,23 +134,25 @@ class OrdersServiceTest {
         assertNotNull(result);
         assertEquals(updatedOrder.getTotalPrice(), result.getTotalPrice());
         assertEquals(updatedOrder.getStatus(), result.getStatus());
-        System.out.println("\n"+result+"\n");
+        System.out.println("Updated: \n" + result + "\n");
     }
 
-    @Transactional
     @Test
+    @Order(4)
     void getAll() {
         List<Orders> orders = orderService.findAll();
-        System.out.println("all \n"+ orders);
         assertFalse(orders.isEmpty());
+        System.out.println("All Orders: \n" + orders + "\n");
     }
 
     @Test
+    @Order(5)
     void delete() {
         Long orderIdToDelete = order.getOrderID();
         orderService.deleteByOrderID(orderIdToDelete);
 
         Orders deletedOrder = orderService.read(orderIdToDelete);
         assertNull(deletedOrder);
+        System.out.println("Deleted Order ID: " + orderIdToDelete);
     }
 }

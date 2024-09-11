@@ -11,7 +11,7 @@ import java.util.Set;
  * It is an entity class that maps to the "User" table in the database.
  */
 @Entity
-@Table(name = "User")
+@Table(name = "Users")
 public class User {
 
     /**
