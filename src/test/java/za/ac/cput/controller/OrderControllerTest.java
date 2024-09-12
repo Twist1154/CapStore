@@ -6,6 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 import za.ac.cput.domain.OrderItem;
 import za.ac.cput.domain.Orders;
 import za.ac.cput.factory.OrderFactory;
@@ -18,17 +19,10 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * OrderControllerTest.java
- *
- * Test class for OrderController.
- *
- * Author: [Your Name]
- * Date: [Current Date]
- */
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest
 @ActiveProfiles("test")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+//@Transactional  // Automatically rolls back DB changes after each test
 class OrderControllerTest {
 
     @Autowired
@@ -43,7 +37,7 @@ class OrderControllerTest {
     void setUp() {
         // Create an initial order without items
         order = OrderFactory.buildOrder(
-                1L,  // ID should be null for auto-generation
+                null,
                 1L,
                 1L,
                 "Pending",
@@ -57,27 +51,29 @@ class OrderControllerTest {
 
         // Create test OrderItems for the saved order
         OrderItem orderItem1 = OrderItemFactory.buildOrderItem(
-                1L,
+                null,
                 1L,
                 12,
-                12.00
+                12.00,
+                order
         );
 
         OrderItem orderItem2 = OrderItemFactory.buildOrderItem(
-                4L,
+                null,
                 1L,
                 5,
-                10.00
+                10.00,
+                order
         );
 
         OrderItem orderItem3 = OrderItemFactory.buildOrderItem(
                 null,
                 1L,
                 20,
-                20.00
+                20.00,
+                order
         );
 
-        // Add OrderItems to a list
         List<OrderItem> orderItems = new ArrayList<>();
         orderItems.add(orderItem1);
         orderItems.add(orderItem2);
@@ -85,13 +81,13 @@ class OrderControllerTest {
 
         // Update the order with OrderItems and save it
         order = new Orders.Builder()
-                .setOrderID(order.getOrderID())
+                .setId(order.getId())
                 .setUserID(order.getUserID())
                 .setAddressID(order.getAddressID())
                 .setTotalPrice(order.getTotalPrice())
                 .setStatus(order.getStatus())
                 .setOrderDate(order.getOrderDate())
-                .setOrderItems(orderItems)  // Set orderItems here
+                .setOrderItems(orderItems)
                 .build();
 
         orderService.update(order);
@@ -99,9 +95,9 @@ class OrderControllerTest {
 
     @AfterEach
     void tearDown() {
-        // Cleanup: Deleting the test order from the database
-        if (order != null && order.getOrderID() != null) {
-            orderService.deleteByOrderID(order.getOrderID());
+        // Cleanup: Delete test order
+        if (order != null && order.getId() != null) {
+            orderService.deleteByOrderID(order.getId());
         }
     }
 
@@ -109,35 +105,14 @@ class OrderControllerTest {
     @Order(1)
     void createOrder() {
         // Arrange
-        OrderItem orderItem1 = OrderItemFactory.buildOrderItem(
-                null,
-                1L,  // null for auto-generated orderItemID
-                12,
-                12.00
+        List<OrderItem> orderItems = List.of(
+            OrderItemFactory.buildOrderItem(null, 1L, 12, 12.00, null),
+            OrderItemFactory.buildOrderItem(null, 1L, 5, 10.00, null),
+            OrderItemFactory.buildOrderItem(null, 1L, 20, 20.00, null)
         );
-
-        OrderItem orderItem2 = OrderItemFactory.buildOrderItem(
-                null,
-                1L,
-                5,
-                10.00
-        );
-
-        OrderItem orderItem3 = OrderItemFactory.buildOrderItem(
-                null,
-                1L,
-                20,
-                20.00
-        );
-
-        // Add OrderItems to a list
-        List<OrderItem> orderItems = new ArrayList<>();
-        orderItems.add(orderItem1);
-        orderItems.add(orderItem2);
-        orderItems.add(orderItem3);
 
         Orders newOrder = OrderFactory.buildOrder(
-                12L,
+                null,
                 124L,
                 1L,
                 "pending",
@@ -156,20 +131,20 @@ class OrderControllerTest {
         System.out.println(response.getBody());
 
         // Cleanup
-        //orderService.deleteByOrderID(response.getBody().getOrderID());
+        orderService.deleteByOrderID(response.getBody().getId());
     }
 
     @Test
     @Order(2)
     void read() {
         // Act
-        ResponseEntity<Orders> response = orderController.read(order.getOrderID());
+        ResponseEntity<Orders> response = orderController.read(order.getId());
         System.out.println(response.getBody());
 
         // Assert
         assertNotNull(response.getBody());
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(order.getOrderID(), response.getBody().getOrderID());
+        assertEquals(order.getId(), response.getBody().getId());
     }
 
     @Test
@@ -182,7 +157,7 @@ class OrderControllerTest {
                 .build();
 
         // Act
-        ResponseEntity<Orders> response = orderController.updateOrder(order.getOrderID(), updatedOrder);
+        ResponseEntity<Orders> response = orderController.updateOrder(order.getId(), updatedOrder);
         System.out.println(response.getBody());
         // Assert
         assertNotNull(response.getBody());
@@ -193,15 +168,15 @@ class OrderControllerTest {
     @Test
     @Order(4)
     void deleteOrder() {
-        System.out.println((order.getOrderID()));
+        System.out.println((order.getId()));
         // Act
-        ResponseEntity<Void> response = orderController.deleteOrder(order.getOrderID());
+        ResponseEntity<Void> response = orderController.deleteOrder(order.getId());
 
         // Assert
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
 
         // Verify that the order is deleted by trying to read it
-        ResponseEntity<Orders> readResponse = orderController.read(order.getOrderID());
+        ResponseEntity<Orders> readResponse = orderController.read(order.getId());
         assertNull(readResponse.getBody());
     }
 
@@ -214,7 +189,7 @@ class OrderControllerTest {
 
         // Assert
         assertNotNull(response.getBody());
-        assertTrue(response.getBody().size() > 0);
+        assertFalse(response.getBody().isEmpty());
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
@@ -228,7 +203,7 @@ class OrderControllerTest {
 
         // Assert
         assertNotNull(response.getBody());
-        assertTrue(response.getBody().size() > 0);
+        assertFalse(response.getBody().isEmpty());
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
@@ -240,7 +215,7 @@ class OrderControllerTest {
         System.out.println(response.getBody());
         // Assert
         assertNotNull(response.getBody());
-        assertTrue(response.getBody().size() > 0);
+        assertFalse(response.getBody().isEmpty());
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
@@ -255,7 +230,7 @@ class OrderControllerTest {
         System.out.println(response.getBody());
         // Assert
         assertNotNull(response.getBody());
-        assertTrue(response.getBody().size() > 0);
+        assertFalse(response.getBody().isEmpty());
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
@@ -268,7 +243,7 @@ class OrderControllerTest {
 
         // Assert
         assertNotNull(response.getBody());
-        assertTrue(response.getBody().size() > 0);
+        assertFalse(response.getBody().isEmpty());
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
@@ -281,7 +256,7 @@ class OrderControllerTest {
 
         // Assert
         assertNotNull(response.getBody());
-        assertTrue(response.getBody().size() > 0);
+        assertFalse(response.getBody().isEmpty());
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 }

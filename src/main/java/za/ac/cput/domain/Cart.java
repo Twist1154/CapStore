@@ -3,10 +3,13 @@ package za.ac.cput.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.*;
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@Getter
 @Entity
 public class Cart {
 
@@ -31,23 +34,6 @@ public class Cart {
         this.customerID = builder.customerID;
         this.cartItems = builder.cartItems;
         this.totalAmount = builder.totalAmount;
-    }
-
-
-    public Long getCartID() {
-        return cartID;
-    }
-
-    public Long getCustomerID() {
-        return customerID;
-    }
-
-    public List<CartItem> getCartItems() {
-        return cartItems;
-    }
-
-    public double getTotalAmount() {
-        return totalAmount;
     }
 
 

@@ -4,13 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import za.ac.cput.domain.OrderItem;
 import za.ac.cput.domain.Orders;
 import za.ac.cput.service.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -36,7 +36,7 @@ public class OrderController {
     }
 
     // Create a new order
-    @PostMapping("/create/{order}")
+    @PostMapping("/create")
     public ResponseEntity<Orders> createOrder(@RequestBody Orders orders) {
         try {
             if (orders == null) {
@@ -70,15 +70,12 @@ public class OrderController {
     @PutMapping("/update/{id}")
     public ResponseEntity<Orders> updateOrder(@PathVariable Long id, @RequestBody Orders orders) {
         try {
-            if (orders == null) {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            }
             Orders existingOrder = orderService.read(id);
             if (existingOrder == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             Orders updatedOrder = orderService.update(orders);
-            return ResponseEntity.ok(updatedOrder);
+            return updatedOrder != null ? ResponseEntity.ok(updatedOrder) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             logger.error("Error updating order with id " + id, e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -201,6 +198,42 @@ public class OrderController {
         } catch (Exception e) {
             logger.error("Error fetching orders with totalPrice greater than " + totalPrice, e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Endpoint to add an item to an existing order and update the total price.
+     *
+     * @param orderId   The ID of the order to which the item is to be added.
+     * @param orderItem The item to be added to the order.
+     * @return The updated order with the new item and recalculated total price.
+     */
+    @PostMapping("/{orderId}/add-item")
+    public ResponseEntity<Orders> addOrderItem(@PathVariable Long orderId, @RequestBody OrderItem orderItem) {
+        Orders updatedOrder = orderService.addOrderItem(orderId, orderItem);
+
+        if (updatedOrder != null) {
+            return new ResponseEntity<>(updatedOrder, HttpStatus.OK); // 200 OK
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // 404 Not Found
+        }
+    }
+
+    /**
+     * Endpoint to remove an item from an existing order and update the total price.
+     *
+     * @param orderId   The ID of the order from which the item is to be removed.
+     * @param orderItem The item to be removed from the order.
+     * @return The updated order with the item removed and recalculated total price.
+     */
+    @PostMapping("/{orderId}/remove-item")
+    public ResponseEntity<Orders> removeOrderItem(@PathVariable Long orderId, @RequestBody OrderItem orderItem) {
+        Orders updatedOrder = orderService.removeOrderItem(orderId, orderItem);
+
+        if (updatedOrder != null) {
+            return new ResponseEntity<>(updatedOrder, HttpStatus.OK); // 200 OK
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // 404 Not Found
         }
     }
 }

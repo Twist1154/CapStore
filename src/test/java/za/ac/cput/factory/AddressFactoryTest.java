@@ -13,7 +13,7 @@ class AddressFactoryTest {
     void buildAddress() {
         Address address = AddressFactory.buildAddress(
                 2L,
-                3L,
+                2L,
                 "445 floop str",
                 "CapeTown",
                 "South Africa",

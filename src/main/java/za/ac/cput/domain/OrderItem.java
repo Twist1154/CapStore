@@ -1,96 +1,82 @@
 package za.ac.cput.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Getter;
+
 import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * OrderItem.java
- * Entity representing an item in an order_id
+ * Entity representing an item in an order
  */
 
+
+@Getter
 @Entity
 public class OrderItem implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long orderItemID;
+    private Long id;
 
     private Long productID;
     private int quantity;
     private double price;
 
-    private Long order_id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id")
+    @JsonIgnore
+    private Orders order;
 
     public OrderItem() {}
 
     public OrderItem(Builder builder) {
-        this.orderItemID = builder.orderItemID;
+        this.id = builder.id;
         this.productID = builder.productID;
         this.quantity = builder.quantity;
         this.price = builder.price;
-        this.order_id = builder.order_id;
+        this.order = builder.order;
     }
-
-    public Long getOrderItemID() {
-        return orderItemID;
-    }
-
-    public Long getProductID() {
-        return productID;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public Long getOrder_id() {
-        return order_id;
-    }
-
 
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof OrderItem)) return false;
-        OrderItem that = (OrderItem) o;
+        if (!(o instanceof OrderItem that)) return false;
         return quantity == that.quantity &&
                 Double.compare(that.price, price) == 0 &&
-                Objects.equals(orderItemID, that.orderItemID) &&
+                Objects.equals(id, that.id) &&
                 Objects.equals(productID, that.productID) &&
-                Objects.equals(order_id, that.order_id);
+                Objects.equals(order, that.order);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(orderItemID, productID, quantity, price, order_id);
+        return Objects.hash(id, productID, quantity, price, order);
     }
 
     @Override
     public String toString() {
-        return "OrderItem{" +
-                "orderItemID=" + orderItemID +
+        return "\n OrderItem{" +
+                ", id=" + id +
                 ", productID=" + productID +
                 ", quantity=" + quantity +
                 ", price=" + price +
-                ", order_id=" + order_id +
+                ", order=" + order.getId() +
                 '}';
     }
 
     public static class Builder {
-        private Long orderItemID;
+        private Long id;
         private Long productID;
         private int quantity;
         private double price;
-        private Long order_id;
+        private Orders order;
 
-        public Builder setOrderItemID(Long orderItemID) {
-            this.orderItemID = orderItemID;
+        public Builder setId(Long id) {
+            this.id = id;
             return this;
         }
 
@@ -109,17 +95,17 @@ public class OrderItem implements Serializable {
             return this;
         }
 
-        public Builder setOrder_id(Long order_id) {
-            this.order_id = order_id;
+        public Builder setOrder(Orders order) {
+            this.order = order;
             return this;
         }
 
         public Builder copy(OrderItem orderItem) {
-            this.orderItemID = orderItem.orderItemID;
+            this.id = orderItem.id;
             this.productID = orderItem.productID;
             this.quantity = orderItem.quantity;
             this.price = orderItem.price;
-            this.order_id = orderItem.order_id;
+            this.order = orderItem.order;
             return this;
         }
 
