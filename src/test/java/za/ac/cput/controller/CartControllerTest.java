@@ -21,7 +21,7 @@ import static org.springframework.http.HttpStatus.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-class CartControllerIntegrationTest {
+class CartControllerTest {
 
     @Autowired
     private TestRestTemplate restTemplate;

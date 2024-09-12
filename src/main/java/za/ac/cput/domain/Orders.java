@@ -1,6 +1,8 @@
 package za.ac.cput.domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serializable;
@@ -16,6 +18,7 @@ import java.util.Objects;
  * @date 07-Sep-24
  */
 
+@Getter
 @Entity
 public class Orders implements Serializable {
     @Id
@@ -31,6 +34,7 @@ public class Orders implements Serializable {
     private LocalDate orderDate;
 
     // OneToMany relationship with OrderItems
+    @Setter
     @OneToMany(mappedBy = "order", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems = new ArrayList<>();
 
@@ -47,36 +51,22 @@ public class Orders implements Serializable {
         this.orderItems = builder.orderItems;
     }
 
-    public Long getId() {
-        return id;
+    // Method to add an order item
+    public void addOrderItem(OrderItem orderItem) {
+        if (orderItem != null) {
+            this.orderItems.add(orderItem);
+
+            // Update total price
+            this.totalPrice += orderItem.getPrice() * orderItem.getQuantity();
+        }
     }
 
-    public Long getUserID() {
-        return userID;
-    }
-
-    public Long getAddressID() {
-        return addressID;
-    }
-
-    public double getTotalPrice() {
-        return totalPrice;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public LocalDate getOrderDate() {
-        return orderDate;
-    }
-
-    public List<OrderItem> getOrderItems() {
-        return orderItems;
-    }
-
-    public void setOrderItems(List<OrderItem> orderItems) {
-        this.orderItems = orderItems;
+    // Method to remove an order item
+    public void removeOrderItem(OrderItem orderItem) {
+        if (orderItem != null && this.orderItems.remove(orderItem)) {
+            // Update total price
+            this.totalPrice -= orderItem.getPrice() * orderItem.getQuantity();
+        }
     }
 
     @Override

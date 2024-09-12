@@ -7,11 +7,15 @@
 
 package za.ac.cput.domain;
 
+
 import jakarta.persistence.*;
+import lombok.Getter;
+
 
 import java.io.Serializable;
 import java.util.Objects;
 
+@Getter
 @Entity
 @Table(name = "category")
 public class Category  implements Serializable {
@@ -29,18 +33,6 @@ public class Category  implements Serializable {
         this.categoryId = builder.categoryId;
         this.categoryName = builder.categoryName;;
         this.subCategoryName = builder.subCategoryName;
-    }
-
-    public Long getCategoryId() {
-        return categoryId;
-    }
-
-    public String getCategoryName() {
-        return categoryName;
-    }
-
-    public String getSubCategoryName() {
-        return subCategoryName;
     }
 
     @Override

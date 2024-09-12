@@ -2,6 +2,8 @@ package za.ac.cput.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Getter;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -10,6 +12,8 @@ import java.util.Objects;
  * Entity representing an item in an order
  */
 
+
+@Getter
 @Entity
 public class OrderItem implements Serializable {
 
@@ -35,27 +39,6 @@ public class OrderItem implements Serializable {
         this.price = builder.price;
         this.order = builder.order;
     }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Long getProductID() {
-        return productID;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public Orders getOrder() {
-        return order;
-    }
-
 
 
     @Override

@@ -7,10 +7,12 @@ package za.ac.cput.domain;
  * Date: 14 May 2024
  */
 import jakarta.persistence.*;
+import lombok.Getter;
 
 import java.io.Serializable;
 import java.util.Objects;
 
+@Getter
 @Entity
 public class CartItem implements Serializable {
     @Id
@@ -31,31 +33,11 @@ public class CartItem implements Serializable {
         this.price = builder.price;
     }
 
-    public Long getCartItemID() {
-        return cartItemID;
-    }
-
-    public Long getCartID() {
-        return cartID;
-    }
-
-    public Long getProductID() {
-        return productID;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        CartItem cartItem = (CartItem) o;
-        return cartItemID == cartItem.cartItemID &&
-                cartID == cartItem.cartID &&
-                productID == cartItem.productID &&
-                Double.compare(cartItem.price, price) == 0;
+        if (!(o instanceof CartItem cartItem)) return false;
+        return Double.compare(price, cartItem.price) == 0 && Objects.equals(cartItemID, cartItem.cartItemID) && Objects.equals(cartID, cartItem.cartID) && Objects.equals(productID, cartItem.productID);
     }
 
     @Override

@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.Getter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -17,6 +18,7 @@ import java.util.Objects;
  * Student Num: 220097429
  * @date 06-Sep-24
  */
+@Getter
 @Entity
 public class Product {
     @Id
@@ -46,42 +48,6 @@ public class Product {
         this.createdAt = builder.createdAt;
         this.updatedAt = builder.updatedAt;
         this.imagePath = builder.imagePath;
-    }
-
-    public Long getProductId() {
-        return productId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public int getStock() {
-        return stock;
-    }
-
-    public Long getCategoryId() {
-        return categoryId;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public String getImagePath() {
-        return imagePath;
     }
 
     @Override
