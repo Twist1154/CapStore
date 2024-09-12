@@ -7,10 +7,13 @@ import za.ac.cput.repository.AddressRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 @Service
 public class AddressService implements IAddressService{
     private final AddressRepository repository;
+    private static final Logger logger = Logger.getLogger(AddressService.class.getName());
+
 
     @Autowired
     AddressService(AddressRepository repository) {this.repository = repository;}
@@ -95,7 +98,15 @@ public class AddressService implements IAddressService{
         return repository.findAll();
     }
 
-    
+    @Override
+    public void deleteByAddressID(Long addressID) {
+
+        if(!repository.existsById(addressID)){
+        repository.deleteByAddressID(addressID);
+        }else{
+            logger.warning("Attempt to delete non-existent order with ID: " + addressID);
+        }
+    }
 
 
 }
