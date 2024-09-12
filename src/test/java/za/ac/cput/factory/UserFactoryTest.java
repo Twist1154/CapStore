@@ -29,7 +29,7 @@ class UserFactoryTest {
         user = UserFactory.createUser(
                 "avatar.jpg",
                 "John",
-                "Doe",
+                "Doee",
                 "johndoe@example.com",
                 LocalDate.parse("1990-01-01"),
                 roles,
