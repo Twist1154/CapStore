@@ -12,9 +12,9 @@ import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 /**
  * S3Config.java
  *
- * @author Rethabile Ntsekhe
- * Student Num: 220455430
- * @date 05-Sep-24
+ * @author Zachariah Matsimella
+ * Student Num: 220097429
+ * @date 09-Sep-24
  */
 
 @Configuration
