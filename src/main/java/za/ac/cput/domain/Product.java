@@ -1,14 +1,13 @@
 package za.ac.cput.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -33,7 +32,10 @@ public class Product {
     private LocalDateTime createdAt;
     @UpdateTimestamp
     private LocalDateTime updatedAt;
-    private String imagePath;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "images", joinColumns = @JoinColumn(name = "imageId"))
+    @Column(name = "imageUrl")
+    private List<String> imageUrl= new ArrayList<>();
 
     public Product() {
     }
@@ -47,7 +49,43 @@ public class Product {
         this.categoryId = builder.categoryId;
         this.createdAt = builder.createdAt;
         this.updatedAt = builder.updatedAt;
-        this.imagePath = builder.imagePath;
+        this.imageUrl = builder.imageUrl;
+    }
+
+    public Long getProductId() {
+        return productId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public List<String> getImageUrl() {
+        return imageUrl;
     }
 
     @Override
@@ -55,12 +93,12 @@ public class Product {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return Double.compare(product.price, price) == 0 && stock == product.stock && Objects.equals(productId, product.productId) && Objects.equals(name, product.name) && Objects.equals(description, product.description) && Objects.equals(categoryId, product.categoryId) && Objects.equals(createdAt, product.createdAt) && Objects.equals(updatedAt, product.updatedAt) && Objects.equals(imagePath, product.imagePath);
+        return Double.compare(product.price, price) == 0 && stock == product.stock && Objects.equals(productId, product.productId) && Objects.equals(name, product.name) && Objects.equals(description, product.description) && Objects.equals(categoryId, product.categoryId) && Objects.equals(createdAt, product.createdAt) && Objects.equals(updatedAt, product.updatedAt) && Objects.equals(imageUrl, product.imageUrl);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(productId, name, description, price, stock, categoryId, createdAt, updatedAt, imagePath);
+        return Objects.hash(productId, name, description, price, stock, categoryId, createdAt, updatedAt, imageUrl);
     }
 
     @Override
@@ -74,7 +112,7 @@ public class Product {
                 ", categoryId=" + categoryId +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
-                ", imagePath='" + imagePath + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
                 '}';
     }
 
@@ -87,7 +125,7 @@ public class Product {
         private Long categoryId;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
-        private String imagePath;
+        private List<String> imageUrl= new ArrayList<>();;
 
         public Builder setProductId(Long productId){
             this.productId = productId;
@@ -129,8 +167,8 @@ public class Product {
             return this;
         }
 
-        public Builder setImagePath(String imagePath){
-            this.imagePath = imagePath;
+        public Builder setImagePath(List<String> imageUrl){
+            this.imageUrl = imageUrl;
             return this;
         }
 
@@ -143,7 +181,7 @@ public class Product {
             this.categoryId = product.getCategoryId();
             this.createdAt = product.getCreatedAt();
             this.updatedAt = product.getUpdatedAt();
-            this.imagePath = product.getImagePath();
+            this.imageUrl = product.getImageUrl();
             return this;
         }
 

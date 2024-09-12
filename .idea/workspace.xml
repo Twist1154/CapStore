@@ -4,19 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-
     <list default="true" id="beb02c30-a586-400a-8512-1256548bff54" name="Changes" comment="Address &amp; User Service Test">
-      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/factory/entityManagerFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/domain/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/domain/Category.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/domain/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/domain/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/factory/AddressFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/factory/AddressFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/repository/AddressRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/repository/AddressRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/AddressService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/AddressService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/IAddressService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/IAddressService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/za/ac/cput/service/AddressServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/za/ac/cput/service/AddressServiceTest.java" afterDir="false" />
-    <list default="true" id="beb02c30-a586-400a-8512-1256548bff54" name="Changes" comment="controller classes done">
       <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/factory/entityManagerFactory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/domain/Cart.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/domain/Cart.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/domain/CartItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/domain/CartItem.java" afterDir="false" />
@@ -26,11 +16,18 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/domain/Orders.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/domain/Orders.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/domain/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/domain/Product.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/domain/ProductReview.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/domain/ProductReview.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/domain/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/domain/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/factory/AddressFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/factory/AddressFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/repository/AddressRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/repository/AddressRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/AddressService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/AddressService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/IAddressService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/IAddressService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/OrderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/OrderService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/ProductService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/za/ac/cput/controller/CartControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/za/ac/cput/controller/CartControllerTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/za/ac/cput/controller/CartItemControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/za/ac/cput/controller/CartItemControllerTest.java" afterDir="false" />
-
+      <change beforePath="$PROJECT_DIR$/src/test/java/za/ac/cput/service/AddressServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/za/ac/cput/service/AddressServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/za/ac/cput/service/ProductServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/za/ac/cput/service/ProductServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,6 +68,13 @@
     "ASKED_ADD_EXTERNAL_FILES": "true",
     "Application.OnlineClothingStoreApp.executor": "Run",
     "Application.Unnamed.executor": "Run",
+    "HTTP Request.generated-requests | #10.executor": "Run",
+    "HTTP Request.generated-requests | #11.executor": "Run",
+    "HTTP Request.generated-requests | #12.executor": "Run",
+    "HTTP Request.generated-requests | #13.executor": "Run",
+    "HTTP Request.generated-requests | #14.executor": "Run",
+    "HTTP Request.generated-requests | #15.executor": "Run",
+    "HTTP Request.generated-requests | #16.executor": "Run",
     "HTTP Request.generated-requests | #28.executor": "Run",
     "HTTP Request.generated-requests | #29.executor": "Run",
     "HTTP Request.generated-requests | #30.executor": "Run",
@@ -83,13 +87,6 @@
     "HTTP Request.generated-requests | #37.executor": "Run",
     "HTTP Request.generated-requests | #38.executor": "Run",
     "HTTP Request.generated-requests | #39.executor": "Run",
-    "HTTP Request.generated-requests | #10.executor": "Run",
-    "HTTP Request.generated-requests | #11.executor": "Run",
-    "HTTP Request.generated-requests | #12.executor": "Run",
-    "HTTP Request.generated-requests | #13.executor": "Run",
-    "HTTP Request.generated-requests | #14.executor": "Run",
-    "HTTP Request.generated-requests | #15.executor": "Run",
-    "HTTP Request.generated-requests | #16.executor": "Run",
     "HTTP Request.generated-requests | #4.executor": "Run",
     "HTTP Request.generated-requests | #5.executor": "Run",
     "HTTP Request.generated-requests | #6.executor": "Run",
@@ -139,9 +136,6 @@
       <recent name="za.ac.cput.factory" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.UserControllerTest">
-    <configuration name="OnlineClothingStoreApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="za.ac.cput.OnlineClothingStoreApp" />
   <component name="RunDashboard">
     <option name="excludedTypes">
       <set>
@@ -149,41 +143,23 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="HTTP Request.generated-requests | #16">
-    <configuration name="generated-requests | #15" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="15" requestIdentifier="#15" runType="Run single request">
-      <method v="2" />
-    </configuration>
-    <configuration name="generated-requests | #16" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="16" requestIdentifier="#16" runType="Run single request">
-      <method v="2" />
-    </configuration>
-    <configuration name="OrderControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.ProductServiceTest">
+    <configuration name="ProductFactoryTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="T-shirts" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="za.ac.cput.*" />
+          <option name="PATTERN" value="za.ac.cput.factory.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="AddressServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="T-shirts" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="za.ac.cput.service.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="za.ac.cput.service" />
-      <option name="MAIN_CLASS_NAME" value="za.ac.cput.service.AddressServiceTest" />
+      <option name="PACKAGE_NAME" value="za.ac.cput.factory" />
+      <option name="MAIN_CLASS_NAME" value="za.ac.cput.factory.ProductFactoryTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="OrdersServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ProductReviewServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="T-shirts" />
       <extension name="coverage">
         <pattern>
@@ -192,7 +168,22 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="za.ac.cput.service" />
-      <option name="MAIN_CLASS_NAME" value="za.ac.cput.service.OrdersServiceTest" />
+      <option name="MAIN_CLASS_NAME" value="za.ac.cput.service.ProductReviewServiceTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ProductServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="T-shirts" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="za.ac.cput.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="za.ac.cput.service" />
+      <option name="MAIN_CLASS_NAME" value="za.ac.cput.service.ProductServiceTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -213,49 +204,33 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="UserServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-    <configuration name="OnlineClothingStoreApp" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+    <configuration name="OnlineClothingStoreApp (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
       <module name="T-shirts" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="za.ac.cput.OnlineClothingStoreApp" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="za.ac.cput.service.*" />
+          <option name="PATTERN" value="za.ac.cput.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="za.ac.cput.service" />
-      <option name="MAIN_CLASS_NAME" value="za.ac.cput.service.UserServiceTest" />
-      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <list>
-      <item itemvalue="Application.OnlineClothingStoreApp" />
+      <item itemvalue="JUnit.ProductFactoryTest" />
+      <item itemvalue="JUnit.ProductReviewServiceTest" />
+      <item itemvalue="JUnit.ProductServiceTest" />
       <item itemvalue="JUnit.UserControllerTest" />
-      <item itemvalue="JUnit.OrdersServiceTest" />
-      <item itemvalue="JUnit.UserServiceTest" />
-      <item itemvalue="JUnit.AddressServiceTest" />
+      <item itemvalue="Spring Boot.OnlineClothingStoreApp (1)" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.ProductServiceTest" />
+        <item itemvalue="JUnit.ProductReviewServiceTest" />
+        <item itemvalue="JUnit.ProductFactoryTest" />
+        <item itemvalue="Spring Boot.OnlineClothingStoreApp (1)" />
         <item itemvalue="JUnit.UserControllerTest" />
-        <item itemvalue="Application.OnlineClothingStoreApp" />
-        <item itemvalue="JUnit.AddressServiceTest" />
-        <item itemvalue="JUnit.UserServiceTest" />
-        <item itemvalue="JUnit.OrdersServiceTest" />
-      <item itemvalue="HTTP Request.generated-requests | #15" />
-      <item itemvalue="HTTP Request.generated-requests | #16" />
-      <item itemvalue="JUnit.OrderControllerTest" />
-      <item itemvalue="JUnit.OrderItemControllerTest" />
-      <item itemvalue="Spring Boot.OnlineClothingStoreApp" />
-    </list>
-    <recent_temporary>
-      <list>
-        <item itemvalue="HTTP Request.generated-requests | #16" />
-        <item itemvalue="Spring Boot.OnlineClothingStoreApp" />
-        <item itemvalue="HTTP Request.generated-requests | #15" />
-        <item itemvalue="JUnit.OrderItemControllerTest" />
-        <item itemvalue="JUnit.OrderControllerTest" />
       </list>
     </recent_temporary>
   </component>
@@ -278,21 +253,6 @@
       <option name="project" value="LOCAL" />
       <updated>1725701070997</updated>
     </task>
-    <task id="LOCAL-00002" summary="Services order and orderitems service done">
-      <option name="closed" value="true" />
-      <created>1725709167286</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1725709167286</updated>
-    </task>
-    <task id="LOCAL-00003" summary="Services order and orderitems service done">
-      <option name="closed" value="true" />
-      <created>1725716671538</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1725716671538</updated>
     <task id="LOCAL-00002" summary="controller classes done">
       <option name="closed" value="true" />
       <created>1726101980408</created>
@@ -314,6 +274,17 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
