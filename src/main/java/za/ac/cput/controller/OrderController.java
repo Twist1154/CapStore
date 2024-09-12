@@ -3,6 +3,7 @@ package za.ac.cput.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import za.ac.cput.domain.OrderItem;
 import za.ac.cput.domain.Orders;
@@ -25,6 +26,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "*")
 @RestController
+@Transactional
 @RequestMapping("/order")
 public class OrderController {
     private final OrderService orderService;

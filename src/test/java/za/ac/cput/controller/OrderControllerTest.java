@@ -22,7 +22,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @ActiveProfiles("test")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-//@Transactional  // Automatically rolls back DB changes after each test
 class OrderControllerTest {
 
     @Autowired
@@ -37,7 +36,7 @@ class OrderControllerTest {
     void setUp() {
         // Create an initial order without items
         order = OrderFactory.buildOrder(
-                null,
+                1L,
                 1L,
                 1L,
                 "Pending",

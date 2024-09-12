@@ -37,21 +37,6 @@ public class OrderService implements IOrderService {
 
     @Override
     public Orders create(Orders orders) {
-
-        // Add order items and calculate total price
-        double totalPrice = 0;
-        for (OrderItem item : orders.getOrderItems()) {
-            orders.addOrderItem(item);
-            totalPrice += item.getPrice() * item.getQuantity();
-        }
-
-        // Set the total price
-        orders = new Orders.Builder()
-                .copy(orders)
-                .setTotalPrice(totalPrice)
-                .build();
-
-        // Save the order, which cascades to saving order items as well
         return repository.save(orders);
     }
 

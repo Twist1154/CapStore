@@ -72,5 +72,10 @@ public class OrderItemService implements IOrderItemService{
         }
     }
 
+    @Override
+    public List<OrderItem> findAllByOrder_Id(Long id) {
+        return repository.findAllByOrder_Id(id);
+    }
+
 
 }
