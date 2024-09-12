@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -36,7 +35,7 @@ public class OrderController {
     }
 
     // Create a new order
-    @PostMapping("/create/{order}")
+    @PostMapping("/create")
     public ResponseEntity<Orders> createOrder(@RequestBody Orders orders) {
         try {
             if (orders == null) {
@@ -70,15 +69,12 @@ public class OrderController {
     @PutMapping("/update/{id}")
     public ResponseEntity<Orders> updateOrder(@PathVariable Long id, @RequestBody Orders orders) {
         try {
-            if (orders == null) {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            }
             Orders existingOrder = orderService.read(id);
             if (existingOrder == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             Orders updatedOrder = orderService.update(orders);
-            return ResponseEntity.ok(updatedOrder);
+            return updatedOrder != null ? ResponseEntity.ok(updatedOrder) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             logger.error("Error updating order with id " + id, e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

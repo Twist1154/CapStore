@@ -21,17 +21,18 @@ class OrderItemServiceTest {
     private OrderItemService orderItemService;
 
     @Autowired
-    private IOrderItemRepository orderItemRepository;
+    private  IOrderItemRepository orderItemRepository;
 
     @Autowired
-    private OrderService orderService; // Add OrderService to link OrderItem with Order
+    private  OrderService orderService; // Add OrderService to link OrderItem with Order
 
-    private Orders testOrder;
+    private static Orders testOrder;
 
     @BeforeEach
-    void setUp() {
+     void setUp() {
         // Setup a test order
         testOrder = new Orders.Builder()
+                .setId(55L)
                 .setUserID(1L)
                 .setAddressID(1L)
                 .setStatus("Pending")
@@ -42,10 +43,10 @@ class OrderItemServiceTest {
     }
 
     @AfterEach
-    void tearDown() {
+     void tearDown() {
         // Clean up data after each test
         orderItemRepository.deleteAll();
-        orderService.deleteByOrderID(testOrder.getOrderID()); // Clean up test order
+        orderService.deleteByOrderID(testOrder.getId()); // Clean up test order
     }
 
     @Test
@@ -56,13 +57,16 @@ class OrderItemServiceTest {
                 .setProductID(1L)
                 .setQuantity(5)
                 .setPrice(100.0)
-                .setOrder_id(testOrder.getOrderID()) // Link to the test order
+                .setOrder(testOrder) // Link to the test order
                 .build();
 
         OrderItem createdOrderItem = orderItemService.create(orderItem);
+
+        System.out.println("created test Method");
         System.out.println(createdOrderItem);
+        System.out.println("-----------------------------");
         assertNotNull(createdOrderItem);
-        assertNotNull(createdOrderItem.getOrderItemID());
+        assertNotNull(createdOrderItem.getId());
         assertEquals(1L, createdOrderItem.getProductID());
     }
 
@@ -74,15 +78,19 @@ class OrderItemServiceTest {
                 .setProductID(2L)
                 .setQuantity(10)
                 .setPrice(200.0)
-                .setOrder_id(testOrder.getOrderID()) // Link to the test order
+                .setOrder(testOrder) // Link to the test order
                 .build();
 
         OrderItem createdOrderItem = orderItemService.create(orderItem);
+        System.out.println("read method");
         System.out.println(createdOrderItem);
-        OrderItem readOrderItem = orderItemService.read(createdOrderItem.getOrderItemID());
+        System.out.println("----------------");
+        OrderItem readOrderItem = orderItemService.read(createdOrderItem.getId());
+        System.out.println("reading the Order Item");
         System.out.println(readOrderItem);
+        System.out.println("------------------------");
         assertNotNull(readOrderItem);
-        assertEquals(createdOrderItem.getOrderItemID(), readOrderItem.getOrderItemID());
+        assertEquals(createdOrderItem.getId(), readOrderItem.getId());
     }
 
     @Test
@@ -93,17 +101,17 @@ class OrderItemServiceTest {
                 .setProductID(3L)
                 .setQuantity(15)
                 .setPrice(300.0)
-                .setOrder_id(testOrder.getOrderID()) // Link to the test order
+                .setOrder(testOrder) // Link to the test order
                 .build();
 
         OrderItem createdOrderItem = orderItemService.create(orderItem);
         System.out.println(createdOrderItem);
         OrderItem updatedOrderItem = new OrderItem.Builder()
-                .setOrderItemID(createdOrderItem.getOrderItemID())
+                .setId(createdOrderItem.getId())
                 .setProductID(3L) // unchanged
                 .setQuantity(20)
                 .setPrice(350.0)
-                .setOrder_id(testOrder.getOrderID()) // Link to the test order
+                .setOrder(testOrder) // Link to the test order
                 .build();
         System.out.println(updatedOrderItem);
         OrderItem result = orderItemService.update(updatedOrderItem);
@@ -120,14 +128,14 @@ class OrderItemServiceTest {
                 .setProductID(4L)
                 .setQuantity(10)
                 .setPrice(400.0)
-                .setOrder_id(testOrder.getOrderID()) // Link to the test order
+                .setOrder(testOrder) // Link to the test order
                 .build();
 
         OrderItem orderItem2 = new OrderItem.Builder()
                 .setProductID(5L)
                 .setQuantity(5)
                 .setPrice(500.0)
-                .setOrder_id(testOrder.getOrderID()) // Link to the test order
+                .setOrder(testOrder) // Link to the test order
                 .build();
 
         orderItemService.create(orderItem1);
@@ -146,15 +154,15 @@ class OrderItemServiceTest {
                 .setProductID(7L)
                 .setQuantity(8)
                 .setPrice(700.0)
-                .setOrder_id(testOrder.getOrderID()) // Link to the test order
+                .setOrder(testOrder) // Link to the test order
                 .build();
         System.out.println("find By Id");
         OrderItem createdOrderItem = orderItemService.create(orderItem);
         System.out.println(createdOrderItem);
-        Optional<OrderItem> foundOrderItem = orderItemService.findById(createdOrderItem.getOrderItemID());
+        OrderItem foundOrderItem = orderItemService.read(createdOrderItem.getId());
         System.out.println(foundOrderItem);
-        assertTrue(foundOrderItem.isPresent());
-        assertEquals(createdOrderItem.getOrderItemID(), foundOrderItem.get().getOrderItemID());
+        assertNotNull(foundOrderItem);
+        assertEquals(createdOrderItem.getId(), foundOrderItem.getId());
     }
 
     @Test
@@ -165,14 +173,14 @@ class OrderItemServiceTest {
                 .setProductID(6L)
                 .setQuantity(7)
                 .setPrice(600.0)
-                .setOrder_id(testOrder.getOrderID()) // Link to the test order
+                .setOrder(testOrder) // Link to the test order
                 .build();
 
         OrderItem createdOrderItem = orderItemService.create(orderItem);
         System.out.println(createdOrderItem);
-        orderItemService.deleteById(createdOrderItem.getOrderItemID());
+        orderItemService.deleteById(createdOrderItem.getId());
 
-        OrderItem deletedOrderItem = orderItemService.read(createdOrderItem.getOrderItemID());
+        OrderItem deletedOrderItem = orderItemService.read(createdOrderItem.getId());
         assertNull(deletedOrderItem);
     }
 }

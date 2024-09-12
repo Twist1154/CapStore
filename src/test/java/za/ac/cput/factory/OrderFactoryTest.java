@@ -19,21 +19,24 @@ public class OrderFactoryTest {
                 1L,
                 12L,
                 2,
-                12.00
+                12.00,
+                null
         );
 
         OrderItem orderItem2 = OrderItemFactory.buildOrderItem(
                 2L,
                 5L,
                 1,
-                10.00
+                10.00,
+                null
         );
 
         OrderItem orderItem3 = OrderItemFactory.buildOrderItem(
-                3L,
+                null,
                 20L,
                 3,
-                20.00
+                20.00,
+                null
         );
 
         // Ensure that the OrderItems were created successfully and not null
@@ -70,7 +73,7 @@ public class OrderFactoryTest {
         assertNotNull(order);
 
         // Additional assertions to ensure the order details are correct
-        assertEquals(orderID, order.getOrderID());
+        assertEquals(orderID, order.getId());
         assertEquals(userID, order.getUserID());
         assertEquals(addressID, order.getAddressID());
         assertEquals(orderDate, order.getOrderDate());
