@@ -194,4 +194,3 @@ public class UserService implements UserDetailsService, IUserService {
         return userRepository.findByRole(role);
     }
 }
-

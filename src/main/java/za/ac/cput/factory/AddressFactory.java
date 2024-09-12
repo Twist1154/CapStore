@@ -13,8 +13,8 @@ public class AddressFactory {
     /**
      * Creates and returns a new Address object with the given parameters.
      *
-     * @param addressID   the ID of the address (nullable for new addresses)
-     * @param userID      the ID of the user associated with the address (required)
+     * @param addressId   the ID of the address (nullable for new addresses)
+     * @param userId      the ID of the user associated with the address (required)
      * @param addressLine the address line (required)
      * @param city        the city (required)
      * @param country     the country (required)
@@ -25,8 +25,8 @@ public class AddressFactory {
      * @return a new Address object
      * @throws IllegalArgumentException if required fields are null or empty
      */
-    public static Address buildAddress(Long addressID,
-                                       Long userID,
+    public static Address buildAddress(Long addressId,
+                                       Long userId,
                                        String addressLine,
                                        String city,
                                        String country,
@@ -36,7 +36,7 @@ public class AddressFactory {
                                        LocalDate deletedAt) {
 
         // Validate required fields
-        if (Helper.isNullOrEmpty(userID) ||
+        if (Helper.isNullOrEmpty(userId) ||
                 Helper.isNullOrEmpty(addressLine) ||
                 Helper.isNullOrEmpty(city) ||
                 Helper.isNullOrEmpty(country) ||
@@ -48,8 +48,8 @@ public class AddressFactory {
 
         // Build and return the Address object
         return new Address.Builder()
-                .setAddressID(addressID)
-                .setUserID(userID)
+                .setAddressID(addressId)
+                .setUserID(userId)
                 .setAddressLine(addressLine)
                 .setCity(city)
                 .setCountry(country)

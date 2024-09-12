@@ -11,26 +11,69 @@ import java.util.Set;
  * It is an entity class that maps to the "User" table in the database.
  */
 @Entity
-@Table(name = "Users")
+@Table(name = "users")
 public class User {
 
-
+    /**
+     * Unique identifier for the user.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userID;
+
+    /**
+     * Path or URL to the user's avatar image.
+     */
     private String avatar;
+
+    /**
+     * User's first name.
+     */
     private String firstName;
+
+    /**
+     * User's last name.
+     */
     private String lastName;
+
+    /**
+     * User's unique email address.
+     */
     @Column(unique = true)
     private String email;
+
+    /**
+     * User's birth date.
+     */
     private LocalDate birthDate;
+
+    /**
+     * User's password for authentication.
+     */
     private String password;
+
+    /**
+     * User's phone number.
+     */
     private Integer phoneNumber;
+
+    /**
+     * Collection of roles assigned to the user (e.g., ADMIN, USER).
+     */
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "role")
     private Set<String> role = new HashSet<>();
+
+    /**
+     * Default constructor.
+     */
     public User() {}
+
+    /**
+     * Private constructor for use by the builder pattern.
+     * @param builder The builder instance used to construct the User object.
+     */
     private User(Builder builder) {
         this.userID = builder.userID;
         this.avatar = builder.avatar;

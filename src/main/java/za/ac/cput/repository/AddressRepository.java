@@ -64,6 +64,4 @@ public interface AddressRepository extends JpaRepository<Address, Long> {
      * @return a list of addresses that have been soft-deleted
      */
     List<Address> findByDeletedAtIsNotNull();
-
-   public void deleteByAddressID(Long addressID);
 }
