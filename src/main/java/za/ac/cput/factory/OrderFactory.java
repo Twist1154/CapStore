@@ -18,7 +18,7 @@ public class OrderFactory {
 
     /**
      * Creates an Orders object.
-     * @param orderID     The ID of the Order being placed
+     * @param id     The ID of the Order being placed
      * @param userID      The ID of the customer placing the order.
      * @param addressID   The ID of the address where the order should be delivered.
      * @param totalPrice  The total price of the order.
@@ -29,7 +29,7 @@ public class OrderFactory {
      * @throws IllegalArgumentException if any parameter is invalid.
      */
     public static Orders buildOrder(
-            Long  orderID,
+            Long id,
             Long userID,
             Long addressID,
             String status,
@@ -50,7 +50,7 @@ public class OrderFactory {
         }
 
         return new Orders.Builder()
-                .setOrderID(orderID)
+                .setId(id)
                 .setUserID(userID)
                 .setAddressID(addressID)
                 .setStatus(status)

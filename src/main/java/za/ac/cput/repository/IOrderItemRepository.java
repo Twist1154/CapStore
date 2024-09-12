@@ -20,6 +20,4 @@ public interface IOrderItemRepository  extends JpaRepository<OrderItem, Long> {
     @Override
     void deleteById(Long id);
 
-    @Override
-    Optional<OrderItem> findById(Long id);
 }

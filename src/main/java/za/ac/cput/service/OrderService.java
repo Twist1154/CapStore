@@ -3,12 +3,12 @@ package za.ac.cput.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import za.ac.cput.domain.OrderItem;
 import za.ac.cput.domain.Orders;
 import za.ac.cput.repository.IOrderRepository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 /**
@@ -20,11 +20,11 @@ import java.util.logging.Logger;
  * Student Num: 220455430
  * Date: 07-Sep-24
  */
-@Transactional
+
 @Service
+@Transactional
 public class OrderService implements IOrderService {
     private final IOrderRepository repository;
-
     private static final Logger logger = Logger.getLogger(OrderService.class.getName());
 
     @Autowired
@@ -44,8 +44,7 @@ public class OrderService implements IOrderService {
 
     @Override
     public Orders update(Orders orders) {
-        Orders existingOrder = repository.findById(orders.getOrderID()).orElse(null);
-        if (existingOrder != null) {
+        return repository.findById(orders.getId()).map(existingOrder -> {
             Orders updatedOrder = new Orders.Builder()
                     .copy(existingOrder)
                     .setUserID(orders.getUserID())
@@ -53,14 +52,13 @@ public class OrderService implements IOrderService {
                     .setOrderDate(orders.getOrderDate())
                     .setTotalPrice(orders.getTotalPrice())
                     .setStatus(orders.getStatus())
-                    .setOrderItems(orders.getOrderItems()) // Ensure this is handled as per your requirements
+                    .setOrderItems(orders.getOrderItems())
                     .build();
             return repository.save(updatedOrder);
-        } else {
-            // Log warning if the order to update does not exist
-            logger.warning("Attempt to update non-existing order with ID: " + orders.getOrderID());
+        }).orElseGet(() -> {
+            logger.warning("Attempt to update non-existing order with ID: " + orders.getId());
             return null;
-        }
+        });
     }
 
     @Override
@@ -95,6 +93,10 @@ public class OrderService implements IOrderService {
 
     @Override
     public void deleteByOrderID(Long orderID) {
-        repository.deleteByOrderID(orderID);
+        if (repository.existsById(orderID)) {
+            repository.deleteById(orderID);
+        } else {
+            logger.warning("Attempt to delete non-existent order with ID: " + orderID);
+        }
     }
 }

@@ -15,14 +15,14 @@ class OrderItemFactoryTest {
                 12L,
                 2,
                 12.00,
-                79L
+                null
         );
 
         // Ensure that the OrderItem was created successfully and is not null
         assertNotNull(orderItem);
 
         // Additional assertions to ensure the order item details are correct
-        assertEquals(1L, orderItem.getOrderItemID());
+        assertEquals(1L, orderItem.getId());
         assertEquals(12L, orderItem.getProductID());
         assertEquals(2, orderItem.getQuantity());
         assertEquals(12.00, orderItem.getPrice());
@@ -37,7 +37,7 @@ class OrderItemFactoryTest {
                     null,
                     -1,
                     -10.00,
-                    79L
+                    null
             );
         });
 

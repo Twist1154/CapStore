@@ -17,5 +17,4 @@ public interface IOrderItemService  extends IService<OrderItem, Long>  {
     void deleteById(Long id);
 
 
-    Optional<OrderItem> findById(Long id);
 }

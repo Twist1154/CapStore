@@ -21,7 +21,6 @@ import java.util.logging.Logger;
 @Transactional
 @Service
 public class OrderItemService implements IOrderItemService{
-
     private final IOrderItemRepository repository;
     private static final Logger logger = Logger.getLogger(OrderItemService.class.getName());
 
@@ -42,18 +41,18 @@ public class OrderItemService implements IOrderItemService{
 
     @Override
     public OrderItem update(OrderItem orderItem) {
-        OrderItem existingOrderItem = repository.findById(orderItem.getOrderItemID()).orElse(null);
+        OrderItem existingOrderItem = repository.findById(orderItem.getId()).orElse(null);
         if (existingOrderItem != null) {
             OrderItem updatedOrderItem = new OrderItem.Builder()
                     .copy(existingOrderItem)
                     .setProductID(orderItem.getProductID())
                     .setQuantity(orderItem.getQuantity())
                     .setPrice(orderItem.getPrice())
-                    .setOrder_id(orderItem.getOrderItemID())
+                    .setOrder(orderItem.getOrder())
                     .build();
             return repository.save(updatedOrderItem);
         } else {
-            logger.warning("Attempt to update a non-existent order item with ID: " + orderItem.getOrderItemID());
+            logger.warning("Attempt to update a non-existent order item with ID: " + orderItem.getId());
             return null;
         }
     }
@@ -73,8 +72,5 @@ public class OrderItemService implements IOrderItemService{
         }
     }
 
-    @Override
-    public Optional<OrderItem> findById(Long id) {
-        return repository.findById(id);
-    }
+
 }

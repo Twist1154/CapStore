@@ -27,9 +27,6 @@ class OrdersServiceTest {
     private OrderItemService orderItemService;
 
     private Orders order;
-    private OrderItem orderItem1;
-    private OrderItem orderItem2;
-    private OrderItem orderItem3;
 
     @BeforeEach
     void setUp() {
@@ -48,25 +45,28 @@ class OrdersServiceTest {
         order = orderService.create(order);
 
         // Create OrderItems
-        orderItem1 = OrderItemFactory.buildOrderItem(
-                null,  // ID should be null for auto-generation
-                order.getOrderID(),  // Link to the created order
+        OrderItem orderItem1 = OrderItemFactory.buildOrderItem(
+                null,
+                order.getId(),
                 12,
-                12.00
+                12.00,
+                order
         );
 
-        orderItem2 = OrderItemFactory.buildOrderItem(
+        OrderItem orderItem2 = OrderItemFactory.buildOrderItem(
                 null,
-                order.getOrderID(),
+                order.getId(),
                 5,
-                10.00
+                10.00,
+                order
         );
 
-        orderItem3 = OrderItemFactory.buildOrderItem(
+        OrderItem orderItem3 = OrderItemFactory.buildOrderItem(
                 null,
-                order.getOrderID(),
+                order.getId(),
                 20,
-                20.00
+                20.00,
+                order
         );
 
         // Save OrderItems
@@ -103,16 +103,16 @@ class OrdersServiceTest {
 
         Orders createdOrder = orderService.create(newOrder);
         assertNotNull(createdOrder);
-        assertNotNull(createdOrder.getOrderID());  // Check if ID is generated
+        assertNotNull(createdOrder.getId());  // Check if ID is generated
         System.out.println("Created: \n" + createdOrder + "\n");
     }
 
     @Test
     @Order(2)
     void read() {
-        Orders readOrder = orderService.read(order.getOrderID());
+        Orders readOrder = orderService.read(order.getId());
         assertNotNull(readOrder);
-        assertEquals(order.getOrderID(), readOrder.getOrderID());
+        assertEquals(order.getId(), readOrder.getId());
         System.out.println("Read: \n" + readOrder + "\n");
 
         // Debugging OrderItems
@@ -148,7 +148,7 @@ class OrdersServiceTest {
     @Test
     @Order(5)
     void delete() {
-        Long orderIdToDelete = order.getOrderID();
+        Long orderIdToDelete = order.getId();
         orderService.deleteByOrderID(orderIdToDelete);
 
         Orders deletedOrder = orderService.read(orderIdToDelete);

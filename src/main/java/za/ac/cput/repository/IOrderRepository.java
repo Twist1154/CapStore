@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import za.ac.cput.domain.Orders;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -23,6 +22,8 @@ import java.util.List;
  */
 @Repository
 public interface IOrderRepository extends JpaRepository<Orders, Long> {
+
+
 
     /**
      * Finds orders by user ID.
@@ -60,7 +61,7 @@ public interface IOrderRepository extends JpaRepository<Orders, Long> {
     /**
      * Finds orders with a total price greater than the specified amount.
      *
-     * @param totalPrice The minimum total price.
+     * @param total_price The minimum total price.
      * @return A list of orders with a total price greater than the specified amount.
      */
     List<Orders> findByTotalPriceGreaterThan(double total_price);
@@ -69,12 +70,13 @@ public interface IOrderRepository extends JpaRepository<Orders, Long> {
     /**
      * Deletes an order by its ID.
      *
-     * @param orderID The ID of the order to delete.
+     * @param id The ID of the order to delete.
      */
     @Transactional
     @Modifying
-    @Query("DELETE FROM Orders o WHERE o.orderID = :orderID")
-    void deleteByOrderID(@Param("orderID") Long orderID);
+    void deleteById(Long id);
+
+
 
     /**
      * Finds all orders that contain a specific product ID in their order items.

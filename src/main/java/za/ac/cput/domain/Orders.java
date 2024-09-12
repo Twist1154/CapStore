@@ -20,7 +20,7 @@ import java.util.Objects;
 public class Orders implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long orderID;
+    private Long id;
 
     private Long userID;
     private Long addressID;
@@ -31,14 +31,14 @@ public class Orders implements Serializable {
     private LocalDate orderDate;
 
     // OneToMany relationship with OrderItems
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems = new ArrayList<>();
 
     public Orders() {
     }
 
     public Orders(Builder builder) {
-        this.orderID = builder.orderID;
+        this.id = builder.id;
         this.userID = builder.userID;
         this.addressID = builder.addressID;
         this.totalPrice = builder.totalPrice;
@@ -47,8 +47,8 @@ public class Orders implements Serializable {
         this.orderItems = builder.orderItems;
     }
 
-    public Long getOrderID() {
-        return orderID;
+    public Long getId() {
+        return id;
     }
 
     public Long getUserID() {
@@ -82,10 +82,10 @@ public class Orders implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Orders)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Orders orders = (Orders) o;
         return Double.compare(orders.totalPrice, totalPrice) == 0 &&
-                Objects.equals(orderID, orders.orderID) &&
+                Objects.equals(id, orders.id) &&
                 Objects.equals(userID, orders.userID) &&
                 Objects.equals(addressID, orders.addressID) &&
                 Objects.equals(status, orders.status) &&
@@ -96,7 +96,7 @@ public class Orders implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(
-                orderID,
+                id,
                 userID,
                 addressID,
                 totalPrice,
@@ -108,28 +108,28 @@ public class Orders implements Serializable {
 
     @Override
     public String toString() {
-        return "Orders{" +
-                "orderID=" + orderID +
-                ", userID=" + userID +
-                ", addressID=" + addressID +
-                ", totalPrice=" + totalPrice +
-                ", status='" + status + '\'' +
-                ", orderDate=" + orderDate +
-                ", orderItems=" + orderItems +
+        return "\n Orders: " +
+                "\n id=" + id +
+                "\n userID=" + userID +
+                "\n addressID=" + addressID +
+                "\n totalPrice=" + totalPrice +
+                "\n status='" + status + '\'' +
+                "\n orderDate=" + orderDate +
+                "\n orderItems size: " + orderItems.size() +
                 '}';
     }
 
     public static class Builder {
-        private Long orderID;
+        private Long id;
         private Long userID;
         private Long addressID;
         private String status;
         private double totalPrice;
         private LocalDate orderDate;
-        private List<OrderItem> orderItems;
+        private List<OrderItem> orderItems = new ArrayList<>();
 
-        public Builder setOrderID(Long orderID) {
-            this.orderID = orderID;
+        public Builder setId(Long id) {
+            this.id = id;
             return this;
         }
 
@@ -164,7 +164,7 @@ public class Orders implements Serializable {
         }
 
         public Builder copy(Orders orders) {
-            this.orderID = orders.getOrderID();
+            this.id = orders.getId();
             this.userID = orders.getUserID();
             this.addressID = orders.getAddressID();
             this.totalPrice = orders.getTotalPrice();

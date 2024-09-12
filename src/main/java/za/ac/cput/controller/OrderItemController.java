@@ -39,16 +39,16 @@ public class OrderItemController {
         }
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/read/{id}")
     public ResponseEntity<OrderItem> getOrderItemById(@PathVariable Long id) {
-        Optional<OrderItem> orderItem = orderItemService.findById(id);
+        Optional<OrderItem> orderItem = Optional.ofNullable(orderItemService.read(id));
         return orderItem.map(ResponseEntity::ok)
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<OrderItem> updateOrderItem(@PathVariable Long id, @RequestBody OrderItem orderItem) {
-        if (!id.equals(orderItem.getOrderItemID())) {
+        if (!id.equals(orderItem.getId())) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         OrderItem updatedOrderItem = orderItemService.update(orderItem);
@@ -63,7 +63,7 @@ public class OrderItemController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteOrderItem(@PathVariable Long id) {
-        if (orderItemService.findById(id).isPresent()) {
+        if (orderItemService.read(id) != null) {
             orderItemService.deleteById(id);
             return ResponseEntity.noContent().build();
         } else {
