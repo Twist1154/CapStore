@@ -127,7 +127,7 @@ class ProductServiceTest {
     @Test
     void update() {
         System.out.println("Product 2 before update: "+ product2);
-        String image = "path/to/image.jpg";
+        String image = "another/path/to/image.jpg";
         List<String> images = new ArrayList<>();
         images.add(image);
 
@@ -145,6 +145,7 @@ class ProductServiceTest {
         Product updateProduct2 = new Product.Builder().copy(product2)
                 .setDescription("Blue V-neck t-shirt. Slim fit, medium. ")
                 .setStock(10)
+                .setImagePath(images)
                 .build();
 
         Product result = productService.update(updateProduct2);
