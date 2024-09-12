@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.Getter;
+
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -14,6 +16,7 @@ import java.util.Objects;
  * Student Num: 220097429
  * @date 08-Sep-24
  */
+@Getter
 @Entity
 public class Discount {
     @Id
@@ -37,34 +40,6 @@ public class Discount {
         this.start_date = builder.start_date;
         this.end_date = builder.end_date;
         this.max_uses = builder.max_uses;
-    }
-
-    public long getDiscountId() {
-        return discountId;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public double getDiscount_percent() {
-        return discount_percent;
-    }
-
-    public LocalDate getStart_date() {
-        return start_date;
-    }
-
-    public LocalDate getEnd_date() {
-        return end_date;
-    }
-
-    public int getMax_uses() {
-        return max_uses;
     }
 
     @Override

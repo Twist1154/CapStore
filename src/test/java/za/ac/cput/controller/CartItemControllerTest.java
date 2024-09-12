@@ -23,7 +23,7 @@ import static org.springframework.http.HttpMethod.GET;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test") // Use a test profile if you have one
-class CartItemControllerIntegrationTest {
+class CartItemControllerTest {
 
     @Autowired
     private TestRestTemplate restTemplate;

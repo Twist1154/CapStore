@@ -3,7 +3,9 @@ package za.ac.cput.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import za.ac.cput.domain.OrderItem;
 import za.ac.cput.domain.Orders;
+import za.ac.cput.repository.IOrderItemRepository;
 import za.ac.cput.repository.IOrderRepository;
 
 import java.time.LocalDate;
@@ -20,20 +22,36 @@ import java.util.logging.Logger;
  * Student Num: 220455430
  * Date: 07-Sep-24
  */
-
 @Service
 @Transactional
 public class OrderService implements IOrderService {
     private final IOrderRepository repository;
+    private final IOrderItemRepository iOrderItemRepository;
     private static final Logger logger = Logger.getLogger(OrderService.class.getName());
 
     @Autowired
-    public OrderService(IOrderRepository repository) {
+    public OrderService(IOrderRepository repository, IOrderItemRepository iOrderItemRepository) {
         this.repository = repository;
+        this.iOrderItemRepository = iOrderItemRepository;
     }
 
     @Override
     public Orders create(Orders orders) {
+
+        // Add order items and calculate total price
+        double totalPrice = 0;
+        for (OrderItem item : orders.getOrderItems()) {
+            orders.addOrderItem(item);
+            totalPrice += item.getPrice() * item.getQuantity();
+        }
+
+        // Set the total price
+        orders = new Orders.Builder()
+                .copy(orders)
+                .setTotalPrice(totalPrice)
+                .build();
+
+        // Save the order, which cascades to saving order items as well
         return repository.save(orders);
     }
 
@@ -99,4 +117,66 @@ public class OrderService implements IOrderService {
             logger.warning("Attempt to delete non-existent order with ID: " + orderID);
         }
     }
+
+
+    public Orders addOrderItem(Long orderId, OrderItem orderItem) {
+
+        Optional<Orders> optionalOrder = repository.findById(orderId);
+
+        if (optionalOrder.isPresent()) {
+            Orders order = optionalOrder.get();
+
+            orderItem = new OrderItem.Builder()
+                    .copy(orderItem)
+                    .setProductID(orderItem.getProductID())
+                    .setOrder(orderItem.getOrder())
+                    .setPrice(orderItem.getPrice())
+                    .setQuantity(orderItem.getQuantity())
+                    .build();
+
+            order.addOrderItem(orderItem);
+
+            double updatedTotalPrice = 0;
+            for (OrderItem item : order.getOrderItems()) {
+                updatedTotalPrice += item.getPrice() * item.getQuantity();
+            }
+
+            Orders updatedOrder = new Orders.Builder()
+                    .copy(order)
+                    .setTotalPrice(updatedTotalPrice)
+                    .build();
+            iOrderItemRepository.save(orderItem);
+            return repository.save(updatedOrder);
+        } else {
+            logger.warning("Attempt to add item to non-existent order with ID: " + orderId);
+            return null;
+        }
+    }
+
+    public Orders removeOrderItem(Long orderId, OrderItem orderItem) {
+        Optional<Orders> optionalOrder = repository.findById(orderId);
+
+        if (optionalOrder.isPresent()) {
+            Orders order = optionalOrder.get();
+
+            order.removeOrderItem(orderItem);
+
+            double updatedTotalPrice = 0;
+            for (OrderItem item : order.getOrderItems()) {
+                updatedTotalPrice += item.getPrice() * item.getQuantity();
+            }
+
+            Orders updatedOrder = new Orders.Builder()
+                    .copy(order)
+                    .setTotalPrice(updatedTotalPrice)
+                    .build();
+            iOrderItemRepository.deleteById(orderItem.getId());
+            return repository.save(updatedOrder);
+        } else {
+            logger.warning("Attempt to remove item from non-existent order with ID: " + orderId);
+            return null;
+        }
+    }
+
+
 }

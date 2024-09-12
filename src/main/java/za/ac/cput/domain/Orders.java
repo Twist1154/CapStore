@@ -1,6 +1,7 @@
 package za.ac.cput.domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -17,6 +18,7 @@ import java.util.Objects;
  * @date 07-Sep-24
  */
 
+@Getter
 @Entity
 public class Orders implements Serializable {
     @Id
@@ -47,34 +49,6 @@ public class Orders implements Serializable {
         this.status = builder.status;
         this.orderDate = builder.orderDate;
         this.orderItems = builder.orderItems;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Long getUserID() {
-        return userID;
-    }
-
-    public Long getAddressID() {
-        return addressID;
-    }
-
-    public double getTotalPrice() {
-        return totalPrice;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public LocalDate getOrderDate() {
-        return orderDate;
-    }
-
-    public List<OrderItem> getOrderItems() {
-        return orderItems;
     }
 
     // Method to add an order item

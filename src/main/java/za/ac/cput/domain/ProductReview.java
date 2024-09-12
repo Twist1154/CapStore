@@ -11,10 +11,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.Getter;
 
 import java.io.Serializable;
 import java.util.Objects;
 
+@Getter
 @Entity
 public class ProductReview implements Serializable {
 
@@ -35,26 +37,6 @@ public class ProductReview implements Serializable {
         this.customerName = builder.customerName;
         this.review = builder.review;
         this.rating = builder.rating;
-    }
-
-    public Long getProductReviewId() {
-        return productReviewId;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public String getCustomerName() {
-        return customerName;
-    }
-
-    public String getReview() {
-        return review;
-    }
-
-    public int getRating() {
-        return rating;
     }
 
     @Override
