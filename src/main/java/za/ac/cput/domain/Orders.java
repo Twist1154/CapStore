@@ -1,6 +1,7 @@
 package za.ac.cput.domain;
 
 import jakarta.persistence.*;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serializable;
@@ -31,6 +32,7 @@ public class Orders implements Serializable {
     private LocalDate orderDate;
 
     // OneToMany relationship with OrderItems
+    @Setter
     @OneToMany(mappedBy = "order", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems = new ArrayList<>();
 
@@ -75,8 +77,22 @@ public class Orders implements Serializable {
         return orderItems;
     }
 
-    public void setOrderItems(List<OrderItem> orderItems) {
-        this.orderItems = orderItems;
+    // Method to add an order item
+    public void addOrderItem(OrderItem orderItem) {
+        if (orderItem != null) {
+            this.orderItems.add(orderItem);
+
+            // Update total price
+            this.totalPrice += orderItem.getPrice() * orderItem.getQuantity();
+        }
+    }
+
+    // Method to remove an order item
+    public void removeOrderItem(OrderItem orderItem) {
+        if (orderItem != null && this.orderItems.remove(orderItem)) {
+            // Update total price
+            this.totalPrice -= orderItem.getPrice() * orderItem.getQuantity();
+        }
     }
 
     @Override
