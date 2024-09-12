@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class AddressServiceTest {
 
     @Autowired
-    private AddressService addressService;
+    private AddressService service;
 
     private static Address address;  // Single Address instance to use across tests
 
@@ -60,7 +60,7 @@ class AddressServiceTest {
     @Order(1)
     @Test
     void create() {
-        Address created = addressService.create(address);
+        Address created = service.create(address);
         assertNotNull(created, "Created address should not be null");
         assertNotNull(created.getAddressID(), "AddressID should not be null");
         assertEquals(address.getAddressLine(), created.getAddressLine(), "Address lines should match");
@@ -73,7 +73,7 @@ class AddressServiceTest {
     @Order(2)
     @Test
     void read() {
-        Address read = addressService.read(address.getAddressID());
+        Address read = service.read(address.getAddressID());
         assertNotNull(read, "Read address should not be null");
         System.out.println("Read address from service: " + read);
 
@@ -93,7 +93,7 @@ class AddressServiceTest {
                 .setCountry("Nigeria")
                 .build();
 
-        Address result = addressService.update(updatedAddress);
+        Address result = service.update(updatedAddress);
 
         assertNotNull(result);
         assertEquals("456 Elm St", result.getAddressLine(), "Address lines should match");
@@ -106,7 +106,7 @@ class AddressServiceTest {
     @Order(4)
     @Test
     void findByUserId() {
-        Optional<Address> found = addressService.findByUserID(1L);
+        Optional<Address> found = service.findByUserID(1L);
         assertTrue(found.isPresent(), "Address should be found by UserID");
         assertEquals("10 Sir Street", found.get().getAddressLine(), "Address line should match");
         System.out.println(found.get());
@@ -129,7 +129,7 @@ class AddressServiceTest {
     @Order(6)
     @Test
     void findByZipcodes() {
-        List<Address> found = addressService.findByZipcodes("22335");
+        List<Address> found = service.findByZipcodes("22335");
         assertFalse(found.isEmpty(), "Address list should not be empty");
         assertEquals("22335", found.get(0).getZipCode(), "ZipCode should match");
         System.out.println(found);
@@ -141,7 +141,7 @@ class AddressServiceTest {
     @Order(7)
     @Test
     void findByPhoneNumber() {
-        List<Address> found = addressService.findByPhoneNumber(863345678);
+        List<Address> found = service.findByPhoneNumber(863345678);
         assertFalse(found.isEmpty(), "Address list should not be empty");
         assertEquals("10 Sir Street", found.get(0).getAddressLine(), "Address line should match");
     }
@@ -152,7 +152,7 @@ class AddressServiceTest {
     @Order(8)
     @Test
     void findByCountry() {
-        List<Address> found = addressService.findByCountry("South Africa");
+        List<Address> found = service.findByCountry("South Africa");
         assertFalse(found.isEmpty(), "Address list should not be empty");
         assertEquals("South Africa", found.get(0).getCountry(), "Country should match");
         System.out.println(found);
@@ -164,7 +164,7 @@ class AddressServiceTest {
     @Order(9)
     @Test
     void findByDeletedAtIsNotNull() {
-        List<Address> found = addressService.findByDeletedAtIsNotNull();
+        List<Address> found = service.findByDeletedAtIsNotNull();
         assertFalse(found.isEmpty());
         assertNotNull(found.get(0).getDeletedAt());
         System.out.println(found);
@@ -176,7 +176,7 @@ class AddressServiceTest {
     @Order(10)
     @Test
     void getAll() {
-        List<Address> allAddresses = addressService.getAll();
+        List<Address> allAddresses = service.getAll();
         assertFalse(allAddresses.isEmpty(), "Address list should not be empty");
         System.out.println(allAddresses);
     }

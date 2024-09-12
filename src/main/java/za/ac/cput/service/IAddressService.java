@@ -26,10 +26,10 @@ public interface IAddressService extends IService<Address, Long> {
     /**
      * Finds a list of addresses by the address line.
      *
-     * @param addressLine the address line to search for
+     * @param addressLine1 the address line to search for
      * @return a list of addresses that match the given address line
      */
-    List<Address> findByAddressLine(String addressLine);
+    List<Address> findByAddressLine(String addressLine1);
 
     /**
      * Finds a list of addresses by the zip code.

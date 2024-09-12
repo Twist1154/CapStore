@@ -142,12 +142,12 @@ public class UserService implements UserDetailsService, IUserService {
     /**
      * Finds users by their first name.
      *
-     * @param firstName the first name of the users
+     * @param firstname the first name of the users
      * @return a list of users with the specified first name
      */
     @Override
-    public List<User> findByFirstName(String firstName) {
-        return userRepository.findByFirstName(firstName);
+    public List<User> findByFirstName(String firstname) {
+        return userRepository.findByFirstName(firstname);
     }
 
     /**

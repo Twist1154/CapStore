@@ -49,10 +49,10 @@ public interface IUserService extends IService<User, Long> {
     /**
      * Finds a list of users by their first name.
      *
-     * @param firstName the first name to search for
+     * @param firstname the first name to search for
      * @return a list of users that match the given first name
      */
-    List<User> findByFirstName(String firstName);
+    List<User> findByFirstName(String firstname);
 
     /**
      * Finds a list of users by their last name.

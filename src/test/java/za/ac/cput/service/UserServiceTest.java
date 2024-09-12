@@ -27,13 +27,13 @@ class UserServiceTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private UserService userService;
+    private UserService userservice;
 
     private User user;
 
     @BeforeEach
     void setUp() {
-        userService = new UserService(userRepository, passwordEncoder);
+        userservice = new UserService(userRepository, passwordEncoder);
 
         user = new User.Builder()
                 .setFirstName("Rethabile")
@@ -65,7 +65,7 @@ class UserServiceTest {
                 1234567890,  // **Change:** Ensure consistent phone number format
                 "password123");
 
-        User createdUser = userService.create(user);
+        User createdUser = userservice.create(user);
         System.out.println(createdUser);
 
         assertNotNull(createdUser);
@@ -77,8 +77,8 @@ class UserServiceTest {
     @Order(2)
     void testReadUser() {
         // Reuse user from the setUp method
-        User createdUser = userService.create(user);
-        User foundUser = userService.read(user.getUserID());
+        User createdUser = userservice.create(user);
+        User foundUser = userservice.read(user.getUserID());
         System.out.println(foundUser);
 
         assertNotNull(foundUser);
@@ -89,13 +89,13 @@ class UserServiceTest {
     @Order(3)
     void testUpdateUser() {
         // Modify user
-        User createdUser = userService.create(user);
+        User createdUser = userservice.create(user);
         createdUser = new User.Builder()
                 .copy(createdUser)
-                .setLastName("Southampton")  // Update the last name
+                .setLastName("Zulu")  // Update the last name
                 .build();
 
-        User updatedUser = userService.update(createdUser);
+        User updatedUser = userservice.update(createdUser);
         System.out.println(updatedUser);
 
         assertNotNull(updatedUser);
@@ -105,8 +105,8 @@ class UserServiceTest {
     @Test
     @Order(5)
     void testFindAllUsers() {
-        userService.create(user);
-        List<User> users = userService.findAll();
+        userservice.create(user);
+        List<User> users = userservice.findAll();
         System.out.println("All Users :" + '\n' + users + '\n');
 
         assertNotNull(users);
@@ -115,16 +115,16 @@ class UserServiceTest {
     @Test
     @Order(6)
     void testLoadUserByUsernameNotFound() {
-        userService.create(user);
+        userservice.create(user);
         assertThrows(UsernameNotFoundException.class,
-                () -> userService.loadUserByUsername("unknown@example.com"));
+                () -> userservice.loadUserByUsername("unknown@example.com"));
     }
 
     @Test
     @Order(7)
     void testFindByEmail() {
-        userService.create(user);
-        Optional<User> foundUser = userService.findByEmail("rethabile@gmail.com");
+        userservice.create(user);
+        Optional<User> foundUser = userservice.findByEmail("rethabile@gmail.com");
         System.out.println("Found By Email: " + '\n' + foundUser);
 
         assertTrue(foundUser.isPresent());
@@ -136,10 +136,10 @@ class UserServiceTest {
     @Order(11)
     void testFindByPhoneNumber() {
         // Create user with full phone number
-        userService.create(user);
+        userservice.create(user);
 
         // Find by full phone number
-        List<User> users = userService.findByPhoneNumber(1234567890);
+        List<User> users = userservice.findByPhoneNumber(1234567890);
         System.out.println("Found By Phone Number: " + users);
 
         // **Change:** Add size check to ensure only one user is returned
@@ -152,8 +152,8 @@ class UserServiceTest {
     @Test
     @Order(8)
     void testFindByFirstName() {
-        userService.create(user);
-        List<User> users = userService.findByFirstName("Rethabile");
+        userservice.create(user);
+        List<User> users = userservice.findByFirstName("Rethabile");
         System.out.println("Found By First Name: " + users);
 
         assertFalse(users.isEmpty());
@@ -163,8 +163,8 @@ class UserServiceTest {
     @Test
     @Order(9)
     void testFindByLastName() {
-        userService.create(user);
-        List<User> users = userService.findByLastName("Ntsekhe");
+        userservice.create(user);
+        List<User> users = userservice.findByLastName("Ntsekhe");
         System.out.println("Found By Last Name: " + users);
 
         assertFalse(users.isEmpty());
@@ -174,8 +174,8 @@ class UserServiceTest {
     @Test
     @Order(10)
     void testFindByBirthDate() {
-        userService.create(user);
-        List<User> users = userService.findByBirthDate(LocalDate.of(1990, 1, 1));
+        userservice.create(user);
+        List<User> users = userservice.findByBirthDate(LocalDate.of(1990, 1, 1));
         System.out.println("Found By Birthday: " + users);
 
         assertFalse(users.isEmpty());
@@ -185,8 +185,8 @@ class UserServiceTest {
     @Test
     @Order(12)
     void testFindByRole() {
-        userService.create(user);
-        List<User> users = userService.findByRole("USER");
+        userservice.create(user);
+        List<User> users = userservice.findByRole("USER");
         System.out.println("Found By Roles: " + users);
 
         assertFalse(users.isEmpty());

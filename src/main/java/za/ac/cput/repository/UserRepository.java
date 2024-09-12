@@ -22,7 +22,7 @@ public interface UserRepository extends JpaRepository<User, Long > {
     List<User> findByFirstName(String firstName);
 
     /*** Finds all Users by their last name.** @param lastName the last name to search for* @return a List of Users with the specified last name*/
-    List<User> findByLastName(String lastName);
+    List<User> findByLastName(String lastname);
 
     /*** Finds all Users by their birth date.** @param birthDate the birth date to search for* @return a List of Users with the specified birth date*/
     List<User> findByBirthDate(LocalDate birthDate);
