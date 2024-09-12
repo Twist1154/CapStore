@@ -13,7 +13,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @date 07-Sep-24
  */
 @SpringBootApplication
-public class OnlineClothingStoreApp {
+public class
+
+OnlineClothingStoreApp {
     public static void main(String[] args) {
         SpringApplication.run(OnlineClothingStoreApp.class, args);
     }

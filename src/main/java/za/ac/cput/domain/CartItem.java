@@ -7,10 +7,12 @@ package za.ac.cput.domain;
  * Date: 14 May 2024
  */
 import jakarta.persistence.*;
+
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-public class CartItem {
+public class CartItem implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cartItemID;
