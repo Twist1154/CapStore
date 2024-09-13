@@ -37,7 +37,7 @@ public class UserControllerTest {
         user = new User.Builder()
                 .setFirstName("John")
                 .setLastName("Doe")
-                .setEmail("john.doe@example.com")
+                .setEmail("jamesAmber@example.com")
                 .setPassword("password")
                 .setAvatar("default-avatar.png")
                 .setPhoneNumber(1234567890)
@@ -73,10 +73,8 @@ public class UserControllerTest {
 
         // Check that the response status is OK
         assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
-
         // Ensure the response body is not null
         assertThat(createResponse.getBody()).isNotNull();
-
         // Get the user object from the response body
         User createdUser = createResponse.getBody();
 
@@ -106,7 +104,7 @@ public class UserControllerTest {
                 .setId(userID)
                 .setFirstName("Jane")
                 .setLastName("Doe")
-                .setEmail("jane.doe@example.com")
+                .setEmail("jamesAmber@example.com")
                 .setPassword("newpassword")
                 .setAvatar("new-avatar.png")
                 .setPhoneNumber(987654321)
