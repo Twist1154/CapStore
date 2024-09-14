@@ -6,17 +6,16 @@ import za.ac.cput.domain.Product;
 import za.ac.cput.repository.IProductRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
-public class ProductService implements IProductService{
+public class ProductService implements IProductService {
     private final IProductRepository productRepository;
 
-
     @Autowired
-    public ProductService(IProductRepository productRepository){
+    public ProductService(IProductRepository productRepository) {
         this.productRepository = productRepository;
     }
+
     @Override
     public Product create(Product product) {
         return productRepository.save(product);
@@ -29,15 +28,30 @@ public class ProductService implements IProductService{
 
     @Override
     public Product update(Product product) {
-        if(productRepository.existsById(product.getProductId())){
-            return productRepository.save(product);
-        }
-        return null;
+        // Check if product exists, update if it does, otherwise return null
+        return productRepository.findById(product.getProductId()).map(existingProduct -> {
+            Product updatedProduct = new Product.Builder()
+                    .copy(existingProduct)
+                    .setProductId(product.getProductId())
+                    .setName(product.getName())
+                    .setDescription(product.getDescription())
+                    .setPrice(product.getPrice())
+                    .setStock(product.getStock())
+                    .setCategoryId(product.getCategoryId())
+                    .setCreatedAt(product.getCreatedAt())
+                    .setUpdatedAt(product.getUpdatedAt())
+                    .setImages(product.getImages())
+                    .build();
+            return productRepository.save(updatedProduct);
+        }).orElseGet(() -> {
+            System.out.println("Attempt to update non-existing product with ID: " + product.getProductId());
+            return null;
+        });
     }
 
     @Override
     public void delete(Long id) {
-            this.productRepository.deleteById(id);
+        productRepository.deleteById(id);
     }
 
     @Override

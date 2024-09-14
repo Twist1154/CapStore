@@ -31,40 +31,41 @@ public class ProductController {
     }
 
     @PostMapping("/create")
-    public Product createProduct(@RequestBody Product product) {
-        return productService.create(product);
+    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
+        Product createdProduct = productService.create(product);
+        return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
     }
 
     @GetMapping("/read/{id}")
-    public ResponseEntity<Product> readProduct(@PathVariable Long id) {
+    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
         Product product = productService.read(id);
-        if(product != null){
-            return ResponseEntity.ok(product);
-        } else{
-            return ResponseEntity.notFound().build();
-        }
+        return product != null ? new ResponseEntity<>(product, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product product) {
-        Product existingProduct = productService.read(id);
-        if (product == null) {
+        if (!id.equals(product.getProductId())) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } else if (existingProduct == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         Product updatedProduct = productService.update(product);
-        return ResponseEntity.ok(updatedProduct);
+        return updatedProduct != null ? new ResponseEntity<>(updatedProduct, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteProduct(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
+        Product product = productService.read(id);
+        if (product != null) {
         productService.delete(id);
+            return ResponseEntity.noContent().build();
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/getAll")
     public ResponseEntity<List<Product>> getAllProducts() {
         List<Product> products = productService.findAll();
-        return ResponseEntity.ok(products);
+        return new ResponseEntity<>(products, HttpStatus.OK);
     }
 }
