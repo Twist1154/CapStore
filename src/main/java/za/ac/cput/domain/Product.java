@@ -32,10 +32,9 @@ public class Product {
     private LocalDateTime createdAt;
     @UpdateTimestamp
     private LocalDateTime updatedAt;
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "images", joinColumns = @JoinColumn(name = "imageId"))
-    @Column(name = "imageUrl")
-    private List<String> imageUrl= new ArrayList<>();
+
+    @Embedded
+    private Images images;
 
     public Product() {
     }
@@ -49,7 +48,7 @@ public class Product {
         this.categoryId = builder.categoryId;
         this.createdAt = builder.createdAt;
         this.updatedAt = builder.updatedAt;
-        this.imageUrl = builder.imageUrl;
+        this.images = builder.images; // Fixing images assignment
     }
 
     public Long getProductId() {
@@ -84,8 +83,8 @@ public class Product {
         return updatedAt;
     }
 
-    public List<String> getImageUrl() {
-        return imageUrl;
+    public Images getImages() {  // Getter for images
+        return images;
     }
 
     @Override
@@ -93,12 +92,20 @@ public class Product {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return Double.compare(product.price, price) == 0 && stock == product.stock && Objects.equals(productId, product.productId) && Objects.equals(name, product.name) && Objects.equals(description, product.description) && Objects.equals(categoryId, product.categoryId) && Objects.equals(createdAt, product.createdAt) && Objects.equals(updatedAt, product.updatedAt) && Objects.equals(imageUrl, product.imageUrl);
+        return Double.compare(product.price, price) == 0 &&
+                stock == product.stock &&
+                Objects.equals(productId, product.productId) &&
+                Objects.equals(name, product.name) &&
+                Objects.equals(description, product.description) &&
+                Objects.equals(categoryId, product.categoryId) &&
+                Objects.equals(createdAt, product.createdAt) &&
+                Objects.equals(updatedAt, product.updatedAt) &&
+                Objects.equals(images, product.images);  // Compare embedded images
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(productId, name, description, price, stock, categoryId, createdAt, updatedAt, imageUrl);
+        return Objects.hash(productId, name, description, price, stock, categoryId, createdAt, updatedAt, images);
     }
 
     @Override
@@ -112,7 +119,7 @@ public class Product {
                 ", categoryId=" + categoryId +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
-                ", imageUrl='" + imageUrl + '\'' +
+                ", images=" + images +  // Display images in the toString method
                 '}';
     }
 
@@ -125,7 +132,7 @@ public class Product {
         private Long categoryId;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
-        private List<String> imageUrl= new ArrayList<>();;
+        private Images images; // Use Images in the builder
 
         public Builder setProductId(Long productId){
             this.productId = productId;
@@ -167,8 +174,8 @@ public class Product {
             return this;
         }
 
-        public Builder setImagePath(List<String> imageUrl){
-            this.imageUrl = imageUrl;
+        public Builder setImages(Images images) { // Set the images in the builder
+            this.images = images;
             return this;
         }
 
@@ -181,7 +188,7 @@ public class Product {
             this.categoryId = product.getCategoryId();
             this.createdAt = product.getCreatedAt();
             this.updatedAt = product.getUpdatedAt();
-            this.imageUrl = product.getImageUrl();
+            this.images = product.getImages();
             return this;
         }
 
