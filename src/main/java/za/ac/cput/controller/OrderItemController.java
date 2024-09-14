@@ -18,6 +18,7 @@ import java.util.Optional;
  * @date 09-Sep-24
  */
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/order-items")
 public class OrderItemController {
@@ -69,5 +70,14 @@ public class OrderItemController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/order_id/{id}")
+    public ResponseEntity<List<OrderItem>> findAllByOrder_Id(@PathVariable Long id) {
+        List<OrderItem> orderItems = orderItemService.findAllByOrder_Id(id);
+        if (orderItems.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(orderItems, HttpStatus.OK);
     }
 }
