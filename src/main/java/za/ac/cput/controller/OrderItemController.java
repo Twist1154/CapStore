@@ -18,6 +18,7 @@ import java.util.Optional;
  * @date 09-Sep-24
  */
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/order-items")
 public class OrderItemController {
