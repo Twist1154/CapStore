@@ -12,8 +12,9 @@ import za.ac.cput.service.S3Service;
 /**
  * S3Controller.java
  *
- * @author Rethabile Ntsekhe
- * @date 13-Aug-24
+ * @author Zachariah Matsimella
+ * Student Num: 220097429
+ * @date 09-Sep-24
  */
 @RestController
 @RequestMapping("/s3")

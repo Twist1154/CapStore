@@ -6,9 +6,10 @@ import za.ac.cput.util.Helper;
 /**
  * PresignedFactory.java
  *
- * @author Rethabile Ntsekhe
- * @date 14-Aug-24
- */
+ * @author Zachariah Matsimella
+ * Student Num: 220097429
+ * @date 09-Sep-24
+ **/
 public class PresignedFactory {
 
     /**

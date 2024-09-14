@@ -7,6 +7,8 @@ import org.junit.jupiter.api.TestMethodOrder;
 import za.ac.cput.domain.Product;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -15,6 +17,10 @@ class ProductFactoryTest {
     @Order(1)
     @Test
     void buildProduct() {
+        String image = "path/to/image.jpg";
+        List<String> images = new ArrayList<>();
+        images.add(image);
+
         Product product = ProductFactory.buildProduct(
                 1L,
                 "Golfer",
@@ -24,7 +30,7 @@ class ProductFactoryTest {
                 1L,
                 LocalDate.now().atStartOfDay(),
                 LocalDate.now().atStartOfDay(),
-                "path/to/image.jpg"
+                images
         );
         assertNotNull(product);
         System.out.println("Build product: "+ product);
@@ -33,6 +39,10 @@ class ProductFactoryTest {
     @Order(2)
     @Test
     void buildProductWithNegativePrice() {
+        String image = "path/to/image.jpg";
+        List<String> images = new ArrayList<>();
+        images.add(image);
+
         Product product = ProductFactory.buildProduct(
                 1L,
                 "Golfer",
@@ -42,7 +52,7 @@ class ProductFactoryTest {
                 1L,
                 LocalDate.now().atStartOfDay(),
                 LocalDate.now().atStartOfDay(),
-                "path/to/image.jpg"
+                images
         );
         assertNotNull(product);
         System.out.println("Build product: "+ product);

@@ -5,6 +5,7 @@ import za.ac.cput.domain.Product;
 import za.ac.cput.util.Helper;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Product.java
@@ -17,11 +18,10 @@ import java.time.LocalDateTime;
 public class ProductFactory {
     public static Product buildProduct(Long productId, String name, String description,
                                        double price, int stock, Long categoryId,
-                                       LocalDateTime createdAt, LocalDateTime updatedAt, String imagePath){
+                                       LocalDateTime createdAt, LocalDateTime updatedAt, List<String> imagePath){
         if(Helper.isNullOrEmpty(name)||
             Helper.isNullOrEmpty(description)||
-            Helper.isOrderNullorEmpty(price)||
-            Helper.isNullOrEmpty(imagePath)
+            Helper.isOrderNullorEmpty(price)
         ){
             return null;
         }

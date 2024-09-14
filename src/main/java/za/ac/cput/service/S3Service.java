@@ -12,9 +12,9 @@ import java.time.Duration;
 /**
  * S3Service.java
  *
- * @author Rethabile Ntsekhe
- * Student Num: 220455430
- * @date 13-Aug-24
+ * @author Zachariah Matsimella
+ * Student Num: 220097429
+ * @date 09-Sep-24
  */
 @Service
 public class S3Service {
