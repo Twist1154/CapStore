@@ -1,5 +1,7 @@
 package za.ac.cput.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,17 +10,15 @@ import org.springframework.web.bind.annotation.*;
 import za.ac.cput.domain.OrderItem;
 import za.ac.cput.domain.Orders;
 import za.ac.cput.service.OrderService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
 import java.util.List;
 
 /**
  * OrderController.java
- *
+ * <p>
  * Controller class to handle HTTP requests for Orders.
- *
+ * <p>
  * Author: Rethabile Ntsekhe
  * Student Num: 220455430
  * Date: 07-Sep-24
@@ -93,12 +93,13 @@ public class OrderController {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             orderService.deleteByOrderID(id);
-            return ResponseEntity.noContent().build();
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);  // Change made here
         } catch (Exception e) {
             logger.error("Error deleting order with id " + id, e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
     // Get all orders
     @GetMapping("/all")
@@ -181,16 +182,16 @@ public class OrderController {
 
     // Get orders with a total price greater than a specified value
     @GetMapping("/total-price/{totalPrice}")
-    public ResponseEntity<List<Orders>> getOrdersByTotalPriceGreaterThan(@PathVariable  double totalPrice) {
-    logger.info("Fetching orders with totalPrice greater than: " + totalPrice);
+    public ResponseEntity<List<Orders>> getOrdersByTotalPriceGreaterThan(@PathVariable double totalPrice) {
+        logger.info("Fetching orders with totalPrice greater than: " + totalPrice);
         try {
             if (totalPrice < 0) {
-            logger.warn("Invalid totalPrice value: " + totalPrice);
+                logger.warn("Invalid totalPrice value: " + totalPrice);
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
 
             List<Orders> ordersList = orderService.findByTotalPriceGreaterThan(totalPrice);
-        logger.info("Fetched " + ordersList.size() + " orders.");
+            logger.info("Fetched " + ordersList.size() + " orders.");
 
             if (ordersList.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);

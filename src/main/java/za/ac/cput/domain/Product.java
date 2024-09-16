@@ -48,7 +48,7 @@ public class Product {
         this.categoryId = builder.categoryId;
         this.createdAt = builder.createdAt;
         this.updatedAt = builder.updatedAt;
-        this.images = builder.images; // Fixing images assignment
+        this.images = builder.images;
     }
 
     public Long getProductId() {
