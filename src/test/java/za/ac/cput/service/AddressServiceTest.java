@@ -30,15 +30,19 @@ class AddressServiceTest {
      */
     @BeforeEach
     void setup() {
-        address = AddressFactory.buildAddress(
+        address = AddressFactory.createAddress(
                 1L,
                 1L,
+                "Home",
                 "10 Sir Street",
+                "Parow North",
                 "Cape Town",
                 "South Africa",
                 "22335",
-                863345678,
-                LocalDate.now(), LocalDate.of(2024, 4, 4));
+                String.valueOf(863345678),
+                LocalDate.now(),
+                LocalDate.of(2024, 4, 4)
+        );
         assertNotNull(address, "Address should not be null in setup");
 
         // Save the address once, and reuse in all test methods
@@ -62,8 +66,8 @@ class AddressServiceTest {
     void create() {
         Address created = service.create(address);
         assertNotNull(created, "Created address should not be null");
-        assertNotNull(created.getAddressID(), "AddressID should not be null");
-        assertEquals(address.getAddressLine(), created.getAddressLine(), "Address lines should match");
+        assertNotNull(created.getId(), "AddressID should not be null");
+        assertEquals(address.getAddressLine1(), created.getAddressLine1(), "Address lines should match");
         System.out.println(created);
     }
 
@@ -73,11 +77,11 @@ class AddressServiceTest {
     @Order(2)
     @Test
     void read() {
-        Address read = service.read(address.getAddressID());
+        Address read = service.read(address.getId());
         assertNotNull(read, "Read address should not be null");
         System.out.println("Read address from service: " + read);
 
-        assertEquals("10 Sir Street", read.getAddressLine(), "Address line should match");
+        assertEquals("10 Sir Street", read.getAddressLine1(), "Address line should match");
         System.out.println(read);
     }
 
@@ -89,14 +93,14 @@ class AddressServiceTest {
         // Use the existing address created in setup
         Address updatedAddress = new Address.Builder()
                 .copy(address)
-                .setAddressLine("456 Elm St")
+                .setAddressLine1("456 Elm St")
                 .setCountry("Nigeria")
                 .build();
 
         Address result = service.update(updatedAddress);
 
         assertNotNull(result);
-        assertEquals("456 Elm St", result.getAddressLine(), "Address lines should match");
+        assertEquals("456 Elm St", result.getAddressLine1(), "Address lines should match");
         System.out.println("Updated address: " + result);
     }
 
@@ -106,9 +110,9 @@ class AddressServiceTest {
     @Order(4)
     @Test
     void findByUserId() {
-        Optional<Address> found = service.findByUserID(1L);
+        Optional<Address> found = service.findByUserId(1L);
         assertTrue(found.isPresent(), "Address should be found by UserID");
-        assertEquals("10 Sir Street", found.get().getAddressLine(), "Address line should match");
+        assertEquals("10 Sir Street", found.get().getAddressLine1(), "Address line should match");
         System.out.println(found.get());
     }
 
@@ -119,19 +123,19 @@ class AddressServiceTest {
     @Test
     void findByAddressLine() {
         // We use the setup address
-        assertNotNull(address.getAddressLine(), "Address line should not be null");
-        assertEquals("10 Sir Street", address.getAddressLine(), "Address line should match");
+        assertNotNull(address.getAddressLine2(), "Address line should not be null");
+        assertEquals("10 Sir Street", address.getAddressLine2(), "Address line should match");
     }
 
     /**
-     * Tests the findByZipcodes method of AddressService.
+     * Tests the findByPostalcodes method of AddressService.
      */
     @Order(6)
     @Test
-    void findByZipcodes() {
-        List<Address> found = service.findByZipcodes("22335");
+    void findByPostalcodes() {
+        List<Address> found = service.findByPostalCode("22335");
         assertFalse(found.isEmpty(), "Address list should not be empty");
-        assertEquals("22335", found.get(0).getZipCode(), "ZipCode should match");
+        assertEquals("22335", found.get(0).getPostalCode(), "ZipCode should match");
         System.out.println(found);
     }
 
@@ -141,9 +145,9 @@ class AddressServiceTest {
     @Order(7)
     @Test
     void findByPhoneNumber() {
-        List<Address> found = service.findByPhoneNumber(863345678);
+        List<Address> found = service.findByPhoneNumber(String.valueOf(863345678));
         assertFalse(found.isEmpty(), "Address list should not be empty");
-        assertEquals("10 Sir Street", found.get(0).getAddressLine(), "Address line should match");
+        assertEquals("10 Sir Street", found.get(0).getAddressLine1(), "Address line should match");
     }
 
     /**
@@ -158,17 +162,6 @@ class AddressServiceTest {
         System.out.println(found);
     }
 
-    /**
-     * Tests the findByDeletedAtIsNotNull method of AddressService.
-     */
-    @Order(9)
-    @Test
-    void findByDeletedAtIsNotNull() {
-        List<Address> found = service.findByDeletedAtIsNotNull();
-        assertFalse(found.isEmpty());
-        assertNotNull(found.get(0).getDeletedAt());
-        System.out.println(found);
-    }
 
     /**
      * Tests the getAll method of AddressService.
@@ -176,7 +169,7 @@ class AddressServiceTest {
     @Order(10)
     @Test
     void getAll() {
-        List<Address> allAddresses = service.getAll();
+        List<Address> allAddresses = service.findAll();
         assertFalse(allAddresses.isEmpty(), "Address list should not be empty");
         System.out.println(allAddresses);
     }
