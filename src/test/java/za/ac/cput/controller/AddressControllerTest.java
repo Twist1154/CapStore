@@ -42,22 +42,46 @@ class AddressControllerTest {
     @BeforeEach
     void setUp() {
         // Building and creating an address using the AddressFactory
-        address1 = AddressFactory.buildAddress(6L, 6L, "34 Timmy Str", "Sun City", "South Africa", "2309", 90564424, LocalDate.now(), LocalDate.of(2024, 6, 24));
+        address1 = AddressFactory.createAddress(
+                6L,
+                6L,
+                "Home",
+                "34 Timmy Str",
+                "18 northridge",
+                "Sun City",
+                "South Africa",
+                "2309",
+                90564424,
+                LocalDate.now(),
+                LocalDate.of(2024, 6, 24)
+        );
         address1 = service.create(address1);
     }
 
     @AfterEach
     void tearDown() {
         // Deleting the created address after each test
-        if (address1 != null && address1.getAddressID() != null) {
-            service.deleteByAddressID(address1.getAddressID());
+        if (address1 != null && address1.getId() != null) {
+            service.delete(address1.getId());
         }
     }
 
     @Test
     void createAddress() {
         // Creating a new address using the API
-        Address address2 = AddressFactory.buildAddress(7L, 7L, "45 Park Lane", "Johannesburg", "South Africa", "3100", 12345678, LocalDate.now(), LocalDate.of(2024, 7, 30));
+        Address address2 = AddressFactory.createAddress(
+                7L,
+                7L,
+                "Home",
+                "45 Park Lane",
+                "Park verk",
+                "Johannesburg",
+                "South Africa",
+                "3100",
+                12345678,
+                LocalDate.now(),
+                LocalDate.of(2024, 7, 30)
+        );
 
         // Sending a POST request to create the address
         ResponseEntity<Address> response = restTemplate.postForEntity(BASE_URL + "/create", address2, Address.class);
@@ -71,13 +95,13 @@ class AddressControllerTest {
     @Test
     void read() {
         // Reading an address by its ID using the API
-        ResponseEntity<Address> response = restTemplate.getForEntity(BASE_URL + "/read/" + address1.getAddressID(), Address.class);
+        ResponseEntity<Address> response = restTemplate.getForEntity(BASE_URL + "/read/" + address1.getId(), Address.class);
 
         // Asserting that the response status is OK
         assertEquals(HttpStatus.OK, response.getStatusCode());
         // Asserting that the returned address is not null
         assertNotNull(response.getBody());
-        assertEquals(address1.getAddressID(), response.getBody().getAddressID());
+        assertEquals(address1.getId(), response.getBody().getId());
     }
 
     @Test
@@ -85,24 +109,24 @@ class AddressControllerTest {
         // Updating the street of an existing address
 
         Address addressupdated = new Address.Builder()
-                .copy(address1).setAddressLine("34 freedom Str")
+                .copy(address1).setAddressLine2("34 freedom Str")
                 .build();
-        restTemplate.put(BASE_URL + "/update/" + addressupdated.getAddressID(), addressupdated);
+        restTemplate.put(BASE_URL + "/update/" + addressupdated.getId(), addressupdated);
 
         // Reading the updated address
-        ResponseEntity<Address> response = restTemplate.getForEntity(BASE_URL + "/read/" + addressupdated.getAddressID(), Address.class);
+        ResponseEntity<Address> response = restTemplate.getForEntity(BASE_URL + "/read/" + addressupdated.getId(), Address.class);
 
         // Asserting that the street has been updated
-        assertEquals("34 freedom Str", response.getBody().getAddressLine());
+        assertEquals("34 freedom Str", response.getBody().getAddressLine2());
     }
 
     @Test
     void deleteAddress() {
         // Deleting an existing address using the API
-        restTemplate.delete(BASE_URL + "/delete/" + address1.getAddressID());
+        restTemplate.delete(BASE_URL + "/delete/" + address1.getId());
 
         // Trying to read the deleted address
-        ResponseEntity<Address> response = restTemplate.getForEntity(BASE_URL + "/read/" + address1.getAddressID(), Address.class);
+        ResponseEntity<Address> response = restTemplate.getForEntity(BASE_URL + "/read/" + address1.getId(), Address.class);
 
         // Asserting that the address is no longer found
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
@@ -122,18 +146,18 @@ class AddressControllerTest {
     @Test
     void getAddressByUserID() {
         // Reading an address by its userID using the API
-        ResponseEntity<Address> response = restTemplate.getForEntity(BASE_URL + "/user/" + address1.getUserID(), Address.class);
+        ResponseEntity<Address> response = restTemplate.getForEntity(BASE_URL + "/user/" + address1.getUserId(), Address.class);
 
         // Asserting that the response status is OK
         assertEquals(HttpStatus.OK, response.getStatusCode());
         // Asserting that the address is correctly returned for the given userID
-        assertEquals(address1.getUserID(), response.getBody().getUserID());
+        assertEquals(address1.getUserId(), response.getBody().getUserId());
     }
 
     @Test
     void getAddressByLine() {
         // Reading an address by its address line
-        ResponseEntity<List> response = restTemplate.getForEntity(BASE_URL + "/line/" + address1.getAddressLine(), List.class);
+        ResponseEntity<List> response = restTemplate.getForEntity(BASE_URL + "/line/" + address1.getAddressLine1(), List.class);
 
         // Asserting that the response status is OK
         assertEquals(HttpStatus.OK, response.getStatusCode());

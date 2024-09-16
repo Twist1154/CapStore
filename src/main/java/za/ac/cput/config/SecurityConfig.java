@@ -41,7 +41,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         /* .requestMatchers("store/api/users/**").permitAll() // Allow access to product endpoints
-                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                         .requestMatchers("/api/admin/**").has Role("ADMIN")
                          .requestMatchers("/api/user/**").hasRole("USER")
                          .anyRequest().authenticated()*/
                         .anyRequest().permitAll() //Allow all requests without authentication
