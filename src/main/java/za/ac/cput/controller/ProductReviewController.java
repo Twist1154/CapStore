@@ -16,6 +16,8 @@ import za.ac.cput.service.ProductReviewService;
 
 import java.util.List;
 
+
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/productReview")
 public class ProductReviewController {
