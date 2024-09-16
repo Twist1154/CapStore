@@ -1,12 +1,16 @@
 package za.ac.cput.service;
 
-import za.ac.cput.domain.Cart;
 import za.ac.cput.domain.CartItem;
 
-import java.util.List;
+/**
+ * ICartItemService.java
+ *
+ * Author: Kinzonzi Mukoko
+ * Student Num: 221477934
+ * Date: 09-Sep-24
+ */
+public interface ICartItemService extends IService<CartItem, Long> {
 
-public interface ICartItemService extends IService<CartItem, Long>{
-    void delete(Long id);
+    void deleteById(Long id);
 
-    List<CartItem> findAll();
 }

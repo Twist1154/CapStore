@@ -13,6 +13,7 @@ import za.ac.cput.repository.UserRepository;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -192,5 +193,10 @@ public class UserService implements UserDetailsService, IUserService {
     @Override
     public List<User> findByRole(String role) {
         return userRepository.findByRole(role);
+    }
+
+    /*** Verifies a user's credentials.** @param email the email address* @param password the password* @return the User if credentials are valid, otherwise null*/
+    public Set<User> verifyUser(String email, String password) {
+        return userRepository.findByEmailAndPassword(email, password);
     }
 }

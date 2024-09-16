@@ -7,6 +7,7 @@ import za.ac.cput.domain.User;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long > {
@@ -32,6 +33,10 @@ public interface UserRepository extends JpaRepository<User, Long > {
 
     /*** Finds all Users by their role.** @param role the role to search for* @return a List of Users with the specified role*/
     List<User> findByRole(String role);
+
+    /*** Finds a User by their email address and password.** @param email the email address to search for* @param password the password to match* @return an Optional containing the User if found, otherwise empty*/
+    Set<User> findByEmailAndPassword(String email, String password);
+
 }
 
 
