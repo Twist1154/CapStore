@@ -35,6 +35,7 @@ class ProductReviewControllerTest {
     @Order(1)
     void create() {
         String url = BASE_URL + "/create";
+        System.out.println("URL: " + url);
         ResponseEntity<ProductReview> postResponse = restTemplate.postForEntity(url, productReview, ProductReview.class);
         assertNotNull(postResponse);
         assertNotNull(postResponse.getBody());
