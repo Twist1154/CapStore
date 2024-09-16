@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import za.ac.cput.domain.Address;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,56 +15,86 @@ import java.util.Optional;
  *
  * <p>Annotated with {@code @Repository} to indicate that it's a Spring Data repository.</p>
  */
+
 @Repository
 public interface AddressRepository extends JpaRepository<Address, Long> {
 
     /**
-     * Finds a list of addresses by the given address line.
+     * Finds all Addresses associated with a given User.
      *
-     * @param addressLine the address line to search for
-     * @return a list of addresses that match the given address line
+     * @param id the User entity to search by
+     * @return a list of Addresses associated with the given User
      */
-    List<Address> findByAddressLine(String addressLine);
+    Optional<Address> findByUserId(Long id);
 
     /**
-     * Finds a list of addresses by the given zip code.
+     * Finds all Addresses with a given title.
      *
-     * @param zipCode the zip code to search for
-     * @return a list of addresses that match the given zip code
+     * @param title the title to search by
+     * @return a list of Addresses with the given title
      */
-    List<Address> findByZipCode(String zipCode);
+    List<Address> findByTitle(String title);
 
     /**
-     * Finds a list of addresses by the given country.
+     * Finds all Addresses with a given address line 1.
      *
-     * @param country the country to search for
-     * @return a list of addresses that match the given country
+     * @param addressLine1 the address line 1 to search by
+     * @return a list of Addresses with the given address line 1
+     */
+    List<Address> findByAddressLine1(String addressLine1);
+
+    /**
+     * Finds all Addresses with a given address line 2.
+     *
+     * @param addressLine2 the address line 2 to search by
+     * @return a list of Addresses with the given address line 2
+     */
+    List<Address> findByAddressLine2(String addressLine2);
+
+    /**
+     * Finds all Addresses in a given country.
+     *
+     * @param country the country to search by
+     * @return a list of Addresses in the given country
      */
     List<Address> findByCountry(String country);
 
     /**
-     * Finds a list of addresses by the given phone number.
+     * Finds all Addresses in a given city.
      *
-     * @param phoneNumber the phone number to search for
-     * @return a list of addresses that match the given phone number
+     * @param city the city to search by
+     * @return a list of Addresses in the given city
+     */
+    List<Address> findByCity(String city);
+
+    /**
+     * Finds all Addresses with a given postal code.
+     *
+     * @param zipCode the postal code to search by
+     * @return a list of Addresses with the given postal code
+     */
+    List<Address> findByZipCode(String zipCode);
+
+    /**
+     * Finds all Addresses with a given phone number.
+     *
+     * @param phoneNumber the phone number to search by
+     * @return a list of Addresses with the given phone number
      */
     List<Address> findByPhoneNumber(Integer phoneNumber);
 
     /**
-     * Finds an optional address by the given user ID.
+     * Finds all Addresses created after a given date.
      *
-     * @param id the user ID to search for
-     * @return an Optional containing the address if found, or an empty Optional if not found
+     * @param createdAt the date to search by
+     * @return a list of Addresses created after the given date
      */
-    Optional<Address> findByUserID(Long id);
+    List<Address> findByCreatedAtAfter(LocalDate createdAt);
 
     /**
-     * Finds a list of addresses that have been soft-deleted.
-     * Addresses with a non-null {@code deletedAt} field are considered soft-deleted.
+     * Finds all Addresses that have a non-null deletedAt field.
      *
-     * @return a list of addresses that have been soft-deleted
+     * @return a list of Addresses that have been marked as deleted
      */
-    List<Address> findByDeletedAtIsNotNull();
-
-    void deleteByAddressID(Long addressID);
+    List<Address> findByUpdatedAt(LocalDate updatedAt);
 }
