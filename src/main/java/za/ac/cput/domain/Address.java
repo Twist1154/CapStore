@@ -21,8 +21,8 @@ public class Address {
     private String addressLine2;
     private String city;
     private String country;
-    private String zipCode;
-    private Integer phoneNumber;
+    private String postalCode;
+    private String  phoneNumber;
     private LocalDate createdAt;
     private LocalDate updatedAt;
 
@@ -38,7 +38,7 @@ public class Address {
         this.addressLine2 = builder.addressLine2;
         this.city = builder.city;
         this.country = builder.country;
-        this.zipCode = builder.zipCode;
+        this.postalCode = builder.postalCode;
         this.phoneNumber = builder.phoneNumber;
         this.createdAt = builder.createdAt;
         this.updatedAt = builder.updatedAt;
@@ -72,11 +72,11 @@ public class Address {
         return country;
     }
 
-    public String getZipCode() {
-        return zipCode;
+    public String getPostalCode() {
+        return postalCode;
     }
 
-    public Integer getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
@@ -98,7 +98,7 @@ public class Address {
                 ", addressLine2='" + addressLine2 + '\'' +
                 ", city='" + city + '\'' +
                 ", country='" + country + '\'' +
-                ", zipCode='" + zipCode + '\'' +
+                ", postalCode='" + postalCode + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
@@ -117,7 +117,7 @@ public class Address {
                 Objects.equals(addressLine2, address.addressLine2) &&
                 Objects.equals(city, address.city) &&
                 Objects.equals(country, address.country) &&
-                Objects.equals(zipCode, address.zipCode) &&
+                Objects.equals(postalCode, address.postalCode) &&
                 Objects.equals(phoneNumber, address.phoneNumber) &&
                 Objects.equals(createdAt, address.createdAt) &&
                 Objects.equals(updatedAt, address.updatedAt);
@@ -125,7 +125,7 @@ public class Address {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userId, title, addressLine1, addressLine2, city, country, zipCode, phoneNumber, createdAt, updatedAt);
+        return Objects.hash(id, userId, title, addressLine1, addressLine2, city, country, postalCode, phoneNumber, createdAt, updatedAt);
     }
 
     public static class Builder {
@@ -136,8 +136,8 @@ public class Address {
         private String addressLine2;
         private String city;
         private String country;
-        private String zipCode;
-        private Integer phoneNumber;
+        private String postalCode;
+        private String phoneNumber;
         private LocalDate createdAt;
         private LocalDate updatedAt;
 
@@ -176,12 +176,12 @@ public class Address {
             return this;
         }
 
-        public Builder setZipCode(String zipCode) {
-            this.zipCode = zipCode;
+        public Builder setPostalCode(String postalCode) {
+            this.postalCode = postalCode;
             return this;
         }
 
-        public Builder setPhoneNumber(Integer phoneNumber) {
+        public Builder setPhoneNumber(String phoneNumber) {
             this.phoneNumber = phoneNumber;
             return this;
         }
@@ -204,7 +204,7 @@ public class Address {
             this.addressLine2 = address.getAddressLine2();
             this.city = address.getCity();
             this.country = address.getCountry();
-            this.zipCode = address.getZipCode();
+            this.postalCode = address.getPostalCode();
             this.phoneNumber = address.getPhoneNumber();
             this.createdAt = address.getCreatedAt();
             this.updatedAt = address.getUpdatedAt();

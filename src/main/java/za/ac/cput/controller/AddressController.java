@@ -203,22 +203,22 @@ public class AddressController {
 
     // Get address by postal code
     @GetMapping("/postal-code/{postalCode}")
-    public ResponseEntity<List<Address>> findByPostalCode(@PathVariable String postalCode) {
+    public ResponseEntity<List<Address>> findByPostalCode(@PathVariable String zipCode) {
         try {
-            List<Address> addresses = addressService.findByPostalCode(postalCode);
+            List<Address> addresses = addressService.findByPostalCode(zipCode);
             if (addresses.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             return new ResponseEntity<>(addresses, HttpStatus.OK);
         } catch (Exception e) {
-            logger.error("Error fetching addresses by postal code " + postalCode, e);
+            logger.error("Error fetching addresses by postal code " + zipCode, e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     // Get address by phone number
     @GetMapping("/phone-number/{phoneNumber}")
-    public ResponseEntity<List<Address>> findByPhoneNumber(@PathVariable Integer phoneNumber) {
+    public ResponseEntity<List<Address>> findByPhoneNumber(@PathVariable String  phoneNumber) {
         try {
             List<Address> addresses = addressService.findByPhoneNumber(phoneNumber);
             if (addresses.isEmpty()) {

@@ -1,6 +1,7 @@
 package za.ac.cput.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import za.ac.cput.domain.User;
@@ -9,6 +10,7 @@ import za.ac.cput.service.UserService;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Controller for managing users in the system.
@@ -120,10 +122,10 @@ public class UserController {
     }
 
     /**
-     * Finds users by their birth date.
+     * Finds users by their birthdate.
      *
-     * @param birthDate the birth date to search by
-     * @return a list of users with the specified birth date
+     * @param birthDate the birthdate to search by
+     * @return a list of users with the specified birthdate
      */
     @GetMapping("/birthdate/{birthDate}")
     public ResponseEntity<List<User>> findByBirthDate(@PathVariable LocalDate birthDate) {
@@ -154,4 +156,17 @@ public class UserController {
         List<User> users = userService.findByRole(role);
         return ResponseEntity.ok(users);
     }
+
+
+        @PostMapping("/login")
+        public ResponseEntity<String> loginUser(@RequestParam String email, @RequestParam String password) {
+            Set<User> user = userService.verifyUser(email, password);
+            if (user.isEmpty()) {
+                // Failed login
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
+            } else {
+                // Successful login
+                return ResponseEntity.ok("Login successful");
+            }
+        }
 }

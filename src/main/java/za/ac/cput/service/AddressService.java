@@ -52,7 +52,7 @@ public class AddressService implements IAddressService {
                 .setAddressLine2(address.getAddressLine2())
                 .setCity(address.getCity())
                 .setCountry(address.getCountry())
-                .setZipCode(address.getZipCode())
+                .setPostalCode(address.getPostalCode())
                 .setPhoneNumber(address.getPhoneNumber())
                 .setCreatedAt(address.getCreatedAt())
                 .setUpdatedAt(address.getUpdatedAt())
@@ -106,12 +106,12 @@ public class AddressService implements IAddressService {
     }
 
     @Override
-    public List<Address> findByPostalCode(String zipCode) {
-        return addressRepository.findByZipCode(zipCode);
+    public List<Address> findByPostalCode(String postalCode) {
+        return addressRepository.findByPostalCode(postalCode);
     }
 
     @Override
-    public List<Address> findByPhoneNumber(Integer phoneNumber) {
+    public List<Address> findByPhoneNumber(String phoneNumber) {
         return addressRepository.findByPhoneNumber(phoneNumber);
     }
 

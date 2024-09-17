@@ -39,7 +39,7 @@ class AddressServiceTest {
                 "Cape Town",
                 "South Africa",
                 "22335",
-                863345678,
+                String.valueOf(863345678),
                 LocalDate.now(),
                 LocalDate.of(2024, 4, 4)
         );
@@ -128,14 +128,14 @@ class AddressServiceTest {
     }
 
     /**
-     * Tests the findByZipcodes method of AddressService.
+     * Tests the findByPostalcodes method of AddressService.
      */
     @Order(6)
     @Test
-    void findByZipcodes() {
+    void findByPostalcodes() {
         List<Address> found = service.findByPostalCode("22335");
         assertFalse(found.isEmpty(), "Address list should not be empty");
-        assertEquals("22335", found.get(0).getZipCode(), "ZipCode should match");
+        assertEquals("22335", found.get(0).getPostalCode(), "ZipCode should match");
         System.out.println(found);
     }
 
@@ -145,7 +145,7 @@ class AddressServiceTest {
     @Order(7)
     @Test
     void findByPhoneNumber() {
-        List<Address> found = service.findByPhoneNumber(863345678);
+        List<Address> found = service.findByPhoneNumber(String.valueOf(863345678));
         assertFalse(found.isEmpty(), "Address list should not be empty");
         assertEquals("10 Sir Street", found.get(0).getAddressLine1(), "Address line should match");
     }

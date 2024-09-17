@@ -66,10 +66,10 @@ public interface IAddressService extends IService<Address, Long> {
     /**
      * Finds all Addresses with a given postal code.
      *
-     * @param zipCode the postal code to search by
+     * @param postalCode the postal code to search by
      * @return a list of Addresses with the given postal code
      */
-    List<Address> findByPostalCode(String zipCode);
+    List<Address> findByPostalCode(String postalCode);
 
     /**
      * Finds all Addresses with a given phone number.
@@ -77,7 +77,7 @@ public interface IAddressService extends IService<Address, Long> {
      * @param phoneNumber the phone number to search by
      * @return a list of Addresses with the given phone number
      */
-    List<Address> findByPhoneNumber(Integer phoneNumber);
+    List<Address> findByPhoneNumber(String phoneNumber);
 
     /**
      * Finds all Addresses created after a given date.

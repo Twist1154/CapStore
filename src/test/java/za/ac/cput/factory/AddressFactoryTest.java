@@ -11,16 +11,19 @@ import static org.junit.jupiter.api.Assertions.*;
 class AddressFactoryTest {
     @Test
     void buildAddress() {
-        Address address = AddressFactory.buildAddress(
-                2L,
-                2L,
-                "445 floop str",
-                "CapeTown",
+        Address address = AddressFactory.createAddress(
+                1L,
+                1L,
+                "Home",
+                "10 Sir Street",
+                "Parow North",
+                "Cape Town",
                 "South Africa",
-                "3344",
-                735568763,
+                "22335",
+                String.valueOf(863345678),
                 LocalDate.now(),
-                null);
+                LocalDate.of(2024, 4, 4)
+        );
 
         assertNotNull(address);
         System.out.println(address);

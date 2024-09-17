@@ -51,7 +51,7 @@ class AddressControllerTest {
                 "Sun City",
                 "South Africa",
                 "2309",
-                90564424,
+                String.valueOf(90564424),
                 LocalDate.now(),
                 LocalDate.of(2024, 6, 24)
         );
@@ -78,7 +78,7 @@ class AddressControllerTest {
                 "Johannesburg",
                 "South Africa",
                 "3100",
-                12345678,
+                String.valueOf(12345678),
                 LocalDate.now(),
                 LocalDate.of(2024, 7, 30)
         );

@@ -24,7 +24,7 @@ public class AddressFactory {
      * @param addressLine2 the second line of the address
      * @param city       the city of the address
      * @param country    the country of the address
-     * @param zipCode the postal code of the address
+     * @param postalCode the postal code of the address
      * @param phoneNumber the phone number associated with the address
      * @param createdAt  the date the address was created
      * @param UpdatedAt  the date the address was deleted (if applicable)
@@ -33,7 +33,7 @@ public class AddressFactory {
     public static Address createAddress(Long id, Long userId, String title,
                                         String addressLine1, String addressLine2,
                                         String city, String country,
-                                        String zipCode, Integer phoneNumber,
+                                        String postalCode, String phoneNumber,
                                         LocalDate createdAt, LocalDate UpdatedAt) {
         // Check if any of the required parameters are null
         if (Helper.isNullOrEmpty(userId) ||
@@ -42,7 +42,7 @@ public class AddressFactory {
                 Helper.isNullOrEmpty(addressLine2) ||
                 Helper.isNullOrEmpty(country) ||
                 Helper.isNullOrEmpty(city) ||
-                Helper.isNullOrEmpty(zipCode)
+                Helper.isNullOrEmpty(postalCode)
         ) {
             throw new IllegalArgumentException("Required fields cannot be null in address");
         }
@@ -56,7 +56,7 @@ public class AddressFactory {
                 .setAddressLine2(addressLine2)
                 .setCity(city)
                 .setCountry(country)
-                .setZipCode(zipCode)
+                .setPostalCode(postalCode)
                 .setPhoneNumber(phoneNumber)
                 .setCreatedAt(createdAt)
                 .setUpdatedAt(LocalDate.now())
