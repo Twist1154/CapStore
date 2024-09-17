@@ -1,115 +1,148 @@
 package za.ac.cput.service;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.junit.jupiter.api.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
+import za.ac.cput.domain.CartItem;
 import za.ac.cput.domain.Cart;
-import za.ac.cput.repository.ICartRepository;
+import za.ac.cput.factory.CartFactory;
+import za.ac.cput.factory.CartItemFactory;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
+@Transactional
+@SpringBootTest
+@TestMethodOrder(MethodOrderer.MethodName.class)
 class CartServiceTest {
 
-    @Mock
-    private ICartRepository cartRepository;
-
-    @InjectMocks
+    @Autowired
     private CartService cartService;
+
+    @Autowired
+    private CartItemService cartItemService;
 
     private Cart cart;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        // Create an initial cart
+        cart = CartFactory.buildCart(
+                null,
+                150.0,
+                LocalDate.now(),
+                new ArrayList<>()
+        );
+
+        // Save the cart to generate a cartID
+        cart = cartService.create(cart);
+
+        // Create CartItems
+        CartItem cartItem1 = CartItemFactory.buildCartItem(
+                null,
+                cart.getId(),
+                12.00,
+                cart
+        );
+
+        CartItem cartItem2 = CartItemFactory.buildCartItem(
+                null,
+                cart.getId(),
+                10.00,
+                cart
+        );
+
+        CartItem cartItem3 = CartItemFactory.buildCartItem(
+                null,
+                cart.getId(),
+                20.00,
+                cart
+        );
+
+        // Save CartItems
+        cartItem1 = cartItemService.create(cartItem1);
+        cartItem2 = cartItemService.create(cartItem2);
+        cartItem3 = cartItemService.create(cartItem3);
+
+        // Ensure CartItems are associated with the Cart
+        List<CartItem> cartItems = new ArrayList<>();
+        cartItems.add(cartItem1);
+        cartItems.add(cartItem2);
+        cartItems.add(cartItem3);
+
         cart = new Cart.Builder()
-                .setCartID(4L)
-                .setCustomerID(9L)
-                .setCartItems(new ArrayList<>())
-                .setTotalAmount(100.00)
+                .copy(cart)
+                .setCartItems(cartItems)  // Add CartItems
                 .build();
+
+        cart = cartService.update(cart); // Ensure the updated cart is persisted
     }
 
     @Test
-    void create_success() {
-        // Mock the repository save method
-        when(cartRepository.save(any(Cart.class))).thenReturn(cart);
+    @Order(1)
+    void create() {
+        Cart newCart = CartFactory.buildCart(
+                null,
+                200.0,
+                LocalDate.now(),
+                new ArrayList<>()
+        );
 
-        // Call the service method
-        Cart createdCart = cartService.create(cart);
-
-        // Assertions
+        Cart createdCart = cartService.create(newCart);
         assertNotNull(createdCart);
-        assertEquals(cart.getCartID(), createdCart.getCartID());
-        System.out.println(createdCart);
-        // Verify that the save method was called
-        verify(cartRepository, times(1)).save(any(Cart.class));
+        assertNotNull(createdCart.getId());  // Check if ID is generated
+        System.out.println("Created: \n" + createdCart + "\n");
     }
 
     @Test
-    void read_success() {
-        // Mock the repository findById method
-        when(cartRepository.findById(1L)).thenReturn(Optional.of(cart));
+    @Order(2)
+    void read() {
+        Cart readCart = cartService.read(cart.getId());
+        assertNotNull(readCart);
+        assertEquals(cart.getId(), readCart.getId());
+        System.out.println("Read: \n" + readCart + "\n");
 
-        // Call the service method
-        Cart foundCart = cartService.read(1L);
-
-        // Assertions
-        assertNotNull(foundCart);
-        assertEquals(cart.getCartID(), foundCart.getCartID());
-        System.out.println(foundCart);
-        // Verify that the findById method was called
-        verify(cartRepository, times(1)).findById(1L);
+        // Debugging CartItems
+        List<CartItem> cartItems = readCart.getCartItems();
+        System.out.println("Cart Items: " + cartItems);
     }
 
     @Test
-    void update_success() {
-        // Mock the repository existsById and save methods
-        when(cartRepository.existsById(cart.getCartID())).thenReturn(true);
-        when(cartRepository.save(any(Cart.class))).thenReturn(cart);
+    @Order(3)
+    void update() {
+        Cart updatedCart = new Cart.Builder()
+                .copy(cart)
+                .setUserID(3L)
+                .setTotalPrice(300.0)
+                .build();
 
-        // Call the service method
-        Cart updatedCart = cartService.update(cart);
+        Cart result = cartService.update(updatedCart);
+        assertNotNull(result);
+        assertEquals(updatedCart.getTotalPrice(), result.getTotalPrice());
 
-        // Assertions
-        assertNotNull(updatedCart);
-        assertEquals(cart.getCartID(), updatedCart.getCartID());
-        System.out.println(updatedCart);
-        // Verify that existsById and save were called
-        verify(cartRepository, times(1)).existsById(cart.getCartID());
-        verify(cartRepository, times(1)).save(cart);
+        System.out.println("Updated: \n" + result + "\n");
     }
 
     @Test
-    void delete_success() {
-        // Call the delete method
-        cartService.delete(cart.getCartID());
-
-        // Verify that deleteById was called
-        verify(cartRepository, times(1)).deleteById(cart.getCartID());
+    @Order(4)
+    void getAll() {
+        List<Cart> carts = cartService.findAll();
+        assertFalse(carts.isEmpty());
+        System.out.println("All Carts: \n" + carts + "\n");
     }
 
     @Test
-    void findAll_success() {
-        // Mock the repository findAll method
-        List<Cart> carts = new ArrayList<>();
-        carts.add(cart);
-        when(cartRepository.findAll()).thenReturn(carts);
+    @Order(5)
+    void delete() {
+        Long cartIdToDelete = cart.getId();
+        cartService.deleteByCartID(cartIdToDelete);
 
-        // Call the service method
-        List<Cart> foundCarts = cartService.findAll();
-
-        // Assertions
-        assertNotNull(foundCarts);
-        assertEquals(1, foundCarts.size());
-
-        // Verify that findAll was called
-        verify(cartRepository, times(1)).findAll();
+        Cart deletedCart = cartService.read(cartIdToDelete);
+        assertNull(deletedCart);
+        System.out.println("Deleted Cart ID: " + cartIdToDelete);
     }
 }

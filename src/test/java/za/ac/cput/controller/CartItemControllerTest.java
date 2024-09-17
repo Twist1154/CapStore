@@ -1,79 +1,151 @@
 package za.ac.cput.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
+import za.ac.cput.OnlineClothingStoreApp;
 import za.ac.cput.domain.CartItem;
+import za.ac.cput.domain.Cart;
+import za.ac.cput.factory.CartItemFactory;
 import za.ac.cput.service.CartItemService;
+import za.ac.cput.service.CartService;
 
-import java.util.Optional;
+import java.time.LocalDate;
+import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.http.HttpMethod.DELETE;
-import static org.springframework.http.HttpMethod.POST;
-import static org.springframework.http.HttpMethod.GET;
+import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles("test") // Use a test profile if you have one
+@SpringBootTest(classes = {OnlineClothingStoreApp.class})
+@ActiveProfiles("test")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class CartItemControllerTest {
 
     @Autowired
-    private TestRestTemplate restTemplate;
+    private CartItemController cartItemController;
 
     @Autowired
     private CartItemService cartItemService;
 
+    @Autowired
+    private CartService cartService;
+
+    private Cart cart;
     private CartItem cartItem;
 
     @BeforeEach
     void setUp() {
-        cartItem = new CartItem.Builder()
-                .setCartItemID(1L)
-                .setCartID(2L)
-                .setProductID(3L)
-                .setPrice(10.99)
+        // Setup a test cart
+        cart = new Cart.Builder()
+                .setId(null)
+                .setUserID(1L)
+                .setTotalPrice(100.0)
+                .setCartDate(LocalDate.now())
                 .build();
-        cartItemService.createCartItem(cartItem); // Ensure the cart item exists in the database
+        cart = cartService.create(cart); // Save cart to get an ID
+
+        // Create a new cart item associated with the saved cart
+        cartItem = CartItemFactory.buildCartItem(
+                null,
+                1L,
+                10.00,
+                cart
+        );
+
+        // Save the cartItem to generate a cartItemID
+        cartItem = cartItemService.create(cartItem);
+    }
+
+    @AfterEach
+    void tearDown() {
+        // Cleanup: Deleting the test cartItem from the database
+        if (cartItem != null && cartItem.getId() != null) {
+            cartItemService.deleteById(cartItem.getId());
+        }
     }
 
     @Test
-    void createCartItem_success() {
-        CartItem newCartItem = new CartItem.Builder()
-                .setCartItemID(2L)
-                .setCartID(3L)
-                .setProductID(4L)
-                .setPrice(20.99)
+    @Order(1)
+    void createCartItem() {
+        // Arrange
+        CartItem newCartItem = CartItemFactory.buildCartItem(
+                null,  // ID will be generated
+                1L,
+                5.00,
+                cart  // The existing cart created in the setup
+        );
+
+        // Act
+        ResponseEntity<CartItem> response = cartItemController.createCartItem(newCartItem);
+
+        // Assert
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+
+        // Output for confirmation
+        System.out.println(response.getBody());
+    }
+
+    @Test
+    @Order(2)
+    void readCartItem() {
+        // Act
+        ResponseEntity<CartItem> response = cartItemController.getCartItemById(cartItem.getId());
+
+        // Assert
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(cartItem.getId(), response.getBody().getId());
+        System.out.println(response.getBody());
+    }
+
+    @Test
+    @Order(3)
+    void updateCartItem() {
+        // Arrange
+        CartItem updatedCartItem = new CartItem.Builder()
+                .copy(cartItem)
                 .build();
 
-        ResponseEntity<CartItem> response = restTemplate.postForEntity("/cart-items/create",
-                newCartItem, CartItem.class);
+        // Act
+        ResponseEntity<CartItem> response = cartItemController.updateCartItem(cartItem.getId(), updatedCartItem);
 
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody().getCartID()).isEqualTo(newCartItem.getCartID());
+        // Assert
+        assertNotNull(response.getBody());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        System.out.println(response.getBody());
     }
 
     @Test
-    void getCartItemById_success() {
-        ResponseEntity<CartItem> response = restTemplate.getForEntity("/cart-items/1", CartItem.class);
+    @Order(4)
+    void deleteCartItem() {
+        // Act
+        ResponseEntity<Void> response = cartItemController.deleteCartItem(cartItem.getId());
 
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody().getCartID()).isEqualTo(cartItem.getCartID());
+        // Assert
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+
+        // Verify that the cartItem is deleted by trying to read it again
+        ResponseEntity<CartItem> readResponse = cartItemController.getCartItemById(cartItem.getId());
+        assertNull(readResponse.getBody());
     }
 
     @Test
-    void deleteCartItem_success() {
-        restTemplate.delete("/cart-items/delete/1");
+    @Order(5)
+    void getAllCartItems() {
+        // Act
+        ResponseEntity<List<CartItem>> response = cartItemController.getAllCartItems();
 
-        ResponseEntity<CartItem> response = restTemplate.getForEntity("/cart-items/1", CartItem.class);
+        System.out.println(response.getBody());
 
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        // Assert
+        assertNotNull(response.getBody());
+        assertFalse(response.getBody().isEmpty());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        // Output for confirmation
+        System.out.println(response.getBody());
     }
 }

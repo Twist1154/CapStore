@@ -5,6 +5,7 @@ import za.ac.cput.domain.User;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * IUserService defines the contract for user-related operations.
@@ -85,4 +86,5 @@ public interface IUserService extends IService<User, Long> {
      * @return a list of users that match the given role
      */
     List<User> findByRole(String role);
+
 }

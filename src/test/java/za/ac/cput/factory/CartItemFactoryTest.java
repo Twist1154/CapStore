@@ -5,38 +5,49 @@ import za.ac.cput.domain.CartItem;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * CartItemFactoryTest.java
+ *
+ * Unit tests for the CartItemFactory class.
+ *
+ * Author: Kinzonzi Mukoko
+ * Student Num: 221477934
+ * Date: 10-Sep-24
+ */
+
 class CartItemFactoryTest {
 
     @Test
-    void createCartItem_success() {
-        long cartID = 1L;
-        long productID = 2L;
-        double price = 10.99;
+    void buildCartItem() {
+        // Create test CartItem with valid data
+        CartItem cartItem = CartItemFactory.buildCartItem(
+                1L,
+                12L,
+                12.00,
+                null
+        );
 
-        CartItem cartItem = CartItemFactory.createCartItem(cartID, productID, price);
-
+        // Ensure that the CartItem was created successfully and is not null
         assertNotNull(cartItem);
-        assertEquals(cartID, cartItem.getCartID());
-        assertEquals(productID, cartItem.getProductID());
-        assertEquals(price, cartItem.getPrice());
+
+        // Additional assertions to ensure the cart item details are correct
+        assertEquals(1L, cartItem.getId());
+        assertEquals(12L, cartItem.getProductID());
+        assertEquals(12.00, cartItem.getPrice());
     }
 
     @Test
-    void createCartItem_failure_invalidInput() {
-        long invalidCartID = -1L;
-        long productID = 2L;
-        double price = 10.99;
+    void buildCartItemWithInvalidData() {
+        // Expecting IllegalArgumentException for invalid data
+        IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> {
+            CartItemFactory.buildCartItem(
+                    null,
+                    null,
+                    -10.00,
+                    null
+            );
+        });
 
-        CartItem cartItem = null;
-
-        try {
-            cartItem = CartItemFactory.createCartItem(invalidCartID, productID, price);
-        } catch (IllegalArgumentException e) {
-            assertEquals("Invalid input provided", e.getMessage());
-        }
-
-        // Verify the cartItem is null since invalid input was provided
-        assertNotNull(cartItem, "CartItem should not be null");
+        assertEquals("Product ID must not be null or empty.", thrown.getMessage());
     }
-
 }

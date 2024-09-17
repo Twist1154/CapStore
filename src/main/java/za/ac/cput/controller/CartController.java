@@ -1,49 +1,241 @@
 package za.ac.cput.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import za.ac.cput.domain.CartItem;
 import za.ac.cput.domain.Cart;
 import za.ac.cput.service.CartService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * CartController.java
+ *
+ * Controller class to handle HTTP requests for Carts.
+ *
+ * Author: Kinzonzi Mukoko
+ * Student Num: 221477934
+ * Date: 07-Sep-24
+ */
+
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/cart")
 public class CartController {
+    private final CartService cartService;
+    private static final Logger logger = LoggerFactory.getLogger(CartController.class);
 
     @Autowired
-    private CartService cartService;
+    public CartController(CartService cartService) {
+        this.cartService = cartService;
+    }
 
+    // Create a new cart
     @PostMapping("/create")
-    public Cart create(@RequestBody Cart cart) {
-        return cartService.create(cart);
+    public ResponseEntity<Cart> createCart(@RequestBody Cart cart) {
+        try {
+            if (cart == null) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            Cart newCart = cartService.create(cart);
+            return new ResponseEntity<>(newCart, HttpStatus.CREATED);
+        } catch (Exception e) {
+            logger.error("Error creating cart", e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
+    // Read a cart by ID
     @GetMapping("/read/{id}")
-    public Cart read(@PathVariable long id) {
-        return cartService.read(id);
+    public ResponseEntity<Cart> read(@PathVariable Long id) {
+        try {
+            Cart cart = cartService.read(id);
+            if (cart != null) {
+                return new ResponseEntity<>(cart, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            logger.error("Error reading cart with id " + id, e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    @PutMapping("/update/{cartID}")
-    public ResponseEntity<Cart> updateCart(@PathVariable Long cartID, @RequestBody Cart cart) {
-        Cart updatedCart = cartService.update(cartID, cart);  // Add logic in service to handle cartID
-        return updatedCart != null ? ResponseEntity.ok(updatedCart) : ResponseEntity.notFound().build();
+    // Update an existing cart
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Cart> updateCart(@PathVariable Long id, @RequestBody Cart cart) {
+        try {
+            Cart existingCart = cartService.read(id);
+            if (existingCart == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            Cart updatedCart = cartService.update(cart);
+            return updatedCart != null ? ResponseEntity.ok(updatedCart) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            logger.error("Error updating cart with id " + id, e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-
+    // Delete a cart by ID
     @DeleteMapping("/delete/{id}")
-    public void delete(@PathVariable long id) {
-        cartService.delete(id);
+    public ResponseEntity<Void> deleteCart(@PathVariable Long id) {
+        try {
+            Cart existingCart = cartService.read(id);
+            if (existingCart == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            cartService.deleteByCartID(id);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            logger.error("Error deleting cart with id " + id, e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-
+    // Get all carts
     @GetMapping("/all")
     public ResponseEntity<List<Cart>> getAllCarts() {
-        List<Cart> carts = cartService.findAll();
-        return ResponseEntity.ok(carts);
+        try {
+            List<Cart> cartList = cartService.findAll();
+            if (cartList.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return ResponseEntity.ok(cartList);
+        } catch (Exception e) {
+            logger.error("Error fetching all carts", e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
+    // Get carts by userID
+    @GetMapping("/user/{userID}")
+    public ResponseEntity<List<Cart>> getCartsByUserID(@PathVariable Long userID) {
+        try {
+            List<Cart> cartList = cartService.findByUserID(userID);
+            if (cartList.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return ResponseEntity.ok(cartList);
+        } catch (Exception e) {
+            logger.error("Error fetching carts for userID " + userID, e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
+    // Get carts by status
+    @GetMapping("/status/{status}")
+    public ResponseEntity<List<Cart>> getCartsByStatus(@PathVariable String status) {
+        try {
+            List<Cart> cartList = cartService.findByStatus(status);
+            if (cartList.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return ResponseEntity.ok(cartList);
+        } catch (Exception e) {
+            logger.error("Error fetching carts with status " + status, e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // Get carts by date range
+    @GetMapping("/date-range")
+    public ResponseEntity<List<Cart>> getCartsByDateRange(@RequestParam LocalDate startDate,
+                                                          @RequestParam LocalDate endDate) {
+        try {
+            if (startDate == null || endDate == null || startDate.isAfter(endDate)) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            List<Cart> cartList = cartService.findByCartDateBetween(startDate, endDate);
+            if (cartList.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return ResponseEntity.ok(cartList);
+        } catch (Exception e) {
+            logger.error("Error fetching carts between dates " + startDate + " and " + endDate, e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // Get carts by addressID
+    @GetMapping("/address/{addressID}")
+    public ResponseEntity<List<Cart>> getCartsByAddressID(@PathVariable Long addressID) {
+        try {
+            List<Cart> carts = cartService.findByAddressID(addressID);
+            if (carts.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(carts, HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error("Error fetching carts with addressID " + addressID, e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // Get carts with a total price greater than a specified value
+    @GetMapping("/total-price/{totalPrice}")
+    public ResponseEntity<List<Cart>> getCartsByTotalPriceGreaterThan(@PathVariable double totalPrice) {
+        logger.info("Fetching carts with totalPrice greater than: " + totalPrice);
+        try {
+            if (totalPrice < 0) {
+                logger.warn("Invalid totalPrice value: " + totalPrice);
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+
+            List<Cart> cartList = cartService.findByTotalPriceGreaterThan(totalPrice);
+            logger.info("Fetched " + cartList.size() + " carts.");
+
+            if (cartList.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+
+            return ResponseEntity.ok(cartList);
+        } catch (Exception e) {
+            logger.error("Error fetching carts with totalPrice greater than " + totalPrice, e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Endpoint to add an item to an existing cart and update the total price.
+     *
+     * @param cartId   The ID of the cart to which the item is to be added.
+     * @param cartItem The item to be added to the cart.
+     * @return The updated cart with the new item and recalculated total price.
+     */
+    @PostMapping("/{cartId}/add-item")
+    public ResponseEntity<Cart> addCartItem(@PathVariable Long cartId, @RequestBody CartItem cartItem) {
+        Cart updatedCart = cartService.addCartItem(cartId, cartItem);
+
+        if (updatedCart != null) {
+            return new ResponseEntity<>(updatedCart, HttpStatus.OK); // 200 OK
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // 404 Not Found
+        }
+    }
+
+    /**
+     * Endpoint to remove an item from an existing cart and update the total price.
+     *
+     * @param cartId   The ID of the cart from which the item is to be removed.
+     * @param cartItem The item to be removed from the cart.
+     * @return The updated cart with the item removed and recalculated total price.
+     */
+    @PostMapping("/{cartId}/remove-item")
+    public ResponseEntity<Cart> removeCartItem(@PathVariable Long cartId, @RequestBody CartItem cartItem) {
+        Cart updatedCart = cartService.removeCartItem(cartId, cartItem);
+
+        if (updatedCart != null) {
+            return new ResponseEntity<>(updatedCart, HttpStatus.OK); // 200 OK
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // 404 Not Found
+        }
+    }
 }
+
 
