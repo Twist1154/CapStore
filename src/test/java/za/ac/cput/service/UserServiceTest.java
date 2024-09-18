@@ -38,9 +38,9 @@ class UserServiceTest {
         user = new User.Builder()
                 .setFirstName("Rethabile")
                 .setLastName("Ntsekhe")
-                .setEmail("rethabile@gmail.com")
+                .setEmail("rethabile1154n@gmail.com")
                 .setPassword("password")
-                .setRole(Set.of("USER"))
+                .setRole(Set.of("USER","ADMIN"))
                 .setBirthDate(LocalDate.of(1990, 1, 1))
                 .setPhoneNumber(1234567890)
                 .build();
@@ -59,10 +59,10 @@ class UserServiceTest {
                 "avatar.jpg",
                 "Rethabile",
                 "Ntsekhe",
-                "rethabile@gmail.com",
+                "rethabile1154n@gmail.com",
                 LocalDate.parse("1990-01-01"),
-                Set.of("USER"),
-                1234567890,  // **Change:** Ensure consistent phone number format
+                Set.of("USER","ADMIN"),
+                1234567890,
                 "password123");
 
         User createdUser = userservice.create(user);
@@ -99,7 +99,7 @@ class UserServiceTest {
         System.out.println(updatedUser);
 
         assertNotNull(updatedUser);
-        assertEquals("Southampton", updatedUser.getLastName());
+        assertEquals("Zulu", updatedUser.getLastName());
     }
 
     @Test
@@ -124,7 +124,7 @@ class UserServiceTest {
     @Order(7)
     void testFindByEmail() {
         userservice.create(user);
-        Optional<User> foundUser = userservice.findByEmail("rethabile@gmail.com");
+        Optional<User> foundUser = userservice.findByEmail("rethabile1154n@@gmail.com");
         System.out.println("Found By Email: " + '\n' + foundUser);
 
         assertTrue(foundUser.isPresent());
