@@ -57,23 +57,22 @@ public class ProductReviewService implements IProductReviewService{
     }
 
     @Override
-    public List<ProductReview> findByProductReviewId(Long productReviewId) {
-        return this.productReviewRepository.findByProductReviewId(productReviewId);
+    public List<ProductReview> findByProductReviewId(Long productReviewID) {
+        return this.productReviewRepository.findByProductReviewId(productReviewID);
     }
 
     @Override
-    public List<ProductReview> findByProductName(String productName) {
-        return this.productReviewRepository.findByProductName(productName);
+    public List<ProductReview> findByProduct_ProductId(Long productId) {
+        return this.productReviewRepository.findByProduct_ProductId(productId);
     }
 
     @Override
-    public List<ProductReview> findByCustomerName(String customerName) {
-        return this.productReviewRepository.findByCustomerName(customerName);
+    public List<ProductReview> findByUser_UserID(Long userID) {
+        return this.productReviewRepository.findByUser_UserID(userID);
     }
 
     @Override
     public List<ProductReview> findByRating(int rating) {
         return this.productReviewRepository.findByRating(rating);
     }
-
 }
