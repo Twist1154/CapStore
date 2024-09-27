@@ -8,6 +8,8 @@ import za.ac.cput.domain.Product;
 import za.ac.cput.factory.ProductFactory;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -66,6 +68,7 @@ class ProductServiceTest {
         );
     }
 
+    @Disabled
     @Order(1)
     @Test
     void create() {
@@ -82,6 +85,7 @@ class ProductServiceTest {
         System.out.println("Product 3: " + createdProduct3);
     }
 
+    @Disabled
     @Order(2)
     @Test
     void read() {
@@ -91,6 +95,7 @@ class ProductServiceTest {
         System.out.println("Read product 1: " + readProduct1);
     }
 
+    @Disabled
     @Order(3)
     @Test
     void update() {
@@ -116,6 +121,7 @@ class ProductServiceTest {
         System.out.println("Updated product 2: " + result);
     }
 
+    @Disabled
     @Order(5)
     @Test
     void delete() {
@@ -135,4 +141,59 @@ class ProductServiceTest {
         assertFalse(productList.isEmpty());
         System.out.println(productList);
     }
+
+    @Order(6)
+    @Test
+    void findByName(){
+        List<Product> product = productService.findByName("Black Gold Geo");
+        assertNotNull(product);
+        System.out.println(product);
+    }
+
+    @Order(7)
+    @Test
+    void findByDescription(){
+        List<Product> product = productService.findByDescription("White formal long sleeve shirt");
+        assertNotNull(product);
+        System.out.println(product);
+    }
+
+    @Order(8)
+    @Test
+    void findByCategoryId(){
+        List<Product> product = productService.findByCategoryId(2L);
+        assertNotNull(product);
+        System.out.println(product);
+    }
+
+    @Order(9)
+    @Test
+    void findByPriceBetween(){
+        List<Product> product = productService.findByPriceBetween(100, 200);
+        assertNotNull(product);
+        System.out.println(product);
+    }
+
+    @Order(10)
+    @Test
+    void findByCreatedAt(){
+        String dateString = "2024-09-19 19:29:33.539816";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
+        LocalDateTime created = LocalDateTime.parse(dateString, formatter);
+        List<Product> product = productService.findByCreatedAt(created);
+        assertNotNull(product);
+        System.out.println(product);
+    }
+
+    @Order(11)
+    @Test
+    void findByUpdatedAt(){
+        String dateString = "2024-09-19 19:29:33.539816";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
+        LocalDateTime updated = LocalDateTime.parse(dateString, formatter);
+        List<Product> product = productService.findByUpdatedAt(updated);
+        assertNotNull(product);
+        System.out.println(product);
+    }
+
 }

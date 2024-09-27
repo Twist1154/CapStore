@@ -4,32 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="de9b4aee-e7ac-4adf-b24b-dc63a5604900" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="67dd0542-1913-420d-a2c4-0d74954709e8" name="Changes" comment="Discount and images added">
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/controller/CartController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/controller/CartController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/controller/CartItemController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/controller/CartItemController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/domain/Cart.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/domain/Cart.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/domain/CartItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/domain/CartItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/factory/CartFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/factory/CartFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/factory/CartItemFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/factory/CartItemFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/repository/ICartItemRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/repository/ICartItemRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/repository/ICartRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/repository/ICartRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/repository/UserRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/CartItemService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/CartItemService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/CartService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/CartService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/ICartItemService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/ICartItemService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/ICartService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/ICartService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/IUserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/IUserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/controller/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/controller/ProductController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/repository/IProductRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/repository/IProductRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/IProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/IProductService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/ProductService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/za/ac/cput/controller/CartControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/za/ac/cput/controller/CartControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/za/ac/cput/controller/CartItemControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/za/ac/cput/controller/CartItemControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/za/ac/cput/factory/CartFactoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/za/ac/cput/factory/CartFactoryTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/za/ac/cput/factory/CartItemFactoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/za/ac/cput/factory/CartItemFactoryTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/za/ac/cput/service/CartItemServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/za/ac/cput/service/CartItemServiceTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/za/ac/cput/service/CartServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/za/ac/cput/service/CartServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/za/ac/cput/controller/OrderControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/za/ac/cput/controller/OrderControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/za/ac/cput/controller/ProductControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/za/ac/cput/controller/ProductControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/za/ac/cput/service/ProductServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/za/ac/cput/service/ProductServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,6 +41,9 @@
       </GitPushTagMode>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
@@ -82,12 +72,16 @@
     &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;Spring Boot.OnlineClothingStoreApp.executor&quot;: &quot;Run&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;database.data.extractors.current.export.id&quot;: &quot;Comma-separated (CSV)_id&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Admin/My Documents&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;spring.configuration.checksum&quot;: &quot;0a4dc03d0231cf363f18753e831d2568&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -111,22 +105,7 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.OnlineClothingStoreApp">
-    <configuration name="CartControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="T-shirts" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="za.ac.cput.controller.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="za.ac.cput.controller" />
-      <option name="MAIN_CLASS_NAME" value="za.ac.cput.controller.CartControllerTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="JUnit.ProductServiceTest">
     <configuration name="CartItemControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="T-shirts" />
       <extension name="coverage">
@@ -142,7 +121,22 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="CartItemServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ProductControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="T-shirts" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="za.ac.cput.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="za.ac.cput.controller" />
+      <option name="MAIN_CLASS_NAME" value="za.ac.cput.controller.ProductControllerTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ProductServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="T-shirts" />
       <extension name="coverage">
         <pattern>
@@ -151,7 +145,7 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="za.ac.cput.service" />
-      <option name="MAIN_CLASS_NAME" value="za.ac.cput.service.CartItemServiceTest" />
+      <option name="MAIN_CLASS_NAME" value="za.ac.cput.service.ProductServiceTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -186,19 +180,19 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="JUnit.ProductControllerTest" />
+      <item itemvalue="JUnit.ProductServiceTest" />
       <item itemvalue="JUnit.CartItemControllerTest" />
-      <item itemvalue="JUnit.CartItemServiceTest" />
       <item itemvalue="JUnit.UserServiceTest" />
-      <item itemvalue="JUnit.CartControllerTest" />
       <item itemvalue="Spring Boot.OnlineClothingStoreApp" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.ProductServiceTest" />
+        <item itemvalue="JUnit.ProductControllerTest" />
         <item itemvalue="Spring Boot.OnlineClothingStoreApp" />
         <item itemvalue="JUnit.UserServiceTest" />
         <item itemvalue="JUnit.CartItemControllerTest" />
-        <item itemvalue="JUnit.CartControllerTest" />
-        <item itemvalue="JUnit.CartItemServiceTest" />
       </list>
     </recent_temporary>
   </component>
@@ -212,7 +206,7 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="de9b4aee-e7ac-4adf-b24b-dc63a5604900" name="Changes" comment="" />
+      <changelist id="67dd0542-1913-420d-a2c4-0d74954709e8" name="Changes" comment="Discount and images added" />
       <created>1725778494940</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -225,6 +219,12 @@
       <workItem from="1726408716394" duration="7639000" />
       <workItem from="1726434844647" duration="21190000" />
       <workItem from="1726490800080" duration="1878000" />
+      <workItem from="1726658120385" duration="4692000" />
+      <workItem from="1726813404208" duration="788000" />
+      <workItem from="1726845629791" duration="951000" />
+      <workItem from="1727371452198" duration="2334000" />
+      <workItem from="1727374606985" duration="2881000" />
+      <workItem from="1727454732543" duration="7085000" />
     </task>
     <task id="LOCAL-00001" summary="controller">
       <option name="closed" value="true" />
