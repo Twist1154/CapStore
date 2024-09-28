@@ -9,6 +9,7 @@ import za.ac.cput.domain.Product;
 import za.ac.cput.service.IProductService;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /*
@@ -66,6 +67,46 @@ public class ProductController {
     @GetMapping("/getAll")
     public ResponseEntity<List<Product>> getAllProducts() {
         List<Product> products = productService.findAll();
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+
+    @GetMapping("/name/{name}")
+    public ResponseEntity<List<Product>> getProductByName(@PathVariable String name) {
+        List<Product> products = productService.findByName(name);
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+
+    @GetMapping("/description/{description}")
+    public ResponseEntity<List<Product>> getProductByDescription(@PathVariable String description) {
+        List<Product> products = productService.findByDescription(description);
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+
+    @GetMapping("/category/{categoryId}")
+    public ResponseEntity<List<Product>> getProductByCategoryId(@PathVariable long categoryId) {
+        List<Product> products = productService.findByCategoryId(categoryId);
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+
+    @GetMapping("/price")
+    public ResponseEntity<List<Product>> getProductByPriceRange(
+            @RequestParam double minPrice,
+            @RequestParam double maxPrice
+    ) {
+        List<Product> products = productService.findByPriceBetween(minPrice, maxPrice);
+        System.out.println(products);
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+
+    @GetMapping("/created-after")
+    public ResponseEntity<List<Product>> getProductCreatedAfter(@RequestParam LocalDateTime createdAt) {
+        List<Product> products = productService.findByCreatedAt(createdAt);
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+
+    @GetMapping("/updated-before")
+    public ResponseEntity<List<Product>> getProductUpdatedBefore(@RequestParam LocalDateTime updatedAt) {
+        List<Product> products = productService.findByUpdatedAt(updatedAt);
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 }

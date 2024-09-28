@@ -7,6 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import za.ac.cput.domain.Product;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 /**
  * IProductRepository.java
  *
@@ -19,4 +22,16 @@ import za.ac.cput.domain.Product;
 public interface IProductRepository extends JpaRepository<Product, Long> {
     @Override
     void deleteById(Long id);
+
+    List<Product> findByName(String name);
+
+    List<Product> findByDescription(String description);
+
+    List<Product> findByCategoryId(Long categoryId);
+
+    List<Product> findByPriceBetween(double minPrice, double maxPrice);
+
+    List<Product> findByCreatedAt(LocalDateTime createdAt);
+
+    List<Product> findByUpdatedAt(LocalDateTime updatedAt);
 }

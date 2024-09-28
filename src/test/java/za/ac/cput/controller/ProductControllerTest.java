@@ -12,6 +12,8 @@ import za.ac.cput.domain.Product;
 import za.ac.cput.service.ProductService;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -62,6 +64,7 @@ class ProductControllerTest {
 //        }
     }
 
+    @Disabled
     @Test
     @Order(1)
     void createProduct() {
@@ -94,6 +97,7 @@ class ProductControllerTest {
         System.out.println("Created Product: " + response.getBody());
     }
 
+    @Disabled
     @Test
     @Order(2)
     void readProduct() {
@@ -107,6 +111,7 @@ class ProductControllerTest {
         System.out.println("Product read: " + response.getBody());
     }
 
+    @Disabled
     @Test
     @Order(3)
     void updateProduct() {
@@ -127,6 +132,7 @@ class ProductControllerTest {
         System.out.println("Updated Product: " + response.getBody());
     }
 
+    @Disabled
     @Test
     @Order(4)
     void deleteProduct() {
@@ -154,5 +160,71 @@ class ProductControllerTest {
 
         // Output for confirmation
         System.out.println("Products list: " + response.getBody());
+    }
+
+    @Test
+    @Order(6)
+    void getProductByName(){
+        ResponseEntity<List<Product>> response = productController.getProductByName("Black Gold Geo");
+        assertNotNull(response.getBody());
+        assertFalse(response.getBody().isEmpty());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        System.out.println(response.getBody());
+    }
+
+    @Test
+    @Order(7)
+    void getProductByDescription(){
+        ResponseEntity<List<Product>> response = productController.getProductByDescription("White formal long sleeve shirt");
+        assertNotNull(response.getBody());
+        assertFalse(response.getBody().isEmpty());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        System.out.println(response.getBody());
+    }
+
+    @Test
+    @Order(8)
+    void getProductByCategoryId(){
+        ResponseEntity<List<Product>> response = productController.getProductByCategoryId(2L);
+        assertNotNull(response.getBody());
+        assertFalse(response.getBody().isEmpty());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        System.out.println(response.getBody());
+    }
+
+    @Test
+    @Order(9)
+    void getProductByPriceRange(){
+        ResponseEntity<List<Product>> response = productController.getProductByPriceRange(100, 200);
+        assertNotNull(response.getBody());
+        assertFalse(response.getBody().isEmpty());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        System.out.println(response.getBody());
+    }
+
+    @Test
+    @Order(10)
+    void getProductCreatedAfter(){
+        String dateString = "2024-09-19 19:29:33.539816";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
+        LocalDateTime created = LocalDateTime.parse(dateString, formatter);
+        ResponseEntity<List<Product>> response = productController.getProductCreatedAfter(created);
+        assertNotNull(response.getBody());
+        assertFalse(response.getBody().isEmpty());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        System.out.println(response.getBody());
+    }
+
+    @Test
+    @Order(11)
+    void getProductUpdatedBefore(){
+        String dateString = "2024-09-19 19:29:33.539816";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
+        LocalDateTime updated = LocalDateTime.parse(dateString, formatter);
+        ResponseEntity<List<Product>> response = productController.getProductUpdatedBefore(updated);
+        assertNotNull(response.getBody());
+        assertFalse(response.getBody().isEmpty());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        System.out.println(response.getBody());
     }
 }

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import za.ac.cput.domain.Product;
 import za.ac.cput.repository.IProductRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -57,5 +58,35 @@ public class ProductService implements IProductService {
     @Override
     public List<Product> findAll() {
         return productRepository.findAll();
+    }
+
+    @Override
+    public List<Product> findByName(String name) {
+        return productRepository.findByName(name);
+    }
+
+    @Override
+    public List<Product> findByDescription(String description) {
+        return productRepository.findByDescription(description);
+    }
+
+    @Override
+    public List<Product> findByCategoryId(Long categoryId) {
+        return productRepository.findByCategoryId(categoryId);
+    }
+
+    @Override
+    public List<Product> findByPriceBetween(double minPrice, double maxPrice) {
+        return productRepository.findByPriceBetween(minPrice, maxPrice);
+    }
+
+    @Override
+    public List<Product> findByCreatedAt(LocalDateTime createdAt) {
+        return productRepository.findByCreatedAt(createdAt);
+    }
+
+    @Override
+    public List<Product> findByUpdatedAt(LocalDateTime updatedAt) {
+        return productRepository.findByUpdatedAt(updatedAt);
     }
 }
