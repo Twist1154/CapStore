@@ -14,9 +14,9 @@ import java.util.List;
 public interface IProductReviewService extends IService<ProductReview, Long> {
 
     List<ProductReview> findByProductReviewId (Long productReviewID);
-    List<ProductReview> findByProductName (String productName);
-    List<ProductReview> findByCustomerName (String customerName);
-    List<ProductReview> findByRating (int rating);
+    List<ProductReview> findByProduct_ProductId (Long productId);
+    List<ProductReview> findByUser_UserID (Long userID);
 
+    List<ProductReview> findByRating (int rating);
     boolean delete(Long productReviewID);
 }

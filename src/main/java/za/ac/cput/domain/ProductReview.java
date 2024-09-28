@@ -7,24 +7,26 @@
 
 package za.ac.cput.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 @Getter
-@Entity
+@Entity(name = "product_review")
 public class ProductReview implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productReviewId;
-    private  String productName;
-    private String customerName;
+
+    @ManyToOne
+    private Product product;
+
+    @ManyToOne
+    private User user;
+
     private String review;
     private int rating;
 
@@ -33,8 +35,8 @@ public class ProductReview implements Serializable {
 
     public ProductReview(Builder builder) {
         this.productReviewId = builder.productReviewId;
-        this.productName = builder.productName;
-        this.customerName = builder.customerName;
+        this.product = builder.product;
+        this.user = builder.user;
         this.review = builder.review;
         this.rating = builder.rating;
     }
@@ -44,20 +46,20 @@ public class ProductReview implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ProductReview that = (ProductReview) o;
-        return rating == that.rating && Objects.equals(productReviewId, that.productReviewId) && Objects.equals(productName, that.productName) && Objects.equals(customerName, that.customerName) && Objects.equals(review, that.review);
+        return rating == that.rating && Objects.equals(productReviewId, that.productReviewId) && Objects.equals(product, that.product) && Objects.equals(user, that.user) && Objects.equals(review, that.review);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(productReviewId, productName, customerName, review, rating);
+        return Objects.hash(productReviewId, product, user, review, rating);
     }
 
     @Override
     public String toString() {
         return "ProductReview{" +
                 "productReviewId=" + productReviewId +
-                ", productName='" + productName + '\'' +
-                ", customerName='" + customerName + '\'' +
+                ", product=" + product +
+                ", user=" + user +
                 ", review='" + review + '\'' +
                 ", rating=" + rating +
                 '}';
@@ -65,8 +67,8 @@ public class ProductReview implements Serializable {
 
     public  static class  Builder{
         private Long productReviewId;
-        private String productName;
-        private String customerName;
+        private Product product;
+        private User user;
         private String review;
         private int rating;
 
@@ -75,13 +77,13 @@ public class ProductReview implements Serializable {
             return this;
         }
 
-        public Builder setProductName(String productName) {
-            this.productName = productName;
+        public Builder setProduct(Product product) {
+            this.product = product;
             return this;
         }
 
-        public Builder setCustomerName(String customerName) {
-            this.customerName = customerName;
+        public Builder setUser(User user) {
+            this.user = user;
             return this;
         }
 
@@ -97,8 +99,8 @@ public class ProductReview implements Serializable {
 
         public  Builder copy(ProductReview productReview){
             this.productReviewId = productReview.productReviewId;
-            this.productName = productReview.productName;
-            this.customerName = productReview.customerName;
+            this.product = productReview.product;
+            this.user = productReview.user;
             this.review = productReview.review;
             this.rating = productReview.rating;
             return this;

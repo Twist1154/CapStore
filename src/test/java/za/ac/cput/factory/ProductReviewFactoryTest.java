@@ -11,7 +11,9 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import za.ac.cput.domain.Product;
 import za.ac.cput.domain.ProductReview;
+import za.ac.cput.domain.User;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,24 +21,33 @@ import static org.junit.jupiter.api.Assertions.*;
 class ProductReviewFactoryTest {
 
     Long productReviewID = 1L;
-    String productName = "White Lousy T-shirt";
-    String customerName = "Siya Mthandeni";
     String review = "Great product!";
+
+    Product product = new Product.Builder()
+            .setProductId(1L)
+            .setName("Test Product")
+            .build();
+
+    User user = new User.Builder()
+            .setId(1L)
+            .setFirstName("Mthandeni")
+            .setLastName("Mbobo")
+            .build();
 
     @Test
     @Order(1)
  // This test will print productReview, all parameters are not null
     void buildProductReview() {
-        ProductReview productReview = ProductReviewFactory.buildProductReview(productReviewID, productName, customerName, review, 5);
+        ProductReview productReview = ProductReviewFactory.buildProductReview(productReviewID, product, user, review, 5);
         assertNotNull(productReview);
         System.out.println(productReview);
     }
 
     @Test
     @Order(2)
-// This test will print null, as productName is empty
+// This test will print null, as product is null
     void buildProductReviewWithNullProductName() {
-        ProductReview productReview = ProductReviewFactory.buildProductReview(productReviewID, "", customerName, review, 5);
+        ProductReview productReview = ProductReviewFactory.buildProductReview(productReviewID, null, user, review, 5);
         assertNull(productReview);
         System.out.println(productReview);
     }
@@ -45,7 +56,7 @@ class ProductReviewFactoryTest {
     @Order(3)
 // This test will print null, as rating is out of range
     void buildProductReviewWithInvalidRating() {
-        ProductReview productReview = ProductReviewFactory.buildProductReview(productReviewID, productName, customerName, review, 6);
+        ProductReview productReview = ProductReviewFactory.buildProductReview(productReviewID, product, user, review, 6);
         assertNull(productReview);
         System.out.println(productReview);
     }

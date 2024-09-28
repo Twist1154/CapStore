@@ -77,15 +77,16 @@ public class ProductReviewController {
         return this.productReviewService.findByProductReviewId(productReviewId);
     }
 
-    //customerName
-    @GetMapping("/getByCustomerName/{customerName}")
-    public List<ProductReview> findByCustomerName(@PathVariable String customerName) {
-        return this.productReviewService.findByCustomerName(customerName);
+    //productId
+    @GetMapping("/getByProductId/{productId}")
+    public List<ProductReview> findByProduct_ProductId(@PathVariable Long productId) {
+        return this.productReviewService.findByProduct_ProductId(productId);
     }
 
-    //productName
-    @GetMapping("/getByProductName/{productName}")
-    public List<ProductReview> findByProductName(@PathVariable String productName) {
-        return this.productReviewService.findByProductName(productName);
+    //userId
+    @GetMapping("/getByUserId/{userId}")
+    public List<ProductReview> findByUser_UserID(@PathVariable Long userId) {
+        return this.productReviewService.findByUser_UserID(userId);
     }
+
 }

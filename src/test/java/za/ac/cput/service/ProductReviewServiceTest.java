@@ -10,7 +10,9 @@ package za.ac.cput.service;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import za.ac.cput.domain.Product;
 import za.ac.cput.domain.ProductReview;
+import za.ac.cput.domain.User;
 import za.ac.cput.factory.ProductReviewFactory;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,13 +23,32 @@ class ProductReviewServiceTest {
 
     @Autowired
     private ProductReviewService productReviewService;
-
     private static ProductReview productReview;
+
+    Product product = new Product.Builder()
+            .setProductId(null)
+            .setName("Test Product")
+            .build();
+
+    User user = new User.Builder()
+            .setId(null)
+            .setFirstName("Mthandeni")
+            .setLastName("Mbobo")
+            .build();
+
+    @Autowired
+    private ProductService productService;
+    @Autowired
+    private UserService userService;
 
     @Test
     @Order(1)
     void setup() {
-        productReview = ProductReviewFactory.buildProductReview(null, "Box Fit Unified T-shirt", "Siya Mthandeni", "Not happy with this!", 3); //id auto generated
+        // Save the product and user entities first
+        product = productService.create(product);
+        user = userService.create(user);
+
+        productReview = ProductReviewFactory.buildProductReview(null, product, user, "Not happy with this!", 3); //id auto generated
         assertNotNull(productReview);
         System.out.println("ProductReview: " + productReview);
     }
@@ -75,25 +96,27 @@ class ProductReviewServiceTest {
     @Test
     @Order(7)
     void findByProductReviewId() {
-        System.out.println("ProductReview by Id: " + productReviewService.findByProductReviewId(productReview.getProductReviewId()));
+        //System.out.println("ProductReview by Id: " + productReviewService.findByProductReviewId(productReview.getProductReviewId()));
+        System.out.println("This is Product Review " +1L+ ": " + productReviewService.findByProductReviewId(1L));
     }
 
     @Test
     @Order(8)
-    void findByProductName() {
-        //same as findByCustomerName
-
+    void findByRating() {
+        //System.out.println("ProductReview by Rating: " + productReviewService.findByRating(productReview.getRating()));
+        System.out.println("These are the Product Reviews with a rating of " +3+ ": " + productReviewService.findByRating(3));
     }
 
     @Test
     @Order(9)
-    void findByCustomerName() {
-       System.out.println("ProductReview by Customer Name: " + "\033[1m" + productReview.getCustomerName() + "\033[0m" + " - " + productReviewService.findByCustomerName(productReview.getCustomerName()));
+    void findByProduct_ProductId() {
+        System.out.println("ProductReview by Product Id " +13+ ": " + productReviewService.findByProduct_ProductId(13L));
     }
 
     @Test
     @Order(10)
-    void findByRating() {
-        System.out.println("ProductReview by Rating: " + productReviewService.findByRating(productReview.getRating()));
+    void findByUser_UserID() {
+        System.out.println("ProductReview by User Id "  +2+ ": " + productReviewService.findByUser_UserID(2L));
     }
+
 }
