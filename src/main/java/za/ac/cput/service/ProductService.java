@@ -89,4 +89,9 @@ public class ProductService implements IProductService {
     public List<Product> findByUpdatedAt(LocalDateTime updatedAt) {
         return productRepository.findByUpdatedAt(updatedAt);
     }
+
+    @Override
+    public List<Product> searchProducts(String keyWord) {
+        return productRepository.searchProducts(keyWord);
+    }
 }
