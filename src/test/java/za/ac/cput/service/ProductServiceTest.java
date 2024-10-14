@@ -145,7 +145,7 @@ class ProductServiceTest {
     @Order(6)
     @Test
     void findByName(){
-        List<Product> product = productService.findByName("Black Gold Geo");
+        List<Product> product = productService.findByName("Formal");
         assertNotNull(product);
         System.out.println(product);
     }
@@ -153,7 +153,7 @@ class ProductServiceTest {
     @Order(7)
     @Test
     void findByDescription(){
-        List<Product> product = productService.findByDescription("White formal long sleeve shirt");
+        List<Product> product = productService.findByDescription("Small fit");
         assertNotNull(product);
         System.out.println(product);
     }
@@ -196,4 +196,11 @@ class ProductServiceTest {
         System.out.println(product);
     }
 
+    @Order(12)
+    @Test
+    void searchProducts(){
+        List<Product> products = productService.searchProducts("White");
+        assertNotNull(products);
+        System.out.println(products);
+    }
 }

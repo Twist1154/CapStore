@@ -227,4 +227,14 @@ class ProductControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         System.out.println(response.getBody());
     }
+
+    @Order(12)
+    @Test
+    void searchProducts(){
+        ResponseEntity<List<Product>> response = productController.searchProducts("White");
+        assertNotNull(response.getBody());
+        assertFalse(response.getBody().isEmpty());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        System.out.println(response.getBody());
+    }
 }

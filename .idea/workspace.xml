@@ -4,11 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="67dd0542-1913-420d-a2c4-0d74954709e8" name="Changes" comment="Discount and images added">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+    <list default="true" id="67dd0542-1913-420d-a2c4-0d74954709e8" name="Changes" comment="Added extra get methods to product related classes.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/controller/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/controller/ProductController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/repository/IProductRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/repository/IProductRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/IProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/IProductService.java" afterDir="false" />
@@ -105,21 +102,12 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.ProductServiceTest">
-    <configuration name="CartItemControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="T-shirts" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="za.ac.cput.controller.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="za.ac.cput.controller" />
-      <option name="MAIN_CLASS_NAME" value="za.ac.cput.controller.CartItemControllerTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
+  <component name="RunManager" selected="Spring Boot.OnlineClothingStoreApp">
+    <configuration name="generated-requests | #5" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="5" requestIdentifier="#5" runType="Run single request">
+      <method v="2" />
+    </configuration>
+    <configuration name="generated-requests | #6" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="6" requestIdentifier="#6" runType="Run single request">
+      <method v="2" />
     </configuration>
     <configuration name="ProductControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="T-shirts" />
@@ -151,21 +139,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="UserServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="T-shirts" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="za.ac.cput.service.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="za.ac.cput.service" />
-      <option name="MAIN_CLASS_NAME" value="za.ac.cput.service.UserServiceTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="OnlineClothingStoreApp" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
       <module name="T-shirts" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="za.ac.cput.OnlineClothingStoreApp" />
@@ -180,19 +153,19 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="JUnit.ProductControllerTest" />
+      <item itemvalue="HTTP Request.generated-requests | #5" />
+      <item itemvalue="HTTP Request.generated-requests | #6" />
       <item itemvalue="JUnit.ProductServiceTest" />
-      <item itemvalue="JUnit.CartItemControllerTest" />
-      <item itemvalue="JUnit.UserServiceTest" />
+      <item itemvalue="JUnit.ProductControllerTest" />
       <item itemvalue="Spring Boot.OnlineClothingStoreApp" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.ProductServiceTest" />
-        <item itemvalue="JUnit.ProductControllerTest" />
         <item itemvalue="Spring Boot.OnlineClothingStoreApp" />
-        <item itemvalue="JUnit.UserServiceTest" />
-        <item itemvalue="JUnit.CartItemControllerTest" />
+        <item itemvalue="JUnit.ProductControllerTest" />
+        <item itemvalue="JUnit.ProductServiceTest" />
+        <item itemvalue="HTTP Request.generated-requests | #6" />
+        <item itemvalue="HTTP Request.generated-requests | #5" />
       </list>
     </recent_temporary>
   </component>
@@ -224,7 +197,12 @@
       <workItem from="1726845629791" duration="951000" />
       <workItem from="1727371452198" duration="2334000" />
       <workItem from="1727374606985" duration="2881000" />
-      <workItem from="1727454732543" duration="7085000" />
+      <workItem from="1727454732543" duration="8136000" />
+      <workItem from="1727532950194" duration="9117000" />
+      <workItem from="1727799940252" duration="1550000" />
+      <workItem from="1728118565832" duration="4270000" />
+      <workItem from="1728304413073" duration="2683000" />
+      <workItem from="1728490626532" duration="1376000" />
     </task>
     <task id="LOCAL-00001" summary="controller">
       <option name="closed" value="true" />
@@ -306,7 +284,14 @@
       <option name="project" value="LOCAL" />
       <updated>1726170906336</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Added extra get methods to product related classes.">
+      <created>1727467730815</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1727467730815</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -326,6 +311,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="controller" />
     <MESSAGE value="controller classes done" />
-    <option name="LAST_COMMIT_MESSAGE" value="controller classes done" />
+    <MESSAGE value="Added extra get methods to product related classes." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added extra get methods to product related classes." />
   </component>
 </project>

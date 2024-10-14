@@ -109,4 +109,11 @@ public class ProductController {
         List<Product> products = productService.findByUpdatedAt(updatedAt);
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Product>> searchProducts(@RequestParam String keyWord){
+        System.out.println("Searching for: " + keyWord);
+        List<Product> products = productService.searchProducts(keyWord);
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
 }
