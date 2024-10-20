@@ -1,0 +1,8 @@
+{
+  "id": 2,
+  "userID": 1,
+  "addressID": 1,
+  "totalPrice": 1000.0,
+  "status": "Pending",
+  "orderDate": "2024-09-15"
+}

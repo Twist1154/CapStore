@@ -1,0 +1,13 @@
+{
+  "id": 10,
+  "userId": 10,
+  "title": "Vacation Home",
+  "addressLine1": "9 Sunset Blvd",
+  "addressLine2": "Apt 10C",
+  "city": "Durban",
+  "country": "South Africa",
+  "postalCode": "4052",
+  "phoneNumber": "838765432",
+  "createdAt": "2024-01-19",
+  "updatedAt": "2024-01-20"
+}

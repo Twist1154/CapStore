@@ -1,0 +1,16 @@
+{
+  "productId": 1,
+  "name": "Formal button neck",
+  "description": "Black Formal button neck, long sleeve shirt.",
+  "price": 300.0,
+  "stock": 30,
+  "categoryId": 1,
+  "createdAt": "2024-09-15T19:57:32.883808",
+  "updatedAt": "2024-09-15T19:57:32.892001",
+  "images": {
+    "imageUrl1": "https://capstone-bucket-cput.s3.eu-north-1.amazonaws.com/a1.mweb",
+    "imageUrl2": "https://capstone-bucket-cput.s3.eu-north-1.amazonaws.com/a2.mweb",
+    "imageUrl3": "https://capstone-bucket-cput.s3.eu-north-1.amazonaws.com/a3.mweb",
+    "imageUrl4": "https://capstone-bucket-cput.s3.eu-north-1.amazonaws.com/a4.mweb"
+  }
+}

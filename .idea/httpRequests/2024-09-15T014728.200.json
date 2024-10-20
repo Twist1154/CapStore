@@ -1,0 +1,194 @@
+[
+  {
+    "productId": 1,
+    "name": "Golfer t-shirt",
+    "description": "Black medium shirt.",
+    "price": 200.0,
+    "stock": 10,
+    "categoryId": 1,
+    "createdAt": "2024-09-15T00:00:00",
+    "updatedAt": "2024-09-15T00:38:14.680808",
+    "images": {
+      "imageUrl1": "updated/path/Controller/image1.jpg",
+      "imageUrl2": "path/Controller/image2.jpg",
+      "imageUrl3": "path/Controller/image3.jpg",
+      "imageUrl4": "path/Controller/image4.jpg"
+    }
+  },
+  {
+    "productId": 2,
+    "name": "V-neck t-shirt",
+    "description": "Blue V-neck t-shirt. Slim fit, medium.",
+    "price": 150.0,
+    "stock": 10,
+    "categoryId": 1,
+    "createdAt": "2024-09-15T00:00:00",
+    "updatedAt": "2024-09-15T00:35:33.056398",
+    "images": {
+      "imageUrl1": "updated/path/to/image1.jpg",
+      "imageUrl2": "path/to/image2.jpg",
+      "imageUrl3": "path/to/image3.jpg",
+      "imageUrl4": "path/to/image4.jpg"
+    }
+  },
+  {
+    "productId": 4,
+    "name": "Golfer t-shirt",
+    "description": "Black medium shirt.",
+    "price": 200.0,
+    "stock": 10,
+    "categoryId": 1,
+    "createdAt": "2024-09-15T01:27:49.857748",
+    "updatedAt": "2024-09-15T01:27:49.857748",
+    "images": {
+      "imageUrl1": "path/Controller/image1.jpg",
+      "imageUrl2": "path/Controller/image2.jpg",
+      "imageUrl3": "path/Controller/image3.jpg",
+      "imageUrl4": "path/Controller/image4.jpg"
+    }
+  },
+  {
+    "productId": 5,
+    "name": "New Product",
+    "description": "Description for the new product.",
+    "price": 300.0,
+    "stock": 5,
+    "categoryId": 1,
+    "createdAt": "2024-09-15T01:27:50.093281",
+    "updatedAt": "2024-09-15T01:27:50.093281",
+    "images": {
+      "imageUrl1": "newPath/image1.jpg",
+      "imageUrl2": "newPath/image2.jpg",
+      "imageUrl3": "newPath/image3.jpg",
+      "imageUrl4": "newPath/image4.jpg"
+    }
+  },
+  {
+    "productId": 6,
+    "name": "Golfer t-shirt",
+    "description": "Black medium shirt.",
+    "price": 200.0,
+    "stock": 10,
+    "categoryId": 1,
+    "createdAt": "2024-09-15T01:27:50.356289",
+    "updatedAt": "2024-09-15T01:27:50.356289",
+    "images": {
+      "imageUrl1": "path/Controller/image1.jpg",
+      "imageUrl2": "path/Controller/image2.jpg",
+      "imageUrl3": "path/Controller/image3.jpg",
+      "imageUrl4": "path/Controller/image4.jpg"
+    }
+  },
+  {
+    "productId": 7,
+    "name": "Updated Product Name",
+    "description": "Updated Product Description",
+    "price": 200.0,
+    "stock": 10,
+    "categoryId": 1,
+    "createdAt": "2024-09-15T01:27:50.793595",
+    "updatedAt": "2024-09-15T01:27:51.2386",
+    "images": {
+      "imageUrl1": "path/Controller/image1.jpg",
+      "imageUrl2": "path/Controller/image2.jpg",
+      "imageUrl3": "path/Controller/image3.jpg",
+      "imageUrl4": "path/Controller/image4.jpg"
+    }
+  },
+  {
+    "productId": 9,
+    "name": "Golfer t-shirt",
+    "description": "Black medium shirt.",
+    "price": 200.0,
+    "stock": 10,
+    "categoryId": 1,
+    "createdAt": "2024-09-15T01:27:51.82979",
+    "updatedAt": "2024-09-15T01:27:51.830787",
+    "images": {
+      "imageUrl1": "path/Controller/image1.jpg",
+      "imageUrl2": "path/Controller/image2.jpg",
+      "imageUrl3": "path/Controller/image3.jpg",
+      "imageUrl4": "path/Controller/image4.jpg"
+    }
+  },
+  {
+    "productId": 10,
+    "name": "Golfer t-shirt",
+    "description": "Black medium shirt.",
+    "price": 200.0,
+    "stock": 10,
+    "categoryId": 1,
+    "createdAt": "2024-09-15T01:41:50.803155",
+    "updatedAt": "2024-09-15T01:41:50.803155",
+    "images": {
+      "imageUrl1": "path/Controller/image1.jpg",
+      "imageUrl2": "path/Controller/image2.jpg",
+      "imageUrl3": "path/Controller/image3.jpg",
+      "imageUrl4": "path/Controller/image4.jpg"
+    }
+  },
+  {
+    "productId": 11,
+    "name": "New Product",
+    "description": "Description for the new product.",
+    "price": 300.0,
+    "stock": 5,
+    "categoryId": 1,
+    "createdAt": "2024-09-15T01:41:50.985153",
+    "updatedAt": "2024-09-15T01:41:50.985153",
+    "images": {
+      "imageUrl1": "newPath/image1.jpg",
+      "imageUrl2": "newPath/image2.jpg",
+      "imageUrl3": "newPath/image3.jpg",
+      "imageUrl4": "newPath/image4.jpg"
+    }
+  },
+  {
+    "productId": 12,
+    "name": "Golfer t-shirt",
+    "description": "Black medium shirt.",
+    "price": 200.0,
+    "stock": 10,
+    "categoryId": 1,
+    "createdAt": "2024-09-15T01:41:51.166182",
+    "updatedAt": "2024-09-15T01:41:51.166182",
+    "images": {
+      "imageUrl1": "path/Controller/image1.jpg",
+      "imageUrl2": "path/Controller/image2.jpg",
+      "imageUrl3": "path/Controller/image3.jpg",
+      "imageUrl4": "path/Controller/image4.jpg"
+    }
+  },
+  {
+    "productId": 13,
+    "name": "Updated Product Name",
+    "description": "Updated Product Description",
+    "price": 200.0,
+    "stock": 10,
+    "categoryId": 1,
+    "createdAt": "2024-09-15T01:41:51.49303",
+    "updatedAt": "2024-09-15T01:41:51.696316",
+    "images": {
+      "imageUrl1": "path/Controller/image1.jpg",
+      "imageUrl2": "path/Controller/image2.jpg",
+      "imageUrl3": "path/Controller/image3.jpg",
+      "imageUrl4": "path/Controller/image4.jpg"
+    }
+  },
+  {
+    "productId": 15,
+    "name": "Golfer t-shirt",
+    "description": "Black medium shirt.",
+    "price": 200.0,
+    "stock": 10,
+    "categoryId": 1,
+    "createdAt": "2024-09-15T01:41:52.201865",
+    "updatedAt": "2024-09-15T01:41:52.201865",
+    "images": {
+      "imageUrl1": "path/Controller/image1.jpg",
+      "imageUrl2": "path/Controller/image2.jpg",
+      "imageUrl3": "path/Controller/image3.jpg",
+      "imageUrl4": "path/Controller/image4.jpg"
+    }
+  }
+]

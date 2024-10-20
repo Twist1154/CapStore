@@ -1,0 +1,1518 @@
+Index: .idea/dataSources.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/dataSources.xml b/.idea/dataSources.xml
+deleted file mode 100644
+--- a/.idea/dataSources.xml	(revision 789b8414aa9422288566c0cd6d9be4fbbe1ab78e)
++++ /dev/null	(revision 789b8414aa9422288566c0cd6d9be4fbbe1ab78e)
+@@ -1,17 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+-    <data-source source="LOCAL" name="sqlserver@shoeserver.database.windows.net" uuid="c2d8397f-a507-421d-8612-880b001b622a">
+-      <driver-ref>sqlserver.ms</driver-ref>
+-      <synchronize>true</synchronize>
+-      <imported>true</imported>
+-      <remarks>$PROJECT_DIR$/src/main/resources/application.properties</remarks>
+-      <jdbc-driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</jdbc-driver>
+-      <jdbc-url>jdbc:sqlserver://shoeserver.database.windows.net:1433;database=Capstone;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;</jdbc-url>
+-      <jdbc-additional-properties>
+-        <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
+-      </jdbc-additional-properties>
+-      <working-dir>$ProjectFileDir$</working-dir>
+-    </data-source>
+-  </component>
+-</project>
+\ No newline at end of file
+Index: src/main/java/za/ac/cput/domain/User.java
+===================================================================
+diff --git a/src/main/java/za/ac/cput/domain/User.java b/src/main/java/za/ac/cput/domain/User.java
+deleted file mode 100644
+--- a/src/main/java/za/ac/cput/domain/User.java	(revision 789b8414aa9422288566c0cd6d9be4fbbe1ab78e)
++++ /dev/null	(revision 789b8414aa9422288566c0cd6d9be4fbbe1ab78e)
+@@ -1,342 +0,0 @@
+-package za.ac.cput.domain;
+-
+-import jakarta.persistence.*;
+-import java.time.LocalDate;
+-import java.util.HashSet;
+-import java.util.Objects;
+-import java.util.Set;
+-
+-/**
+- * Represents a User entity in the system.
+- * It is an entity class that maps to the "User" table in the database.
+- */
+-@Entity
+-@Table(name = "users")
+-public class User {
+-
+-    /**
+-     * Unique identifier for the user.
+-     */
+-    @Id
+-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+-    private Long userID;
+-
+-    /**
+-     * Path or URL to the user's avatar image.
+-     */
+-    private String avatar;
+-
+-    /**
+-     * User's first name.
+-     */
+-    private String firstName;
+-
+-    /**
+-     * User's last name.
+-     */
+-    private String lastName;
+-
+-    /**
+-     * User's unique email address.
+-     */
+-    @Column(unique = true)
+-    private String email;
+-
+-    /**
+-     * User's birth date.
+-     */
+-    private LocalDate birthDate;
+-
+-    /**
+-     * User's password for authentication.
+-     */
+-    private String password;
+-
+-    /**
+-     * User's phone number.
+-     */
+-    private Integer phoneNumber;
+-
+-    /**
+-     * Collection of roles assigned to the user (e.g., ADMIN, USER).
+-     */
+-    @ElementCollection(fetch = FetchType.EAGER)
+-    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+-    @Column(name = "role")
+-    private Set<String> role = new HashSet<>();
+-
+-    /**
+-     * Default constructor.
+-     */
+-    public User() {}
+-
+-    /**
+-     * Private constructor for use by the builder pattern.
+-     * @param builder The builder instance used to construct the User object.
+-     */
+-    private User(Builder builder) {
+-        this.userID = builder.userID;
+-        this.avatar = builder.avatar;
+-        this.firstName = builder.firstName;
+-        this.lastName = builder.lastName;
+-        this.email = builder.email;
+-        this.birthDate = builder.birthDate;
+-        this.password = builder.password;
+-        this.phoneNumber = builder.phoneNumber;
+-        this.role.addAll(builder.role);
+-    }
+-
+-    // Getters
+-
+-    /**
+-     * Gets the user ID.
+-     * @return the user ID
+-     */
+-    public Long getUserID() {
+-        return userID;
+-    }
+-
+-    /**
+-     * Gets the avatar URL or path.
+-     * @return the avatar
+-     */
+-    public String getAvatar() {
+-        return avatar;
+-    }
+-
+-    /**
+-     * Gets the first name of the user.
+-     * @return the first name
+-     */
+-    public String getFirstName() {
+-        return firstName;
+-    }
+-
+-    /**
+-     * Gets the last name of the user.
+-     * @return the last name
+-     */
+-    public String getLastName() {
+-        return lastName;
+-    }
+-
+-    /**
+-     * Gets the email address of the user.
+-     * @return the email
+-     */
+-    public String getEmail() {
+-        return email;
+-    }
+-
+-    /**
+-     * Gets the birth date of the user.
+-     * @return the birth date
+-     */
+-    public LocalDate getBirthDate() {
+-        return birthDate;
+-    }
+-
+-    /**
+-     * Gets the password of the user.
+-     * @return the password
+-     */
+-    public String getPassword() {
+-        return password;
+-    }
+-
+-    /**
+-     * Gets the phone number of the user.
+-     * @return the phone number
+-     */
+-    public Integer getPhoneNumber() {
+-        return phoneNumber;
+-    }
+-
+-    /**
+-     * Gets the roles assigned to the user.
+-     * @return a set of roles
+-     */
+-    public Set<String> getRole() {
+-        return role;
+-    }
+-
+-    /**
+-     * Generates a string representation of the User object.
+-     * @return a string representation of the User
+-     */
+-    @Override
+-    public String toString() {
+-        return "'\n'+User{" +
+-                "id=" + userID +
+-                ", avatar='" + avatar + '\'' +
+-                ", firstName='" + firstName + '\'' +
+-                ", lastName='" + lastName + '\'' +
+-                ", email='" + email + '\'' +
+-                ", birthDate=" + birthDate +
+-                ", password='" + password + '\'' +
+-                ", phoneNumber='" + phoneNumber + '\'' +
+-                ", role=" + role +
+-                '\n';
+-    }
+-
+-    /**
+-     * Compares this User with another object.
+-     * @param o the object to compare to
+-     * @return true if the objects are equal, false otherwise
+-     */
+-    @Override
+-    public boolean equals(Object o) {
+-        if (this == o) return true;
+-        if (o == null || getClass() != o.getClass()) return false;
+-        User user = (User) o;
+-        return Objects.equals(userID, user.userID) &&
+-                Objects.equals(avatar, user.avatar) &&
+-                Objects.equals(firstName, user.firstName) &&
+-                Objects.equals(lastName, user.lastName) &&
+-                Objects.equals(email, user.email) &&
+-                Objects.equals(birthDate, user.birthDate) &&
+-                Objects.equals(password, user.password) &&
+-                Objects.equals(phoneNumber, user.phoneNumber) &&
+-                Objects.equals(role, user.role);
+-    }
+-
+-    /**
+-     * Generates a hash code for the User object.
+-     * @return the hash code
+-     */
+-    @Override
+-    public int hashCode() {
+-        return Objects.hash(userID, avatar, firstName, lastName, email, birthDate, password, phoneNumber, role);
+-    }
+-
+-    /**
+-     * Builder class for constructing User instances using the builder pattern.
+-     */
+-    public static class Builder {
+-        private Long userID;
+-        private String avatar;
+-        private String firstName;
+-        private String lastName;
+-        private String email;
+-        private LocalDate birthDate;
+-        private String password;
+-        private Integer phoneNumber;
+-        private Set<String> role = new HashSet<>();
+-
+-        /**
+-         * Sets the user ID.
+-         * @param userID the user ID to set
+-         * @return the current Builder instance
+-         */
+-        public Builder setId(Long userID) {
+-            this.userID = userID;
+-            return this;
+-        }
+-
+-        /**
+-         * Sets the avatar URL or path.
+-         * @param avatar the avatar to set
+-         * @return the current Builder instance
+-         */
+-        public Builder setAvatar(String avatar) {
+-            this.avatar = avatar;
+-            return this;
+-        }
+-
+-        /**
+-         * Sets the first name.
+-         * @param firstName the first name to set
+-         * @return the current Builder instance
+-         */
+-        public Builder setFirstName(String firstName) {
+-            this.firstName = firstName;
+-            return this;
+-        }
+-
+-        /**
+-         * Sets the last name.
+-         * @param lastName the last name to set
+-         * @return the current Builder instance
+-         */
+-        public Builder setLastName(String lastName) {
+-            this.lastName = lastName;
+-            return this;
+-        }
+-
+-        /**
+-         * Sets the email.
+-         * @param email the email to set
+-         * @return the current Builder instance
+-         */
+-        public Builder setEmail(String email) {
+-            this.email = email;
+-            return this;
+-        }
+-
+-        /**
+-         * Sets the birth date.
+-         * @param birthDate the birth date to set
+-         * @return the current Builder instance
+-         */
+-        public Builder setBirthDate(LocalDate birthDate) {
+-            this.birthDate = birthDate;
+-            return this;
+-        }
+-
+-        /**
+-         * Sets the password.
+-         * @param password the password to set
+-         * @return the current Builder instance
+-         */
+-        public Builder setPassword(String password) {
+-            this.password = password;
+-            return this;
+-        }
+-
+-        /**
+-         * Sets the phone number.
+-         * @param phoneNumber the phone number to set
+-         * @return the current Builder instance
+-         */
+-        public Builder setPhoneNumber(Integer phoneNumber) {
+-            this.phoneNumber = phoneNumber;
+-            return this;
+-        }
+-
+-        /**
+-         * Sets the roles assigned to the user.
+-         * @param role the roles to set
+-         * @return the current Builder instance
+-         */
+-        public Builder setRole(Set<String> role) {
+-            this.role = role;
+-            return this;
+-        }
+-
+-        /**
+-         * Copies an existing User object into the builder.
+-         * @param user the User object to copy
+-         * @return the current Builder instance
+-         */
+-        public Builder copy(User user) {
+-            this.userID = user.getUserID();
+-            this.avatar = user.getAvatar();
+-            this.firstName = user.getFirstName();
+-            this.lastName = user.getLastName();
+-            this.email = user.getEmail();
+-            this.birthDate = user.getBirthDate();
+-            this.password = user.getPassword();
+-            this.phoneNumber = user.getPhoneNumber();
+-            this.role = new HashSet<>(user.getRole());
+-            return this;
+-        }
+-
+-        /**
+-         * Builds and returns a new User instance based on the builder's configuration.
+-         * @return the newly created User object
+-         */
+-        public User build() {
+-            return new User(this);
+-        }
+-    }
+-}
+Index: pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project xmlns=\"http://maven.apache.org/POM/4.0.0\"\r\n         xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\r\n         xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd\">\r\n    <modelVersion>4.0.0</modelVersion>\r\n\r\n    <!-- Spring Boot -->\r\n    <parent>\r\n        <groupId>org.springframework.boot</groupId>\r\n        <artifactId>spring-boot-starter-parent</artifactId>\r\n        <version>3.2.5</version>\r\n        <relativePath/>\r\n    </parent>\r\n\r\n    <groupId>za.ac.cput</groupId>\r\n    <artifactId>T-shirts</artifactId>\r\n    <version>1.0-SNAPSHOT</version>\r\n\r\n    <properties>\r\n        <maven.compiler.source>17</maven.compiler.source>\r\n        <maven.compiler.target>17</maven.compiler.target>\r\n        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>\r\n    </properties>\r\n\r\n    <dependencies>\r\n        <!-- Spring Boot Starters -->\r\n        <dependency>\r\n            <groupId>org.springframework.boot</groupId>\r\n            <artifactId>spring-boot-starter-data-jpa</artifactId>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>org.springframework.boot</groupId>\r\n            <artifactId>spring-boot-starter-web</artifactId>\r\n        </dependency>\r\n        <!-- Spring  Test -->\r\n        <dependency>\r\n            <groupId>org.springframework.boot</groupId>\r\n            <artifactId>spring-boot-starter-test</artifactId>\r\n            <scope>test</scope>\r\n        </dependency>\r\n\r\n        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->\r\n        <dependency>\r\n            <groupId>mysql</groupId>\r\n            <artifactId>mysql-connector-java</artifactId>\r\n            <version>8.0.33</version>\r\n        </dependency>\r\n\r\n\r\n        <!-- SQL Server JDBC Driver -->\r\n        <dependency>\r\n            <groupId>com.microsoft.sqlserver</groupId>\r\n            <artifactId>mssql-jdbc</artifactId>\r\n            <version>12.8.0.jre8</version>\r\n        </dependency>\r\n\r\n\r\n\r\n        <dependency>\r\n            <groupId>org.springframework.boot</groupId>\r\n            <artifactId>spring-boot-starter-security</artifactId>\r\n        </dependency>\r\n\r\n        <!-- Spring Test -->\r\n        <dependency>\r\n            <groupId>software.amazon.awssdk</groupId>\r\n            <artifactId>s3</artifactId>\r\n            <version>2.17.3</version>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>org.junit.jupiter</groupId>\r\n            <artifactId>junit-jupiter-api</artifactId>\r\n            <version>5.9.0</version>\r\n            <scope>test</scope>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>org.junit.jupiter</groupId>\r\n            <artifactId>junit-jupiter-engine</artifactId>\r\n            <version>5.9.0</version>\r\n            <scope>test</scope>\r\n        </dependency>\r\n\r\n        <!-- Spring Security Test -->\r\n        <dependency>\r\n            <groupId>org.springframework.security</groupId>\r\n            <artifactId>spring-security-test</artifactId>\r\n            <scope>test</scope>\r\n        </dependency>\r\n\r\n        <dependency>\r\n            <groupId>org.springframework.boot</groupId>\r\n            <artifactId>spring-boot-starter-security</artifactId>\r\n        </dependency>\r\n\r\n        <dependency>\r\n            <groupId>org.junit.platform</groupId>\r\n            <artifactId>junit-platform-launcher</artifactId>\r\n            <version>1.10.2</version>\r\n            <scope>test</scope>\r\n        </dependency>\r\n\r\n        <!-- THe aws and Lombok dependencies are needed for the S3 implementation to work -->\r\n        <!-- AWS SDK -->\r\n        <dependency>\r\n            <groupId>software.amazon.awssdk</groupId>\r\n            <artifactId>s3</artifactId>\r\n            <version>2.17.3</version>\r\n        </dependency>\r\n\r\n        <!-- Lombok -->\r\n        <dependency>\r\n            <groupId>org.projectlombok</groupId>\r\n            <artifactId>lombok</artifactId>\r\n            <version>1.18.32</version>\r\n            <scope>provided</scope>\r\n        </dependency>\r\n    </dependencies>\r\n\r\n\r\n</project>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/pom.xml b/pom.xml
+--- a/pom.xml	(revision 789b8414aa9422288566c0cd6d9be4fbbe1ab78e)
++++ b/pom.xml	(date 1727541625543)
+@@ -54,8 +54,6 @@
+             <version>12.8.0.jre8</version>
+         </dependency>
+ 
+-
+-
+         <dependency>
+             <groupId>org.springframework.boot</groupId>
+             <artifactId>spring-boot-starter-security</artifactId>
+@@ -92,12 +90,7 @@
+             <artifactId>spring-boot-starter-security</artifactId>
+         </dependency>
+ 
+-        <dependency>
+-            <groupId>org.junit.platform</groupId>
+-            <artifactId>junit-platform-launcher</artifactId>
+-            <version>1.10.2</version>
+-            <scope>test</scope>
+-        </dependency>
++
+ 
+         <!-- THe aws and Lombok dependencies are needed for the S3 implementation to work -->
+         <!-- AWS SDK -->
+@@ -116,5 +109,13 @@
+         </dependency>
+     </dependencies>
+ 
++    <build>
++        <plugins>
++            <plugin>
++                <groupId>org.springframework.boot</groupId>
++                <artifactId>spring-boot-maven-plugin</artifactId>
++            </plugin>
++        </plugins>
++    </build>
+ 
+ </project>
+Index: src/test/java/za/ac/cput/service/OrdersServiceTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package za.ac.cput.service;\r\n\r\nimport org.junit.jupiter.api.*;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.boot.test.context.SpringBootTest;\r\nimport org.springframework.transaction.annotation.Transactional;\r\nimport za.ac.cput.domain.OrderItem;\r\nimport za.ac.cput.domain.Orders;\r\nimport za.ac.cput.factory.OrderFactory;\r\nimport za.ac.cput.factory.OrderItemFactory;\r\n\r\nimport java.time.LocalDate;\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\nimport static org.junit.jupiter.api.Assertions.*;\r\n\r\n\r\n@SpringBootTest\r\n@TestMethodOrder(MethodOrderer.MethodName.class)\r\nclass OrdersServiceTest {\r\n\r\n    @Autowired\r\n    private OrderService orderService;\r\n\r\n    @Autowired\r\n    private OrderItemService orderItemService;\r\n\r\n    private Orders order;\r\n\r\n    @BeforeEach\r\n    void setUp() {\r\n        // Create an initial order\r\n        order = OrderFactory.buildOrder(\r\n                null,  // ID should be null for auto-generation\r\n                2L,    // userID\r\n                5L,    // addressID\r\n                \"Pending\",\r\n                150.0,\r\n                LocalDate.now(),\r\n                new ArrayList<>()\r\n        );\r\n\r\n        // Save the order to generate an orderID\r\n        order = orderService.create(order);\r\n\r\n        // Create OrderItems\r\n        OrderItem orderItem1 = OrderItemFactory.buildOrderItem(\r\n                null,\r\n                order.getId(),\r\n                12,\r\n                12.00,\r\n                order\r\n        );\r\n\r\n        OrderItem orderItem2 = OrderItemFactory.buildOrderItem(\r\n                null,\r\n                order.getId(),\r\n                5,\r\n                10.00,\r\n                order\r\n        );\r\n\r\n        OrderItem orderItem3 = OrderItemFactory.buildOrderItem(\r\n                null,\r\n                order.getId(),\r\n                20,\r\n                20.00,\r\n                order\r\n        );\r\n\r\n        // Save OrderItems\r\n        orderItem1 = orderItemService.create(orderItem1);\r\n        orderItem2 = orderItemService.create(orderItem2);\r\n        orderItem3 = orderItemService.create(orderItem3);\r\n\r\n        // Ensure OrderItems are associated with the Order\r\n        List<OrderItem> orderItems = new ArrayList<>();\r\n        orderItems.add(orderItem1);\r\n        orderItems.add(orderItem2);\r\n        orderItems.add(orderItem3);\r\n\r\n        order = new Orders.Builder()\r\n                .copy(order)\r\n                .setOrderItems(orderItems)  // Add OrderItems\r\n                .build();\r\n\r\n        order = orderService.update(order); // Ensure the updated order is persisted\r\n    }\r\n\r\n    @Test\r\n    @Order(1)\r\n    void create() {\r\n        Orders newOrder = OrderFactory.buildOrder(\r\n                null,\r\n                2L,\r\n                5L,\r\n                \"Pending\",\r\n                200.0,\r\n                LocalDate.now(),\r\n                new ArrayList<>()\r\n        );\r\n\r\n        Orders createdOrder = orderService.create(newOrder);\r\n        assertNotNull(createdOrder);\r\n        assertNotNull(createdOrder.getId());  // Check if ID is generated\r\n        System.out.println(\"Created: \\n\" + createdOrder + \"\\n\");\r\n    }\r\n\r\n    @Test\r\n    @Order(2)\r\n    void read() {\r\n        Orders readOrder = orderService.read(order.getId());\r\n        assertNotNull(readOrder);\r\n        assertEquals(order.getId(), readOrder.getId());\r\n        System.out.println(\"Read: \\n\" + readOrder + \"\\n\");\r\n\r\n        // Debugging OrderItems\r\n        List<OrderItem> orderItems = readOrder.getOrderItems();\r\n        System.out.println(\"Order Items: \" + orderItems);\r\n    }\r\n\r\n    @Test\r\n    @Order(3)\r\n    void update() {\r\n        Orders updatedOrder = new Orders.Builder()\r\n                .copy(order)\r\n                .setUserID(3L) // Updated userID\r\n                .setTotalPrice(300.0) // Updated totalPrice\r\n                .setStatus(\"Shipped\") // Updated status\r\n                .build();\r\n\r\n        Orders result = orderService.update(updatedOrder);\r\n        assertNotNull(result);\r\n        assertEquals(updatedOrder.getTotalPrice(), result.getTotalPrice());\r\n        assertEquals(updatedOrder.getStatus(), result.getStatus());\r\n        System.out.println(\"Updated: \\n\" + result + \"\\n\");\r\n    }\r\n\r\n    @Test\r\n    @Order(4)\r\n    void getAll() {\r\n        List<Orders> orders = orderService.findAll();\r\n        assertFalse(orders.isEmpty());\r\n        System.out.println(\"All Orders: \\n\" + orders + \"\\n\");\r\n    }\r\n\r\n    @Test\r\n    @Order(5)\r\n    void delete() {\r\n        Long orderIdToDelete = order.getId();\r\n        orderService.deleteByOrderID(orderIdToDelete);\r\n\r\n        Orders deletedOrder = orderService.read(orderIdToDelete);\r\n        assertNull(deletedOrder);\r\n        System.out.println(\"Deleted Order ID: \" + orderIdToDelete);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/test/java/za/ac/cput/service/OrdersServiceTest.java b/src/test/java/za/ac/cput/service/OrdersServiceTest.java
+--- a/src/test/java/za/ac/cput/service/OrdersServiceTest.java	(revision 789b8414aa9422288566c0cd6d9be4fbbe1ab78e)
++++ b/src/test/java/za/ac/cput/service/OrdersServiceTest.java	(date 1727541625588)
+@@ -33,8 +33,8 @@
+         // Create an initial order
+         order = OrderFactory.buildOrder(
+                 null,  // ID should be null for auto-generation
+-                2L,    // userID
+-                5L,    // addressID
++                1L,    // userID
++                1L,    // addressID
+                 "Pending",
+                 150.0,
+                 LocalDate.now(),
+@@ -93,7 +93,7 @@
+     void create() {
+         Orders newOrder = OrderFactory.buildOrder(
+                 null,
+-                2L,
++                1L,
+                 5L,
+                 "Pending",
+                 200.0,
+Index: src/main/java/za/ac/cput/controller/UserController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package za.ac.cput.controller;\r\n\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.http.HttpStatus;\r\nimport org.springframework.http.ResponseEntity;\r\nimport org.springframework.web.bind.annotation.*;\r\nimport za.ac.cput.domain.User;\r\nimport za.ac.cput.service.UserService;\r\n\r\nimport java.time.LocalDate;\r\nimport java.util.List;\r\nimport java.util.Optional;\r\nimport java.util.Set;\r\n\r\n/**\r\n * Controller for managing users in the system.\r\n */\r\n@RestController\r\n@RequestMapping(\"/users\")\r\npublic class UserController {\r\n\r\n    private final UserService userService;\r\n\r\n    @Autowired\r\n    public UserController(UserService userService) {\r\n        this.userService = userService;\r\n    }\r\n\r\n    /**\r\n     * Creates a new user.\r\n     *\r\n     * @param user the user object to be created\r\n     * @return the created user\r\n     */\r\n    @PostMapping(\"/create\")\r\n    public ResponseEntity<User> createUser(@RequestBody User user) {\r\n        User createdUser = userService.create(user);\r\n        return ResponseEntity.ok(createdUser);\r\n    }\r\n\r\n    /**\r\n     * Retrieves a user by ID.\r\n     *\r\n     * @param id the ID of the user to retrieve\r\n     * @return the user if found, or 404 status if not\r\n     */\r\n    @GetMapping(\"/read/{id}\")\r\n    public ResponseEntity<User> readUser(@PathVariable Long id) {\r\n        User user = userService.read(id);\r\n        return user != null ? ResponseEntity.ok(user) : ResponseEntity.notFound().build();\r\n    }\r\n\r\n    /**\r\n     * Updates an existing user.\r\n     *\r\n     * @param user the updated user details\r\n     * @return the updated user if the update is successful, or 404 status if the user does not exist\r\n     */\r\n    @PutMapping(\"/update\")\r\n    public ResponseEntity<User> updateUser(@RequestBody User user) {\r\n        User updatedUser = userService.update(user);\r\n        return updatedUser != null ? ResponseEntity.ok(updatedUser) : ResponseEntity.notFound().build();\r\n    }\r\n\r\n    /**\r\n     * Deletes a user by ID.\r\n     *\r\n     * @param id the ID of the user to delete\r\n     * @return a status indicating success or failure\r\n     */\r\n    @DeleteMapping(\"/delete/{id}\")\r\n    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {\r\n        userService.delete(id);\r\n        return ResponseEntity.noContent().build();\r\n    }\r\n\r\n    /**\r\n     * Retrieves a list of all users.\r\n     *\r\n     * @return a list of all users\r\n     */\r\n    @GetMapping(\"/all\")\r\n    public ResponseEntity<List<User>> getAllUsers() {\r\n        List<User> users = userService.getAll();\r\n        return ResponseEntity.ok(users);\r\n    }\r\n\r\n    /**\r\n     * Finds users by their email.\r\n     *\r\n     * @param email the email to search by\r\n     * @return the user if found, or 404 status if not\r\n     */\r\n    @GetMapping(\"/email/{email}\")\r\n    public ResponseEntity<User> findByEmail(@PathVariable String email) {\r\n        Optional<User> user = userService.findByEmail(email);\r\n        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());\r\n    }\r\n\r\n    /**\r\n     * Finds users by their first name.\r\n     *\r\n     * @param firstName the first name to search by\r\n     * @return a list of users with the specified first name\r\n     */\r\n    @GetMapping(\"/firstname/{firstName}\")\r\n    public ResponseEntity<List<User>> findByFirstName(@PathVariable String firstName) {\r\n        List<User> users = userService.findByFirstName(firstName);\r\n        return ResponseEntity.ok(users);\r\n    }\r\n\r\n    /**\r\n     * Finds users by their last name.\r\n     *\r\n     * @param lastName the last name to search by\r\n     * @return a list of users with the specified last name\r\n     */\r\n    @GetMapping(\"/lastname/{lastName}\")\r\n    public ResponseEntity<List<User>> findByLastName(@PathVariable String lastName) {\r\n        List<User> users = userService.findByLastName(lastName);\r\n        return ResponseEntity.ok(users);\r\n    }\r\n\r\n    /**\r\n     * Finds users by their birthdate.\r\n     *\r\n     * @param birthDate the birthdate to search by\r\n     * @return a list of users with the specified birthdate\r\n     */\r\n    @GetMapping(\"/birthdate/{birthDate}\")\r\n    public ResponseEntity<List<User>> findByBirthDate(@PathVariable LocalDate birthDate) {\r\n        List<User> users = userService.findByBirthDate(birthDate);\r\n        return ResponseEntity.ok(users);\r\n    }\r\n\r\n    /**\r\n     * Finds users by their phone number.\r\n     *\r\n     * @param phoneNumber the phone number to search by\r\n     * @return a list of users with the specified phone number\r\n     */\r\n    @GetMapping(\"/phone/{phoneNumber}\")\r\n    public ResponseEntity<List<User>> findByPhoneNumber(@PathVariable Integer phoneNumber) {\r\n        List<User> users = userService.findByPhoneNumber(phoneNumber);\r\n        return ResponseEntity.ok(users);\r\n    }\r\n\r\n    /**\r\n     * Finds users by their role.\r\n     *\r\n     * @param role the role to search by\r\n     * @return a list of users with the specified role\r\n     */\r\n    @GetMapping(\"/role/{role}\")\r\n    public ResponseEntity<List<User>> findByRole(@PathVariable String role) {\r\n        List<User> users = userService.findByRole(role);\r\n        return ResponseEntity.ok(users);\r\n    }\r\n\r\n\r\n        @PostMapping(\"/login\")\r\n        public ResponseEntity<String> loginUser(@RequestParam String email, @RequestParam String password) {\r\n            Set<User> user = userService.verifyUser(email, password);\r\n            if (user.isEmpty()) {\r\n                // Failed login\r\n                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(\"Invalid email or password\");\r\n            } else {\r\n                // Successful login\r\n                return ResponseEntity.ok(\"Login successful\");\r\n            }\r\n        }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/za/ac/cput/controller/UserController.java b/src/main/java/za/ac/cput/controller/UserController.java
+--- a/src/main/java/za/ac/cput/controller/UserController.java	(revision 789b8414aa9422288566c0cd6d9be4fbbe1ab78e)
++++ b/src/main/java/za/ac/cput/controller/UserController.java	(date 1727572093102)
+@@ -4,7 +4,7 @@
+ import org.springframework.http.HttpStatus;
+ import org.springframework.http.ResponseEntity;
+ import org.springframework.web.bind.annotation.*;
+-import za.ac.cput.domain.User;
++import za.ac.cput.domain.Users;
+ import za.ac.cput.service.UserService;
+ 
+ import java.time.LocalDate;
+@@ -33,8 +33,8 @@
+      * @return the created user
+      */
+     @PostMapping("/create")
+-    public ResponseEntity<User> createUser(@RequestBody User user) {
+-        User createdUser = userService.create(user);
++    public ResponseEntity<Users> createUser(@RequestBody Users user) {
++        Users createdUser = userService.create(user);
+         return ResponseEntity.ok(createdUser);
+     }
+ 
+@@ -45,20 +45,20 @@
+      * @return the user if found, or 404 status if not
+      */
+     @GetMapping("/read/{id}")
+-    public ResponseEntity<User> readUser(@PathVariable Long id) {
+-        User user = userService.read(id);
++    public ResponseEntity<Users> readUser(@PathVariable Long id) {
++        Users user = userService.read(id);
+         return user != null ? ResponseEntity.ok(user) : ResponseEntity.notFound().build();
+     }
+ 
+     /**
+-     * Updates an existing user.
++     * Updates an existing users.
+      *
+-     * @param user the updated user details
+-     * @return the updated user if the update is successful, or 404 status if the user does not exist
++     * @param users the updated users details
++     * @return the updated users if the update is successful, or 404 status if the users does not exist
+      */
+     @PutMapping("/update")
+-    public ResponseEntity<User> updateUser(@RequestBody User user) {
+-        User updatedUser = userService.update(user);
++    public ResponseEntity<Users> updateUser(@RequestBody Users users) {
++        Users updatedUser = userService.update(users);
+         return updatedUser != null ? ResponseEntity.ok(updatedUser) : ResponseEntity.notFound().build();
+     }
+ 
+@@ -80,8 +80,8 @@
+      * @return a list of all users
+      */
+     @GetMapping("/all")
+-    public ResponseEntity<List<User>> getAllUsers() {
+-        List<User> users = userService.getAll();
++    public ResponseEntity<List<Users>> getAllUsers() {
++        List<Users> users = userService.getAll();
+         return ResponseEntity.ok(users);
+     }
+ 
+@@ -92,8 +92,8 @@
+      * @return the user if found, or 404 status if not
+      */
+     @GetMapping("/email/{email}")
+-    public ResponseEntity<User> findByEmail(@PathVariable String email) {
+-        Optional<User> user = userService.findByEmail(email);
++    public ResponseEntity<Users> findByEmail(@PathVariable String email) {
++        Optional<Users> user = userService.findByEmail(email);
+         return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+     }
+ 
+@@ -104,8 +104,8 @@
+      * @return a list of users with the specified first name
+      */
+     @GetMapping("/firstname/{firstName}")
+-    public ResponseEntity<List<User>> findByFirstName(@PathVariable String firstName) {
+-        List<User> users = userService.findByFirstName(firstName);
++    public ResponseEntity<List<Users>> findByFirstName(@PathVariable String firstName) {
++        List<Users> users = userService.findByFirstName(firstName);
+         return ResponseEntity.ok(users);
+     }
+ 
+@@ -116,8 +116,8 @@
+      * @return a list of users with the specified last name
+      */
+     @GetMapping("/lastname/{lastName}")
+-    public ResponseEntity<List<User>> findByLastName(@PathVariable String lastName) {
+-        List<User> users = userService.findByLastName(lastName);
++    public ResponseEntity<List<Users>> findByLastName(@PathVariable String lastName) {
++        List<Users> users = userService.findByLastName(lastName);
+         return ResponseEntity.ok(users);
+     }
+ 
+@@ -128,8 +128,8 @@
+      * @return a list of users with the specified birthdate
+      */
+     @GetMapping("/birthdate/{birthDate}")
+-    public ResponseEntity<List<User>> findByBirthDate(@PathVariable LocalDate birthDate) {
+-        List<User> users = userService.findByBirthDate(birthDate);
++    public ResponseEntity<List<Users>> findByBirthDate(@PathVariable LocalDate birthDate) {
++        List<Users> users = userService.findByBirthDate(birthDate);
+         return ResponseEntity.ok(users);
+     }
+ 
+@@ -140,8 +140,8 @@
+      * @return a list of users with the specified phone number
+      */
+     @GetMapping("/phone/{phoneNumber}")
+-    public ResponseEntity<List<User>> findByPhoneNumber(@PathVariable Integer phoneNumber) {
+-        List<User> users = userService.findByPhoneNumber(phoneNumber);
++    public ResponseEntity<List<Users>> findByPhoneNumber(@PathVariable Integer phoneNumber) {
++        List<Users> users = userService.findByPhoneNumber(phoneNumber);
+         return ResponseEntity.ok(users);
+     }
+ 
+@@ -152,21 +152,21 @@
+      * @return a list of users with the specified role
+      */
+     @GetMapping("/role/{role}")
+-    public ResponseEntity<List<User>> findByRole(@PathVariable String role) {
+-        List<User> users = userService.findByRole(role);
++    public ResponseEntity<List<Users>> findByRole(@PathVariable String role) {
++        List<Users> users = userService.findByRole(role);
+         return ResponseEntity.ok(users);
+     }
+ 
+ 
+-        @PostMapping("/login")
+-        public ResponseEntity<String> loginUser(@RequestParam String email, @RequestParam String password) {
+-            Set<User> user = userService.verifyUser(email, password);
+-            if (user.isEmpty()) {
+-                // Failed login
+-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
+-            } else {
+-                // Successful login
+-                return ResponseEntity.ok("Login successful");
+-            }
+-        }
++    @PostMapping("/login")
++    public ResponseEntity<String> loginUser(@RequestParam String email, @RequestParam String password) {
++        Set<Users> user = userService.verifyUser(email, password);
++        if (user.isEmpty()) {
++            // Failed login
++            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
++        } else {
++            // Successful login
++            return ResponseEntity.ok("Login successful");
++        }
++    }
+ }
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"67dd0542-1913-420d-a2c4-0d74954709e8\" name=\"Changes\" comment=\"Discount and images added\">\r\n      <change afterPath=\"$PROJECT_DIR$/.idea/uiDesigner.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/dataSources.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/dataSources.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/pom.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/pom.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/za/ac/cput/controller/ProductController.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/za/ac/cput/controller/ProductController.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/za/ac/cput/repository/IProductRepository.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/za/ac/cput/repository/IProductRepository.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/za/ac/cput/service/IProductService.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/za/ac/cput/service/IProductService.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/za/ac/cput/service/ProductService.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/za/ac/cput/service/ProductService.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/resources/application.properties\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/resources/application.properties\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/test/java/za/ac/cput/controller/OrderControllerTest.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/test/java/za/ac/cput/controller/OrderControllerTest.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/test/java/za/ac/cput/controller/ProductControllerTest.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/test/java/za/ac/cput/controller/ProductControllerTest.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/test/java/za/ac/cput/service/ProductServiceTest.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/test/java/za/ac/cput/service/ProductServiceTest.java\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Interface\" />\r\n        <option value=\"Class\" />\r\n        <option value=\"JUnit5 Test Class\" />\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"PUSH_TAGS\">\r\n      <GitPushTagMode>\r\n        <option name=\"argument\" value=\"--tags\" />\r\n        <option name=\"title\" value=\"All\" />\r\n      </GitPushTagMode>\r\n    </option>\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"ProjectColorInfo\">{\r\n  &quot;associatedIndex&quot;: 6\r\n}</component>\r\n  <component name=\"ProjectId\" id=\"2ljgXhJH0PTyD9XyUBh5AmohWZs\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\">\r\n    <ConfirmationsSetting value=\"2\" id=\"Add\" />\r\n  </component>\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;JPA.DatabaseSchemaImportDialog&quot;: &quot;c2d8397f-a507-421d-8612-880b001b622a&quot;,\r\n    &quot;JUnit.CartControllerTest.executor&quot;: &quot;Run&quot;,\r\n    &quot;JUnit.CartFactoryTest.executor&quot;: &quot;Run&quot;,\r\n    &quot;JUnit.CartItemControllerTest.executor&quot;: &quot;Run&quot;,\r\n    &quot;JUnit.CartItemFactoryTest.executor&quot;: &quot;Run&quot;,\r\n    &quot;JUnit.CartItemServiceTest.executor&quot;: &quot;Run&quot;,\r\n    &quot;JUnit.CartServiceTest.executor&quot;: &quot;Run&quot;,\r\n    &quot;JUnit.UserServiceTest.executor&quot;: &quot;Run&quot;,\r\n    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,\r\n    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,\r\n    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,\r\n    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,\r\n    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,\r\n    &quot;Spring Boot.OnlineClothingStoreApp.executor&quot;: &quot;Run&quot;,\r\n    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,\r\n    &quot;database.data.extractors.current.export.id&quot;: &quot;Comma-separated (CSV)_id&quot;,\r\n    &quot;git-widget-placeholder&quot;: &quot;main&quot;,\r\n    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,\r\n    &quot;last_opened_file_path&quot;: &quot;C:/Users/Admin/My Documents&quot;,\r\n    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,\r\n    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,\r\n    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,\r\n    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,\r\n    &quot;spring.configuration.checksum&quot;: &quot;0a4dc03d0231cf363f18753e831d2568&quot;,\r\n    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;\r\n  }\r\n}</component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"CreateTestDialog.Recents.Supers\">\r\n      <recent name=\"\" />\r\n    </key>\r\n    <key name=\"CreateTestDialog.RecentsKey\">\r\n      <recent name=\"za.ac.cput.controller\" />\r\n      <recent name=\"za.ac.cput.service\" />\r\n      <recent name=\"za.ac.cput.factory\" />\r\n    </key>\r\n    <key name=\"ImportMappingsDialog.RecentPackages\">\r\n      <recent name=\"\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"RunDashboard\">\r\n    <option name=\"excludedTypes\">\r\n      <set>\r\n        <option value=\"HttpClient.HttpRequestRunConfigurationType\" />\r\n      </set>\r\n    </option>\r\n  </component>\r\n  <component name=\"RunManager\" selected=\"JUnit.ProductServiceTest\">\r\n    <configuration name=\"CartItemControllerTest\" type=\"JUnit\" factoryName=\"JUnit\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"T-shirts\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"za.ac.cput.controller.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <option name=\"PACKAGE_NAME\" value=\"za.ac.cput.controller\" />\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"za.ac.cput.controller.CartItemControllerTest\" />\r\n      <option name=\"TEST_OBJECT\" value=\"class\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"ProductControllerTest\" type=\"JUnit\" factoryName=\"JUnit\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"T-shirts\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"za.ac.cput.controller.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <option name=\"PACKAGE_NAME\" value=\"za.ac.cput.controller\" />\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"za.ac.cput.controller.ProductControllerTest\" />\r\n      <option name=\"TEST_OBJECT\" value=\"class\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"ProductServiceTest\" type=\"JUnit\" factoryName=\"JUnit\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"T-shirts\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"za.ac.cput.service.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <option name=\"PACKAGE_NAME\" value=\"za.ac.cput.service\" />\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"za.ac.cput.service.ProductServiceTest\" />\r\n      <option name=\"TEST_OBJECT\" value=\"class\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"UserServiceTest\" type=\"JUnit\" factoryName=\"JUnit\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"T-shirts\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"za.ac.cput.service.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <option name=\"PACKAGE_NAME\" value=\"za.ac.cput.service\" />\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"za.ac.cput.service.UserServiceTest\" />\r\n      <option name=\"TEST_OBJECT\" value=\"class\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"OnlineClothingStoreApp\" type=\"SpringBootApplicationConfigurationType\" factoryName=\"Spring Boot\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"T-shirts\" />\r\n      <option name=\"SPRING_BOOT_MAIN_CLASS\" value=\"za.ac.cput.OnlineClothingStoreApp\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"za.ac.cput.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <list>\r\n      <item itemvalue=\"JUnit.ProductControllerTest\" />\r\n      <item itemvalue=\"JUnit.ProductServiceTest\" />\r\n      <item itemvalue=\"JUnit.CartItemControllerTest\" />\r\n      <item itemvalue=\"JUnit.UserServiceTest\" />\r\n      <item itemvalue=\"Spring Boot.OnlineClothingStoreApp\" />\r\n    </list>\r\n    <recent_temporary>\r\n      <list>\r\n        <item itemvalue=\"JUnit.ProductServiceTest\" />\r\n        <item itemvalue=\"JUnit.ProductControllerTest\" />\r\n        <item itemvalue=\"Spring Boot.OnlineClothingStoreApp\" />\r\n        <item itemvalue=\"JUnit.UserServiceTest\" />\r\n        <item itemvalue=\"JUnit.CartItemControllerTest\" />\r\n      </list>\r\n    </recent_temporary>\r\n  </component>\r\n  <component name=\"SharedIndexes\">\r\n    <attachedChunks>\r\n      <set>\r\n        <option value=\"jdk-17.0.9-jbr-17.0.9-f644763e9732-e10f1064\" />\r\n      </set>\r\n    </attachedChunks>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"67dd0542-1913-420d-a2c4-0d74954709e8\" name=\"Changes\" comment=\"Discount and images added\" />\r\n      <created>1725778494940</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1725778494940</updated>\r\n      <workItem from=\"1725778513527\" duration=\"2398000\" />\r\n      <workItem from=\"1725823782038\" duration=\"6575000\" />\r\n      <workItem from=\"1725953886169\" duration=\"13116000\" />\r\n      <workItem from=\"1726055401674\" duration=\"1291000\" />\r\n      <workItem from=\"1726337506407\" duration=\"8059000\" />\r\n      <workItem from=\"1726408716394\" duration=\"7639000\" />\r\n      <workItem from=\"1726434844647\" duration=\"21190000\" />\r\n      <workItem from=\"1726490800080\" duration=\"1878000\" />\r\n      <workItem from=\"1726658120385\" duration=\"4692000\" />\r\n      <workItem from=\"1726813404208\" duration=\"788000\" />\r\n      <workItem from=\"1726845629791\" duration=\"951000\" />\r\n      <workItem from=\"1727371452198\" duration=\"2334000\" />\r\n      <workItem from=\"1727374606985\" duration=\"2881000\" />\r\n      <workItem from=\"1727454732543\" duration=\"7085000\" />\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"controller\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1726055682050</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1726055682051</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"controller classes done\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1726101980408</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1726101980450</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00003\" summary=\"controller classes done\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1726106051750</created>\r\n      <option name=\"number\" value=\"00003\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1726106051750</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00004\" summary=\"controller classes done\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1726169697107</created>\r\n      <option name=\"number\" value=\"00004\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1726169697107</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00005\" summary=\"controller classes done\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1726169973911</created>\r\n      <option name=\"number\" value=\"00005\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00005\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1726169973911</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00006\" summary=\"controller classes done\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1726170670014</created>\r\n      <option name=\"number\" value=\"00006\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00006\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1726170670014</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00007\" summary=\"controller classes done\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1726170717263</created>\r\n      <option name=\"number\" value=\"00007\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00007\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1726170717263</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00008\" summary=\"controller classes done\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1726170826560</created>\r\n      <option name=\"number\" value=\"00008\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00008\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1726170826560</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00009\" summary=\"controller classes done\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1726170850694</created>\r\n      <option name=\"number\" value=\"00009\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00009\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1726170850694</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00010\" summary=\"controller classes done\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1726170906336</created>\r\n      <option name=\"number\" value=\"00010\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00010\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1726170906336</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"11\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"controller\" />\r\n    <MESSAGE value=\"controller classes done\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"controller classes done\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 789b8414aa9422288566c0cd6d9be4fbbe1ab78e)
++++ b/.idea/workspace.xml	(date 1728924177467)
+@@ -4,19 +4,19 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="67dd0542-1913-420d-a2c4-0d74954709e8" name="Changes" comment="Discount and images added">
+-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
++    <list default="true" id="aaa25fc2-1426-4975-a807-1484a060e6ec" name="Changes" comment="">
++      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/domain/Users.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/controller/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/controller/ProductController.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/repository/IProductRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/repository/IProductRepository.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/IProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/IProductService.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/ProductService.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/controller/UserController.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/domain/User.java" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/factory/UserFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/factory/UserFactory.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/repository/UserRepository.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/IUserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/IUserService.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/UserService.java" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/test/java/za/ac/cput/controller/OrderControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/za/ac/cput/controller/OrderControllerTest.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/test/java/za/ac/cput/controller/ProductControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/za/ac/cput/controller/ProductControllerTest.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/test/java/za/ac/cput/service/ProductServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/za/ac/cput/service/ProductServiceTest.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/test/java/za/ac/cput/service/OrdersServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/za/ac/cput/service/OrdersServiceTest.java" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -42,6 +42,18 @@
+     </option>
+     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+   </component>
++  <component name="GitHubPullRequestSearchHistory">{
++  &quot;lastFilter&quot;: {
++    &quot;state&quot;: &quot;OPEN&quot;,
++    &quot;assignee&quot;: &quot;Twist1154&quot;
++  }
++}</component>
++  <component name="GithubPullRequestsUISettings">{
++  &quot;selectedUrlAndAccountId&quot;: {
++    &quot;url&quot;: &quot;https://github.com/Twist1154/CapStore.git&quot;,
++    &quot;accountId&quot;: &quot;2fe106e0-c6f1-493f-af56-58438595ca34&quot;
++  }
++}</component>
+   <component name="MarkdownSettingsMigration">
+     <option name="stateVersion" value="1" />
+   </component>
+@@ -58,30 +70,19 @@
+   </component>
+   <component name="PropertiesComponent">{
+   &quot;keyToString&quot;: {
+-    &quot;JPA.DatabaseSchemaImportDialog&quot;: &quot;c2d8397f-a507-421d-8612-880b001b622a&quot;,
+-    &quot;JUnit.CartControllerTest.executor&quot;: &quot;Run&quot;,
+-    &quot;JUnit.CartFactoryTest.executor&quot;: &quot;Run&quot;,
+-    &quot;JUnit.CartItemControllerTest.executor&quot;: &quot;Run&quot;,
+-    &quot;JUnit.CartItemFactoryTest.executor&quot;: &quot;Run&quot;,
+-    &quot;JUnit.CartItemServiceTest.executor&quot;: &quot;Run&quot;,
+-    &quot;JUnit.CartServiceTest.executor&quot;: &quot;Run&quot;,
+-    &quot;JUnit.UserServiceTest.executor&quot;: &quot;Run&quot;,
+     &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+     &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+     &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+     &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
++    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+     &quot;Spring Boot.OnlineClothingStoreApp.executor&quot;: &quot;Run&quot;,
+-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+-    &quot;database.data.extractors.current.export.id&quot;: &quot;Comma-separated (CSV)_id&quot;,
+     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Admin/My Documents&quot;,
+     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
++    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+-    &quot;spring.configuration.checksum&quot;: &quot;0a4dc03d0231cf363f18753e831d2568&quot;,
+     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+   }
+ }</component>
+@@ -105,17 +106,20 @@
+       </set>
+     </option>
+   </component>
+-  <component name="RunManager" selected="JUnit.ProductServiceTest">
+-    <configuration name="CartItemControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
++  <component name="RunManager" selected="Spring Boot.OnlineClothingStoreApp">
++    <configuration name="generated-requests | #32" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="32" requestIdentifier="#32" runType="Run single request">
++      <method v="2" />
++    </configuration>
++    <configuration name="OrdersServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+       <module name="T-shirts" />
+       <extension name="coverage">
+         <pattern>
+-          <option name="PATTERN" value="za.ac.cput.controller.*" />
++          <option name="PATTERN" value="za.ac.cput.service.*" />
+           <option name="ENABLED" value="true" />
+         </pattern>
+       </extension>
+-      <option name="PACKAGE_NAME" value="za.ac.cput.controller" />
+-      <option name="MAIN_CLASS_NAME" value="za.ac.cput.controller.CartItemControllerTest" />
++      <option name="PACKAGE_NAME" value="za.ac.cput.service" />
++      <option name="MAIN_CLASS_NAME" value="za.ac.cput.service.OrdersServiceTest" />
+       <option name="TEST_OBJECT" value="class" />
+       <method v="2">
+         <option name="Make" enabled="true" />
+@@ -126,21 +130,6 @@
+       <extension name="coverage">
+         <pattern>
+           <option name="PATTERN" value="za.ac.cput.controller.*" />
+-          <option name="ENABLED" value="true" />
+-        </pattern>
+-      </extension>
+-      <option name="PACKAGE_NAME" value="za.ac.cput.controller" />
+-      <option name="MAIN_CLASS_NAME" value="za.ac.cput.controller.ProductControllerTest" />
+-      <option name="TEST_OBJECT" value="class" />
+-      <method v="2">
+-        <option name="Make" enabled="true" />
+-      </method>
+-    </configuration>
+-    <configuration name="ProductServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+-      <module name="T-shirts" />
+-      <extension name="coverage">
+-        <pattern>
+-          <option name="PATTERN" value="za.ac.cput.service.*" />
+           <option name="ENABLED" value="true" />
+         </pattern>
+       </extension>
+@@ -180,33 +169,34 @@
+       </method>
+     </configuration>
+     <list>
++      <item itemvalue="HTTP Request.generated-requests | #32" />
++      <item itemvalue="JUnit.OrdersServiceTest" />
+       <item itemvalue="JUnit.ProductControllerTest" />
+-      <item itemvalue="JUnit.ProductServiceTest" />
+-      <item itemvalue="JUnit.CartItemControllerTest" />
+       <item itemvalue="JUnit.UserServiceTest" />
+       <item itemvalue="Spring Boot.OnlineClothingStoreApp" />
+     </list>
+     <recent_temporary>
+       <list>
+-        <item itemvalue="JUnit.ProductServiceTest" />
+-        <item itemvalue="JUnit.ProductControllerTest" />
+         <item itemvalue="Spring Boot.OnlineClothingStoreApp" />
++        <item itemvalue="JUnit.OrdersServiceTest" />
++        <item itemvalue="HTTP Request.generated-requests | #32" />
++        <item itemvalue="JUnit.ProductControllerTest" />
+         <item itemvalue="JUnit.UserServiceTest" />
+-        <item itemvalue="JUnit.CartItemControllerTest" />
+       </list>
+     </recent_temporary>
+   </component>
+   <component name="SharedIndexes">
+     <attachedChunks>
+       <set>
+-        <option value="jdk-17.0.9-jbr-17.0.9-f644763e9732-e10f1064" />
++        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.22855.74" />
++        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.22855.74" />
+       </set>
+     </attachedChunks>
+   </component>
+   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+   <component name="TaskManager">
+     <task active="true" id="Default" summary="Default task">
+-      <changelist id="67dd0542-1913-420d-a2c4-0d74954709e8" name="Changes" comment="Discount and images added" />
++      <changelist id="aaa25fc2-1426-4975-a807-1484a060e6ec" name="Changes" comment="" />
+       <created>1725778494940</created>
+       <option name="number" value="Default" />
+       <option name="presentableId" value="Default" />
+@@ -225,6 +215,21 @@
+       <workItem from="1727371452198" duration="2334000" />
+       <workItem from="1727374606985" duration="2881000" />
+       <workItem from="1727454732543" duration="7085000" />
++      <workItem from="1726849985755" duration="161000" />
++      <workItem from="1727030378383" duration="571000" />
++      <workItem from="1727037213694" duration="2316000" />
++      <workItem from="1727089546516" duration="3229000" />
++      <workItem from="1727373952019" duration="1568000" />
++      <workItem from="1727541186213" duration="298000" />
++      <workItem from="1727721117910" duration="20000" />
++      <workItem from="1728058367241" duration="133000" />
++      <workItem from="1728074462404" duration="809000" />
++      <workItem from="1728075650127" duration="2082000" />
++      <workItem from="1728139025980" duration="8000" />
++      <workItem from="1728420018827" duration="1088000" />
++      <workItem from="1728503683952" duration="15000" />
++      <workItem from="1728580154547" duration="1274000" />
++      <workItem from="1728922320033" duration="1835000" />
+     </task>
+     <task id="LOCAL-00001" summary="controller">
+       <option name="closed" value="true" />
+@@ -326,6 +331,7 @@
+   <component name="VcsManagerConfiguration">
+     <MESSAGE value="controller" />
+     <MESSAGE value="controller classes done" />
+-    <option name="LAST_COMMIT_MESSAGE" value="controller classes done" />
++    <MESSAGE value="updated the addresses and OrderController.java" />
++    <option name="LAST_COMMIT_MESSAGE" value="updated the addresses and OrderController.java" />
+   </component>
+ </project>
+\ No newline at end of file
+Index: src/main/java/za/ac/cput/domain/Users.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/za/ac/cput/domain/Users.java b/src/main/java/za/ac/cput/domain/Users.java
+new file mode 100644
+--- /dev/null	(date 1727570597223)
++++ b/src/main/java/za/ac/cput/domain/Users.java	(date 1727570597223)
+@@ -0,0 +1,183 @@
++package za.ac.cput.domain;
++
++import com.fasterxml.jackson.annotation.JsonIgnore;
++import jakarta.persistence.*;
++import lombok.Getter;
++
++import java.time.LocalDate;
++import java.util.HashSet;
++import java.util.Objects;
++import java.util.Set;
++
++/**
++ * Represents a user in the system.
++ * <p>
++ * This entity class is mapped to the "users" table in the database.
++ *
++ * @author Rethabile Ntsekhe
++ * @date 25-Aug-24
++ */
++
++@Entity
++@Getter
++@Table(name = "users")
++public class Users {
++
++    @Id
++    @GeneratedValue(strategy = GenerationType.IDENTITY)
++    private Long id;
++
++    @Column(name = "avatar")
++    private String avatar;
++
++    @Column(name = "first_name")
++    private String firstName;
++
++    @Column(name = "last_name")
++    private String lastName;
++
++    @Column(name = "email")
++    private String email;
++
++    @Column(name = "birth_date")
++    private LocalDate birthDate;
++
++    @Column(name = "password")
++    private String password;
++
++    @Column(name = "phone_number")
++    private Integer phoneNumber;
++
++    // ElementCollection with a separate table "user_roles" to store roles
++    @ElementCollection(fetch = FetchType.EAGER)
++    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
++    @Column(name = "role")
++    @JsonIgnore
++    private Set<String> role = new HashSet<>();
++
++    public Users() {
++    }
++
++    // Private constructor to be used by the builder
++    private Users(Builder builder) {
++        this.id = builder.id;
++        this.avatar = builder.avatar;
++        this.firstName = builder.firstName;
++        this.lastName = builder.lastName;
++        this.email = builder.email;
++        this.birthDate = builder.birthDate;
++        this.password = builder.password;
++        this.phoneNumber = builder.phoneNumber;
++        this.role.addAll(builder.role);
++    }
++
++    @Override
++    public String toString() {
++        return "\n User{" +
++                "id=" + id +
++                ", avatar='" + avatar + '\'' +
++                ", firstName='" + firstName + '\'' +
++                ", lastName='" + lastName + '\'' +
++                ", email='" + email + '\'' +
++                ", birthDate=" + birthDate +
++                ", password='" + password + '\'' +
++                ", phoneNumber='" + phoneNumber + '\'' +
++                ", role=" + role +
++                "}\n ";
++    }
++
++    @Override
++    public boolean equals(Object o) {
++        if (this == o) return true;
++        if (o == null || getClass() != o.getClass()) return false;
++        Users user = (Users) o;
++        return Objects.equals(id, user.id) &&
++                Objects.equals(avatar, user.avatar) &&
++                Objects.equals(firstName, user.firstName) &&
++                Objects.equals(lastName, user.lastName) &&
++                Objects.equals(email, user.email) &&
++                Objects.equals(birthDate, user.birthDate) &&
++                Objects.equals(password, user.password) &&
++                Objects.equals(phoneNumber, user.phoneNumber) &&
++                Objects.equals(role, user.role);
++    }
++
++    @Override
++    public int hashCode() {
++        return Objects.hash(id, avatar, firstName, lastName, email, birthDate, password, phoneNumber, role);
++    }
++
++    public static class Builder {
++        private Long id;
++        private String avatar;
++        private String firstName;
++        private String lastName;
++        private String email;
++        private LocalDate birthDate;
++        private String password;
++        private Integer phoneNumber;
++        private Set<String> role = new HashSet<>();
++
++        public Builder setId(Long id) {
++            this.id = id;
++            return this;
++        }
++
++        public Builder setAvatar(String avatar) {
++            this.avatar = avatar;
++            return this;
++        }
++
++        public Builder setFirstName(String firstName) {
++            this.firstName = firstName;
++            return this;
++        }
++
++        public Builder setLastName(String lastName) {
++            this.lastName = lastName;
++            return this;
++        }
++
++        public Builder setEmail(String email) {
++            this.email = email;
++            return this;
++        }
++
++        public Builder setBirthDate(LocalDate birthDate) {
++            this.birthDate = birthDate;
++            return this;
++        }
++
++        public Builder setPassword(String password) {
++            this.password = password;
++            return this;
++        }
++
++        public Builder setPhoneNumber(Integer phoneNumber) {
++            this.phoneNumber = phoneNumber;
++            return this;
++        }
++
++        public Builder setRole(Set<String> role) {
++            this.role = role;
++            return this;
++        }
++
++        public Builder copy(Users users) {
++            this.id = users.getId();
++            this.avatar = users.getAvatar();
++            this.firstName = users.getFirstName();
++            this.lastName = users.getLastName();
++            this.email = users.getEmail();
++            this.birthDate = users.getBirthDate();
++            this.password = users.getPassword();
++            this.phoneNumber = users.getPhoneNumber();
++            this.role = new HashSet<>(users.getRole());
++            return this;
++        }
++
++        public Users build() {
++            return new Users(this);
++        }
++    }
++}
+Index: src/main/java/za/ac/cput/service/IUserService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package za.ac.cput.service;\r\n\r\nimport za.ac.cput.domain.User;\r\n\r\nimport java.time.LocalDate;\r\nimport java.util.List;\r\nimport java.util.Optional;\r\nimport java.util.Set;\r\n\r\n/**\r\n * IUserService defines the contract for user-related operations.\r\n * It extends the generic IService interface, providing specific methods\r\n * for managing {@link User} entities. The service includes functionality for\r\n * CRUD operations and custom queries such as finding users by email, name, birthdate, and more.\r\n */\r\npublic interface IUserService extends IService<User, Long> {\r\n\r\n    List<User> getAll();\r\n\r\n    /**\r\n     * Deletes a user by their unique ID.\r\n     *\r\n     * @param id the unique ID of the user to be deleted\r\n     */\r\n    void delete(Long id);\r\n\r\n    /**\r\n     * Retrieves a list of all users.\r\n     *\r\n     * @return a list of all users\r\n     */\r\n    List<User> findAll();\r\n\r\n    /**\r\n     * Finds a list of users by their avatar image URL or path.\r\n     *\r\n     * @param avatar the avatar image URL or path to search for\r\n     * @return a list of users that match the given avatar\r\n     */\r\n    List<User> findByAvatar(String avatar);\r\n\r\n    /**\r\n     * Finds an optional user by their email address.\r\n     *\r\n     * @param email the email address to search for\r\n     * @return an Optional containing the user if found, or an empty Optional if not found\r\n     */\r\n    Optional<User> findByEmail(String email);\r\n\r\n    /**\r\n     * Finds a list of users by their first name.\r\n     *\r\n     * @param firstname the first name to search for\r\n     * @return a list of users that match the given first name\r\n     */\r\n    List<User> findByFirstName(String firstname);\r\n\r\n    /**\r\n     * Finds a list of users by their last name.\r\n     *\r\n     * @param lastName the last name to search for\r\n     * @return a list of users that match the given last name\r\n     */\r\n    List<User> findByLastName(String lastName);\r\n\r\n    /**\r\n     * Finds a list of users by their birth date.\r\n     *\r\n     * @param birthDate the birth date to search for\r\n     * @return a list of users that match the given birth date\r\n     */\r\n    List<User> findByBirthDate(LocalDate birthDate);\r\n\r\n    /**\r\n     * Finds a list of users by their phone number.\r\n     *\r\n     * @param phoneNumber the phone number to search for\r\n     * @return a list of users that match the given phone number\r\n     */\r\n    List<User> findByPhoneNumber(Integer phoneNumber);\r\n\r\n    /**\r\n     * Finds a list of users by their assigned role (e.g., \"Admin\", \"User\").\r\n     *\r\n     * @param role the role to search for\r\n     * @return a list of users that match the given role\r\n     */\r\n    List<User> findByRole(String role);\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/za/ac/cput/service/IUserService.java b/src/main/java/za/ac/cput/service/IUserService.java
+--- a/src/main/java/za/ac/cput/service/IUserService.java	(revision 789b8414aa9422288566c0cd6d9be4fbbe1ab78e)
++++ b/src/main/java/za/ac/cput/service/IUserService.java	(date 1727572092843)
+@@ -1,21 +1,20 @@
+ package za.ac.cput.service;
+ 
+-import za.ac.cput.domain.User;
++import za.ac.cput.domain.Users;
+ 
+ import java.time.LocalDate;
+ import java.util.List;
+ import java.util.Optional;
+-import java.util.Set;
+ 
+ /**
+  * IUserService defines the contract for user-related operations.
+  * It extends the generic IService interface, providing specific methods
+- * for managing {@link User} entities. The service includes functionality for
++ * for managing {@link Users} entities. The service includes functionality for
+  * CRUD operations and custom queries such as finding users by email, name, birthdate, and more.
+  */
+-public interface IUserService extends IService<User, Long> {
++public interface IUserService extends IService<Users, Long> {
+ 
+-    List<User> getAll();
++    List<Users> getAll();
+ 
+     /**
+      * Deletes a user by their unique ID.
+@@ -29,7 +28,7 @@
+      *
+      * @return a list of all users
+      */
+-    List<User> findAll();
++    List<Users> findAll();
+ 
+     /**
+      * Finds a list of users by their avatar image URL or path.
+@@ -37,7 +36,7 @@
+      * @param avatar the avatar image URL or path to search for
+      * @return a list of users that match the given avatar
+      */
+-    List<User> findByAvatar(String avatar);
++    List<Users> findByAvatar(String avatar);
+ 
+     /**
+      * Finds an optional user by their email address.
+@@ -45,7 +44,7 @@
+      * @param email the email address to search for
+      * @return an Optional containing the user if found, or an empty Optional if not found
+      */
+-    Optional<User> findByEmail(String email);
++    Optional<Users> findByEmail(String email);
+ 
+     /**
+      * Finds a list of users by their first name.
+@@ -53,7 +52,7 @@
+      * @param firstname the first name to search for
+      * @return a list of users that match the given first name
+      */
+-    List<User> findByFirstName(String firstname);
++    List<Users> findByFirstName(String firstname);
+ 
+     /**
+      * Finds a list of users by their last name.
+@@ -61,7 +60,7 @@
+      * @param lastName the last name to search for
+      * @return a list of users that match the given last name
+      */
+-    List<User> findByLastName(String lastName);
++    List<Users> findByLastName(String lastName);
+ 
+     /**
+      * Finds a list of users by their birth date.
+@@ -69,7 +68,7 @@
+      * @param birthDate the birth date to search for
+      * @return a list of users that match the given birth date
+      */
+-    List<User> findByBirthDate(LocalDate birthDate);
++    List<Users> findByBirthDate(LocalDate birthDate);
+ 
+     /**
+      * Finds a list of users by their phone number.
+@@ -77,7 +76,7 @@
+      * @param phoneNumber the phone number to search for
+      * @return a list of users that match the given phone number
+      */
+-    List<User> findByPhoneNumber(Integer phoneNumber);
++    List<Users> findByPhoneNumber(Integer phoneNumber);
+ 
+     /**
+      * Finds a list of users by their assigned role (e.g., "Admin", "User").
+@@ -85,6 +84,6 @@
+      * @param role the role to search for
+      * @return a list of users that match the given role
+      */
+-    List<User> findByRole(String role);
++    List<Users> findByRole(String role);
+ 
+ }
+\ No newline at end of file
+Index: src/main/java/za/ac/cput/service/UserService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package za.ac.cput.service;\r\n\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.security.core.authority.SimpleGrantedAuthority;\r\nimport org.springframework.security.core.userdetails.UserDetails;\r\nimport org.springframework.security.core.userdetails.UserDetailsService;\r\nimport org.springframework.security.core.userdetails.UsernameNotFoundException;\r\nimport org.springframework.stereotype.Service;\r\nimport org.springframework.security.crypto.password.PasswordEncoder;\r\nimport za.ac.cput.domain.User;\r\nimport za.ac.cput.repository.UserRepository;\r\n\r\nimport java.time.LocalDate;\r\nimport java.util.List;\r\nimport java.util.Optional;\r\nimport java.util.Set;\r\nimport java.util.stream.Collectors;\r\n\r\n@Service\r\npublic class UserService implements UserDetailsService, IUserService {\r\n\r\n    private final UserRepository userRepository;\r\n    private final PasswordEncoder passwordEncoder;\r\n\r\n    /**\r\n     * Constructs a UserService with the specified {@link UserRepository} and {@link PasswordEncoder}.\r\n     *\r\n     * @param userRepository  the repository for interacting with the User entity in the database\r\n     * @param passwordEncoder the encoder for encoding user passwords\r\n     */\r\n    @Autowired\r\n    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {\r\n        this.userRepository = userRepository;\r\n        this.passwordEncoder = passwordEncoder;\r\n    }\r\n\r\n    /**\r\n     * Creates a new user in the database.\r\n     *\r\n     * @param user the user to be created\r\n     * @return the created user\r\n     */\r\n    @Override\r\n    public User create(User user) {\r\n        return userRepository.save(user);\r\n    }\r\n\r\n    /**\r\n     * Retrieves a user by their ID.\r\n     *\r\n     * @param id the ID of the user\r\n     * @return the user, or {@code null} if no user is found\r\n     */\r\n    @Override\r\n    public User read(Long id) {\r\n        return userRepository.findById(id).orElse(null);\r\n    }\r\n\r\n    /**\r\n     * Updates an existing user in the database.\r\n     *\r\n     * @param user the user with updated details\r\n     * @return the updated user, or {@code null} if the user does not exist\r\n     */\r\n    @Override\r\n    public User update(User user) {\r\n        if (userRepository.existsById(user.getUserID())) {\r\n            return userRepository.save(user);\r\n        }\r\n        return null;\r\n    }\r\n\r\n    /**\r\n     * Retrieves all users in the system.\r\n     *\r\n     * @return a list of all users\r\n     */\r\n    @Override\r\n    public List<User> getAll() {\r\n        return userRepository.findAll(); // This can be updated to return actual data if needed\r\n    }\r\n\r\n    /**\r\n     * Deletes a user by their ID.\r\n     *\r\n     * @param id the ID of the user to be deleted\r\n     */\r\n    @Override\r\n    public void delete(Long id) {\r\n        userRepository.deleteById(id);\r\n    }\r\n\r\n    /**\r\n     * Finds all users in the system.\r\n     *\r\n     * @return a list of all users\r\n     */\r\n    @Override\r\n    public List<User> findAll() {\r\n        return userRepository.findAll();\r\n    }\r\n\r\n    @Override\r\n    public List<User> findByAvatar(String avatar) {\r\n        return userRepository.findByAvatar(avatar);\r\n    }\r\n\r\n    /**\r\n     * Loads user-specific data by username (usually email for authentication).\r\n     *\r\n     * @param username the username (or email) of the user\r\n     * @return the {@link UserDetails} object containing user data\r\n     * @throws UsernameNotFoundException if no user is found with the given username\r\n     */\r\n    @Override\r\n    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {\r\n        User user = userRepository.findByEmail(username)\r\n                .orElseThrow(() -> new UsernameNotFoundException(\"User not found with email: \" + username));\r\n\r\n        // Convert roles to SimpleGrantedAuthority\r\n        List<SimpleGrantedAuthority> authorities = user.getRole().stream()\r\n                .map(SimpleGrantedAuthority::new)\r\n                .collect(Collectors.toList());\r\n\r\n        return new org.springframework.security.core.userdetails.User(\r\n                user.getEmail(),\r\n                user.getPassword(),\r\n                authorities\r\n        );\r\n    }\r\n\r\n    /**\r\n     * Finds a user by their email.\r\n     *\r\n     * @param email the email of the user\r\n     * @return an {@link Optional} containing the user, or empty if not found\r\n     */\r\n    @Override\r\n    public Optional<User> findByEmail(String email) {\r\n        return userRepository.findByEmail(email);\r\n    }\r\n\r\n    /**\r\n     * Finds users by their first name.\r\n     *\r\n     * @param firstname the first name of the users\r\n     * @return a list of users with the specified first name\r\n     */\r\n    @Override\r\n    public List<User> findByFirstName(String firstname) {\r\n        return userRepository.findByFirstName(firstname);\r\n    }\r\n\r\n    /**\r\n     * Finds users by their last name.\r\n     *\r\n     * @param lastName the last name of the users\r\n     * @return a list of users with the specified last name\r\n     */\r\n    @Override\r\n    public List<User> findByLastName(String lastName) {\r\n        return userRepository.findByLastName(lastName);\r\n    }\r\n\r\n    /**\r\n     * Finds users by their birth date.\r\n     *\r\n     * @param birthDate the birth date of the users\r\n     * @return a list of users with the specified birth date\r\n     */\r\n    @Override\r\n    public List<User> findByBirthDate(LocalDate birthDate) {\r\n        return userRepository.findByBirthDate(birthDate);\r\n    }\r\n\r\n    /**\r\n     * Finds users by their phone number.\r\n     *\r\n     * @param phoneNumber the phone number of the users\r\n     * @return a list of users with the specified phone number\r\n     */\r\n    @Override\r\n    public List<User> findByPhoneNumber(Integer phoneNumber) {\r\n        return userRepository.findByPhoneNumber(phoneNumber);\r\n    }\r\n\r\n    /**\r\n     * Finds users by their role.\r\n     *\r\n     * @param role the role of the users\r\n     * @return a list of users with the specified role\r\n     */\r\n    @Override\r\n    public List<User> findByRole(String role) {\r\n        return userRepository.findByRole(role);\r\n    }\r\n\r\n    /*** Verifies a user's credentials.** @param email the email address* @param password the password* @return the User if credentials are valid, otherwise null*/\r\n    public Set<User> verifyUser(String email, String password) {\r\n        return userRepository.findByEmailAndPassword(email, password);\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/za/ac/cput/service/UserService.java b/src/main/java/za/ac/cput/service/UserService.java
+--- a/src/main/java/za/ac/cput/service/UserService.java	(revision 789b8414aa9422288566c0cd6d9be4fbbe1ab78e)
++++ b/src/main/java/za/ac/cput/service/UserService.java	(date 1727572093030)
+@@ -5,10 +5,12 @@
+ import org.springframework.security.core.userdetails.UserDetails;
+ import org.springframework.security.core.userdetails.UserDetailsService;
+ import org.springframework.security.core.userdetails.UsernameNotFoundException;
+-import org.springframework.stereotype.Service;
++import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+ import org.springframework.security.crypto.password.PasswordEncoder;
+-import za.ac.cput.domain.User;
+-import za.ac.cput.repository.UserRepository;
++import org.springframework.stereotype.Service;
++import za.ac.cput.domain.Users;
++import za.ac.cput.factory.UserFactory;
++import za.ac.cput.repo.UserRepository;
+ 
+ import java.time.LocalDate;
+ import java.util.List;
+@@ -20,29 +22,40 @@
+ public class UserService implements UserDetailsService, IUserService {
+ 
+     private final UserRepository userRepository;
+-    private final PasswordEncoder passwordEncoder;
++    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(5);
++
++    private UserFactory userFactory;
+ 
+     /**
+      * Constructs a UserService with the specified {@link UserRepository} and {@link PasswordEncoder}.
+      *
+      * @param userRepository  the repository for interacting with the User entity in the database
+-     * @param passwordEncoder the encoder for encoding user passwords
+      */
+     @Autowired
+-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
++    public UserService(UserRepository userRepository) {
+         this.userRepository = userRepository;
+-        this.passwordEncoder = passwordEncoder;
+     }
+ 
+     /**
+-     * Creates a new user in the database.
++     * Creates a new users in the database.
+      *
+-     * @param user the user to be created
+-     * @return the created user
++     * @param users the users to be created
++     * @return the created users
+      */
+     @Override
+-    public User create(User user) {
+-        return userRepository.save(user);
++    public Users create(Users users) {
++        Users encrptedPasword= new Users.Builder()
++                .copy(users)
++                .setId(users.getId())
++                .setFirstName(users.getFirstName())
++                .setLastName(users.getLastName())
++                .setEmail(users.getEmail())
++                .setPassword(encoder.encode(users.getPassword()) )
++                .setRole(users.getRole())
++                .setBirthDate(users.getBirthDate())
++                .setPhoneNumber(users.getPhoneNumber())
++                .build();
++        return userRepository.save(encrptedPasword);
+     }
+ 
+     /**
+@@ -52,31 +65,44 @@
+      * @return the user, or {@code null} if no user is found
+      */
+     @Override
+-    public User read(Long id) {
++    public Users read(Long id) {
+         return userRepository.findById(id).orElse(null);
+     }
+ 
+     /**
+-     * Updates an existing user in the database.
++     * Updates an existing users in the database.
+      *
+-     * @param user the user with updated details
+-     * @return the updated user, or {@code null} if the user does not exist
++     * @param users the users with updated details
++     * @return the updated users, or {@code null} if the users does not exist
+      */
+     @Override
+-    public User update(User user) {
+-        if (userRepository.existsById(user.getUserID())) {
+-            return userRepository.save(user);
++    public Users update(Users users) {
++        Users existing = userRepository.findById(users.getId()).orElse(null);
++        if (existing != null) {
++            Users updatedusers= new Users.Builder()
++                    .copy(existing)
++                    .setId(existing.getId())
++                    .setFirstName(users.getFirstName())
++                    .setLastName(users.getLastName())
++                    .setEmail(users.getEmail())
++                    .setPassword(users.getPassword())
++                    .setRole(users.getRole())
++                    .setBirthDate(users.getBirthDate())
++                    .setPhoneNumber(users.getPhoneNumber())
++                    .build();
++            return userRepository.save(updatedusers);
+         }
+         return null;
+     }
+ 
++
+     /**
+      * Retrieves all users in the system.
+      *
+      * @return a list of all users
+      */
+     @Override
+-    public List<User> getAll() {
++    public List<Users> getAll() {
+         return userRepository.findAll(); // This can be updated to return actual data if needed
+     }
+ 
+@@ -96,12 +122,12 @@
+      * @return a list of all users
+      */
+     @Override
+-    public List<User> findAll() {
++    public List<Users> findAll() {
+         return userRepository.findAll();
+     }
+ 
+     @Override
+-    public List<User> findByAvatar(String avatar) {
++    public List<Users> findByAvatar(String avatar) {
+         return userRepository.findByAvatar(avatar);
+     }
+ 
+@@ -114,17 +140,17 @@
+      */
+     @Override
+     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+-        User user = userRepository.findByEmail(username)
++        Users users = userRepository.findByEmail(username)
+                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + username));
+ 
+         // Convert roles to SimpleGrantedAuthority
+-        List<SimpleGrantedAuthority> authorities = user.getRole().stream()
++        List<SimpleGrantedAuthority> authorities = users.getRole().stream()
+                 .map(SimpleGrantedAuthority::new)
+                 .collect(Collectors.toList());
+ 
+         return new org.springframework.security.core.userdetails.User(
+-                user.getEmail(),
+-                user.getPassword(),
++                users.getEmail(),
++                users.getPassword(),
+                 authorities
+         );
+     }
+@@ -136,7 +162,7 @@
+      * @return an {@link Optional} containing the user, or empty if not found
+      */
+     @Override
+-    public Optional<User> findByEmail(String email) {
++    public Optional<Users> findByEmail(String email) {
+         return userRepository.findByEmail(email);
+     }
+ 
+@@ -147,7 +173,7 @@
+      * @return a list of users with the specified first name
+      */
+     @Override
+-    public List<User> findByFirstName(String firstname) {
++    public List<Users> findByFirstName(String firstname) {
+         return userRepository.findByFirstName(firstname);
+     }
+ 
+@@ -158,7 +184,7 @@
+      * @return a list of users with the specified last name
+      */
+     @Override
+-    public List<User> findByLastName(String lastName) {
++    public List<Users> findByLastName(String lastName) {
+         return userRepository.findByLastName(lastName);
+     }
+ 
+@@ -169,7 +195,7 @@
+      * @return a list of users with the specified birth date
+      */
+     @Override
+-    public List<User> findByBirthDate(LocalDate birthDate) {
++    public List<Users> findByBirthDate(LocalDate birthDate) {
+         return userRepository.findByBirthDate(birthDate);
+     }
+ 
+@@ -180,7 +206,7 @@
+      * @return a list of users with the specified phone number
+      */
+     @Override
+-    public List<User> findByPhoneNumber(Integer phoneNumber) {
++    public List<Users> findByPhoneNumber(Integer phoneNumber) {
+         return userRepository.findByPhoneNumber(phoneNumber);
+     }
+ 
+@@ -191,12 +217,12 @@
+      * @return a list of users with the specified role
+      */
+     @Override
+-    public List<User> findByRole(String role) {
++    public List<Users> findByRole(String role) {
+         return userRepository.findByRole(role);
+     }
+ 
+     /*** Verifies a user's credentials.** @param email the email address* @param password the password* @return the User if credentials are valid, otherwise null*/
+-    public Set<User> verifyUser(String email, String password) {
++    public Set<Users> verifyUser(String email, String password) {
+         return userRepository.findByEmailAndPassword(email, password);
+     }
+ }
+\ No newline at end of file
+Index: src/main/resources/application.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+># Database configuration for SQL Server\r\nspring.datasource.url=jdbc:sqlserver://shoeserver.database.windows.net:1433;database=Capstone;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;\r\nspring.datasource.username=Rethabile@shoeserver\r\nspring.datasource.password=Ntsekhe12\r\nspring.datasource.driver-class-name=com.microsoft.sqlserver.jdbc.SQLServerDriver\r\n\r\n# Hibernate configuration\r\nspring.jpa.hibernate.ddl-auto=update\r\n\r\n# Server configuration\r\nserver.servlet.context-path=/shopping_store\r\n\r\n# Additional settings\r\nspring.jpa.open-in-view=false\r\n\r\n# AWS Configuration\r\naws.accessKeyId=AKIA6ELKOAGBQJPXU57V\r\naws.secretKey=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\r\naws.region=eu-north-1\r\naws.s3.bucket=capstone-bucket-cput
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>ISO-8859-1
+===================================================================
+diff --git a/src/main/resources/application.properties b/src/main/resources/application.properties
+--- a/src/main/resources/application.properties	(revision 789b8414aa9422288566c0cd6d9be4fbbe1ab78e)
++++ b/src/main/resources/application.properties	(date 1727570641654)
+@@ -1,11 +1,14 @@
+ # Database configuration for SQL Server
+-spring.datasource.url=jdbc:sqlserver://shoeserver.database.windows.net:1433;database=Capstone;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;
+-spring.datasource.username=Rethabile@shoeserver
+-spring.datasource.password=Ntsekhe12
++spring.datasource.name=Capstone
++spring.datasource.url=jdbc:sqlserver://capstone-server-v2.database.windows.net:1433;database=Capstone;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;
++spring.datasource.username=Mbobo@capstone-server-v2
++spring.datasource.password=@mazda5470
+ spring.datasource.driver-class-name=com.microsoft.sqlserver.jdbc.SQLServerDriver
+ 
+ # Hibernate configuration
+ spring.jpa.hibernate.ddl-auto=update
++spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.SQLServerDialect
++spring.jpa.show-sql=true 
+ 
+ # Server configuration
+ server.servlet.context-path=/shopping_store
+@@ -14,7 +17,7 @@
+ spring.jpa.open-in-view=false
+ 
+ # AWS Configuration
+-aws.accessKeyId=AKIA6ELKOAGBQJPXU57V
+-aws.secretKey=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
++aws.accessKeyId=AKIA6ELKOAGBZSAITIO7
++aws.secretKey=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
+ aws.region=eu-north-1
+ aws.s3.bucket=capstone-bucket-cput
+\ No newline at end of file
+Index: src/main/java/za/ac/cput/repository/UserRepository.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package za.ac.cput.repository;\r\n\r\nimport org.springframework.data.jpa.repository.JpaRepository;\r\nimport org.springframework.stereotype.Repository;\r\nimport za.ac.cput.domain.User;\r\n\r\nimport java.time.LocalDate;\r\nimport java.util.List;\r\nimport java.util.Optional;\r\nimport java.util.Set;\r\n\r\n@Repository\r\npublic interface UserRepository extends JpaRepository<User, Long > {\r\n    /*** Finds a User by their email address.** @param email the email address to search for* @return an Optional containing the User if found, otherwise empty*/\r\n    Optional<User> findByEmail(String email);\r\n\r\n    List<User> findByAvatar(String avatar);\r\n    /*** Finds a User by their username.** @param username the username to search for* @return an Optional containing the User if found, otherwise empty*/\r\n    @Override\r\n    Optional<User> findById(Long id);\r\n\r\n    /*** Finds all Users by their first name.** @param firstName the first name to search for* @return a List of Users with the specified first name*/\r\n    List<User> findByFirstName(String firstName);\r\n\r\n    /*** Finds all Users by their last name.** @param lastName the last name to search for* @return a List of Users with the specified last name*/\r\n    List<User> findByLastName(String lastname);\r\n\r\n    /*** Finds all Users by their birth date.** @param birthDate the birth date to search for* @return a List of Users with the specified birth date*/\r\n    List<User> findByBirthDate(LocalDate birthDate);\r\n\r\n    /*** Finds all Users by their phone number.** @param phoneNumber the phone number to search for* @return a List of Users with the specified phone number*/\r\n    List<User> findByPhoneNumber(Integer phoneNumber);\r\n\r\n    /*** Finds all Users by their role.** @param role the role to search for* @return a List of Users with the specified role*/\r\n    List<User> findByRole(String role);\r\n\r\n    /*** Finds a User by their email address and password.** @param email the email address to search for* @param password the password to match* @return an Optional containing the User if found, otherwise empty*/\r\n    Set<User> findByEmailAndPassword(String email, String password);\r\n\r\n}\r\n\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/za/ac/cput/repository/UserRepository.java b/src/main/java/za/ac/cput/repository/UserRepository.java
+--- a/src/main/java/za/ac/cput/repository/UserRepository.java	(revision 789b8414aa9422288566c0cd6d9be4fbbe1ab78e)
++++ b/src/main/java/za/ac/cput/repository/UserRepository.java	(date 1727572093070)
+@@ -1,8 +1,8 @@
+-package za.ac.cput.repository;
++package za.ac.cput.repo;
+ 
+ import org.springframework.data.jpa.repository.JpaRepository;
+ import org.springframework.stereotype.Repository;
+-import za.ac.cput.domain.User;
++import za.ac.cput.domain.Users;
+ 
+ import java.time.LocalDate;
+ import java.util.List;
+@@ -10,32 +10,32 @@
+ import java.util.Set;
+ 
+ @Repository
+-public interface UserRepository extends JpaRepository<User, Long > {
++public interface UserRepository extends JpaRepository<Users, Long > {
+     /*** Finds a User by their email address.** @param email the email address to search for* @return an Optional containing the User if found, otherwise empty*/
+-    Optional<User> findByEmail(String email);
++    Optional<Users> findByEmail(String email);
+ 
+-    List<User> findByAvatar(String avatar);
++    List<Users> findByAvatar(String avatar);
+     /*** Finds a User by their username.** @param username the username to search for* @return an Optional containing the User if found, otherwise empty*/
+     @Override
+-    Optional<User> findById(Long id);
++    Optional<Users> findById(Long id);
+ 
+     /*** Finds all Users by their first name.** @param firstName the first name to search for* @return a List of Users with the specified first name*/
+-    List<User> findByFirstName(String firstName);
++    List<Users> findByFirstName(String firstName);
+ 
+     /*** Finds all Users by their last name.** @param lastName the last name to search for* @return a List of Users with the specified last name*/
+-    List<User> findByLastName(String lastname);
++    List<Users> findByLastName(String lastname);
+ 
+     /*** Finds all Users by their birth date.** @param birthDate the birth date to search for* @return a List of Users with the specified birth date*/
+-    List<User> findByBirthDate(LocalDate birthDate);
++    List<Users> findByBirthDate(LocalDate birthDate);
+ 
+     /*** Finds all Users by their phone number.** @param phoneNumber the phone number to search for* @return a List of Users with the specified phone number*/
+-    List<User> findByPhoneNumber(Integer phoneNumber);
++    List<Users> findByPhoneNumber(Integer phoneNumber);
+ 
+     /*** Finds all Users by their role.** @param role the role to search for* @return a List of Users with the specified role*/
+-    List<User> findByRole(String role);
++    List<Users> findByRole(String role);
+ 
+     /*** Finds a User by their email address and password.** @param email the email address to search for* @param password the password to match* @return an Optional containing the User if found, otherwise empty*/
+-    Set<User> findByEmailAndPassword(String email, String password);
++    Set<Users> findByEmailAndPassword(String email, String password);
+ 
+ }
+ 
+Index: src/main/java/za/ac/cput/factory/UserFactory.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package za.ac.cput.factory;\r\n\r\nimport za.ac.cput.domain.User;\r\nimport za.ac.cput.util.Helper;\r\n\r\nimport java.time.LocalDate;\r\nimport java.util.Set;\r\n\r\npublic class UserFactory {\r\n\r\n    public static User createUser(String avatar, String firstName, String lastName, String email,\r\n                                  LocalDate birthDate, Set<String> role, Integer phoneNumber, String password){\r\n\r\n        if (Helper.isNullOrEmpty(firstName) ||\r\n                Helper.isNullOrEmpty(lastName) ||\r\n                Helper.isNullOrEmpty(email) ||\r\n                Helper.isNullOrEmpty(password)) {\r\n            throw new IllegalArgumentException(\"First name, last name, email, and password cannot be null or empty\");\r\n        }\r\n        // Create a new User object using the Builder pattern\r\n        return new User.Builder()\r\n                .setAvatar(avatar)\r\n                .setFirstName(firstName)\r\n                .setLastName(lastName)\r\n                .setEmail(email)\r\n                .setBirthDate(birthDate)\r\n                .setRole(role) // Set the roles as a Set<String>\r\n                .setPhoneNumber(phoneNumber)\r\n                .setPassword(password)\r\n                .build();\r\n    }\r\n    public static User createUserForSignIn(String email, String password) {\r\n        // Validation checks\r\n        if (Helper.isNullOrEmpty(email) || Helper.isNullOrEmpty(password)) {\r\n            throw new IllegalArgumentException(\"Email and password cannot be null or empty\");\r\n        }\r\n\r\n        return new User.Builder()\r\n                .setEmail(email)\r\n                .setPassword(password)\r\n                .build();\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/za/ac/cput/factory/UserFactory.java b/src/main/java/za/ac/cput/factory/UserFactory.java
+--- a/src/main/java/za/ac/cput/factory/UserFactory.java	(revision 789b8414aa9422288566c0cd6d9be4fbbe1ab78e)
++++ b/src/main/java/za/ac/cput/factory/UserFactory.java	(date 1727572093114)
+@@ -1,6 +1,6 @@
+ package za.ac.cput.factory;
+ 
+-import za.ac.cput.domain.User;
++import za.ac.cput.domain.Users;
+ import za.ac.cput.util.Helper;
+ 
+ import java.time.LocalDate;
+@@ -8,8 +8,14 @@
+ 
+ public class UserFactory {
+ 
+-    public static User createUser(String avatar, String firstName, String lastName, String email,
+-                                  LocalDate birthDate, Set<String> role, Integer phoneNumber, String password){
++    public static Users createUser(String avatar,
++                                   String firstName,
++                                   String lastName,
++                                   String email,
++                                   LocalDate birthDate,
++                                   Set<String> role,
++                                   Integer phoneNumber,
++                                   String password){
+ 
+         if (Helper.isNullOrEmpty(firstName) ||
+                 Helper.isNullOrEmpty(lastName) ||
+@@ -18,7 +24,7 @@
+             throw new IllegalArgumentException("First name, last name, email, and password cannot be null or empty");
+         }
+         // Create a new User object using the Builder pattern
+-        return new User.Builder()
++        return new Users.Builder()
+                 .setAvatar(avatar)
+                 .setFirstName(firstName)
+                 .setLastName(lastName)
+@@ -29,13 +35,13 @@
+                 .setPassword(password)
+                 .build();
+     }
+-    public static User createUserForSignIn(String email, String password) {
++    public static Users createUserForSignIn(String email, String password) {
+         // Validation checks
+         if (Helper.isNullOrEmpty(email) || Helper.isNullOrEmpty(password)) {
+             throw new IllegalArgumentException("Email and password cannot be null or empty");
+         }
+ 
+-        return new User.Builder()
++        return new Users.Builder()
+                 .setEmail(email)
+                 .setPassword(password)
+                 .build();

@@ -1,0 +1,513 @@
+Index: src/main/java/za/ac/cput/controller/UserController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package za.ac.cput.controller;\r\n\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.http.ResponseEntity;\r\nimport org.springframework.web.bind.annotation.*;\r\nimport za.ac.cput.domain.User;\r\nimport za.ac.cput.service.UserService;\r\n\r\nimport java.time.LocalDate;\r\nimport java.util.List;\r\nimport java.util.Optional;\r\n\r\n/**\r\n * Controller for managing users in the system.\r\n */\r\n@RestController\r\n@RequestMapping(\"/users\")\r\npublic class UserController {\r\n\r\n    private final UserService userService;\r\n\r\n    @Autowired\r\n    public UserController(UserService userService) {\r\n        this.userService = userService;\r\n    }\r\n\r\n    /**\r\n     * Creates a new user.\r\n     *\r\n     * @param user the user object to be created\r\n     * @return the created user\r\n     */\r\n    @PostMapping(\"/create\")\r\n    public ResponseEntity<User> createUser(@RequestBody User user) {\r\n        User createdUser = userService.create(user);\r\n        return ResponseEntity.ok(createdUser);\r\n    }\r\n\r\n    /**\r\n     * Retrieves a user by ID.\r\n     *\r\n     * @param id the ID of the user to retrieve\r\n     * @return the user if found, or 404 status if not\r\n     */\r\n    @GetMapping(\"/read/{id}\")\r\n    public ResponseEntity<User> readUser(@PathVariable Long id) {\r\n        User user = userService.read(id);\r\n        return user != null ? ResponseEntity.ok(user) : ResponseEntity.notFound().build();\r\n    }\r\n\r\n    /**\r\n     * Updates an existing user.\r\n     *\r\n     * @param user the updated user details\r\n     * @return the updated user if the update is successful, or 404 status if the user does not exist\r\n     */\r\n    @PutMapping(\"/update\")\r\n    public ResponseEntity<User> updateUser(@RequestBody User user) {\r\n        User updatedUser = userService.update(user);\r\n        return updatedUser != null ? ResponseEntity.ok(updatedUser) : ResponseEntity.notFound().build();\r\n    }\r\n\r\n    /**\r\n     * Deletes a user by ID.\r\n     *\r\n     * @param id the ID of the user to delete\r\n     * @return a status indicating success or failure\r\n     */\r\n    @DeleteMapping(\"/delete/{id}\")\r\n    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {\r\n        userService.delete(id);\r\n        return ResponseEntity.noContent().build();\r\n    }\r\n\r\n    /**\r\n     * Retrieves a list of all users.\r\n     *\r\n     * @return a list of all users\r\n     */\r\n    @GetMapping(\"/all\")\r\n    public ResponseEntity<List<User>> getAllUsers() {\r\n        List<User> users = userService.getAll();\r\n        return ResponseEntity.ok(users);\r\n    }\r\n\r\n    /**\r\n     * Finds users by their email.\r\n     *\r\n     * @param email the email to search by\r\n     * @return the user if found, or 404 status if not\r\n     */\r\n    @GetMapping(\"/email/{email}\")\r\n    public ResponseEntity<User> findByEmail(@PathVariable String email) {\r\n        Optional<User> user = userService.findByEmail(email);\r\n        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());\r\n    }\r\n\r\n    /**\r\n     * Finds users by their first name.\r\n     *\r\n     * @param firstName the first name to search by\r\n     * @return a list of users with the specified first name\r\n     */\r\n    @GetMapping(\"/firstname/{firstName}\")\r\n    public ResponseEntity<List<User>> findByFirstName(@PathVariable String firstName) {\r\n        List<User> users = userService.findByFirstName(firstName);\r\n        return ResponseEntity.ok(users);\r\n    }\r\n\r\n    /**\r\n     * Finds users by their last name.\r\n     *\r\n     * @param lastName the last name to search by\r\n     * @return a list of users with the specified last name\r\n     */\r\n    @GetMapping(\"/lastname/{lastName}\")\r\n    public ResponseEntity<List<User>> findByLastName(@PathVariable String lastName) {\r\n        List<User> users = userService.findByLastName(lastName);\r\n        return ResponseEntity.ok(users);\r\n    }\r\n\r\n    /**\r\n     * Finds users by their birth date.\r\n     *\r\n     * @param birthDate the birth date to search by\r\n     * @return a list of users with the specified birth date\r\n     */\r\n    @GetMapping(\"/birthdate/{birthDate}\")\r\n    public ResponseEntity<List<User>> findByBirthDate(@PathVariable LocalDate birthDate) {\r\n        List<User> users = userService.findByBirthDate(birthDate);\r\n        return ResponseEntity.ok(users);\r\n    }\r\n\r\n    /**\r\n     * Finds users by their phone number.\r\n     *\r\n     * @param phoneNumber the phone number to search by\r\n     * @return a list of users with the specified phone number\r\n     */\r\n    @GetMapping(\"/phone/{phoneNumber}\")\r\n    public ResponseEntity<List<User>> findByPhoneNumber(@PathVariable Integer phoneNumber) {\r\n        List<User> users = userService.findByPhoneNumber(phoneNumber);\r\n        return ResponseEntity.ok(users);\r\n    }\r\n\r\n    /**\r\n     * Finds users by their role.\r\n     *\r\n     * @param role the role to search by\r\n     * @return a list of users with the specified role\r\n     */\r\n    @GetMapping(\"/role/{role}\")\r\n    public ResponseEntity<List<User>> findByRole(@PathVariable String role) {\r\n        List<User> users = userService.findByRole(role);\r\n        return ResponseEntity.ok(users);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/za/ac/cput/controller/UserController.java b/src/main/java/za/ac/cput/controller/UserController.java
+--- a/src/main/java/za/ac/cput/controller/UserController.java	
++++ b/src/main/java/za/ac/cput/controller/UserController.java	
+@@ -2,6 +2,7 @@
+ 
+ import org.springframework.beans.factory.annotation.Autowired;
+ import org.springframework.http.ResponseEntity;
++import org.springframework.security.core.userdetails.UserDetails;
+ import org.springframework.web.bind.annotation.*;
+ import za.ac.cput.domain.User;
+ import za.ac.cput.service.UserService;
+@@ -154,4 +155,10 @@
+         List<User> users = userService.findByRole(role);
+         return ResponseEntity.ok(users);
+     }
++
++    @GetMapping("/login/{email}/{password}")
++    public ResponseEntity<User> login(@PathVariable String email, @PathVariable String password) {
++        UserDetails user = userService.loadUserByUsername(email);
++        return user.map(ResponseEntity.ok()).orElseGet(() -> ResponseEntity.notFound().build());
++    }
+ }
+Index: src/main/java/za/ac/cput/config/SecurityConfig.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package za.ac.cput.config;\r\n\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.context.annotation.Bean;\r\nimport org.springframework.context.annotation.Configuration;\r\nimport org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;\r\nimport org.springframework.security.config.annotation.web.builders.HttpSecurity;\r\nimport org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;\r\nimport org.springframework.security.core.userdetails.UserDetailsService;\r\nimport org.springframework.security.crypto.password.PasswordEncoder;\r\nimport org.springframework.security.web.SecurityFilterChain;\r\n\r\n\r\n@Configuration\r\n@EnableWebSecurity\r\npublic class SecurityConfig {\r\n\r\n    private final UserDetailsService userDetailsService;\r\n    private final PasswordEncoder passwordEncoder;\r\n\r\n    public SecurityConfig(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {\r\n        this.userDetailsService = userDetailsService;\r\n        this.passwordEncoder = passwordEncoder;\r\n    }\r\n\r\n    /**\r\n     * Configures the HttpSecurity for authorization and authentication settings.\r\n     *\r\n     * - Admin endpoints (\"/api/admin/**\") are restricted to users with the \"ADMIN\" role.\r\n     * - User endpoints (\"/api/user/**\") are restricted to users with the \"USER\" role.\r\n     * - Other endpoints are accessible to all users without authentication.\r\n     *\r\n     * It also configures a custom login page and enables logout functionality.\r\n     *\r\n     * @param http the HttpSecurity object used for configuring web-based security.\r\n     * @return the SecurityFilterChain to be used by the security framework.\r\n     * @throws Exception if an error occurs while configuring HttpSecurity.\r\n     */\r\n    @Bean\r\n    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {\r\n        http\r\n                .authorizeHttpRequests(authorizeRequests -> authorizeRequests\r\n                        /* .requestMatchers(\"store/api/users/**\").permitAll() // Allow access to product endpoints\r\n                         .requestMatchers(\"/api/admin/**\").has Role(\"ADMIN\")\r\n                         .requestMatchers(\"/api/user/**\").hasRole(\"USER\")\r\n                         .anyRequest().authenticated()*/\r\n                        .anyRequest().permitAll() //Allow all requests without authentication\r\n                )\r\n                .formLogin(formLogin -> formLogin\r\n                                .disable() // Disable form login\r\n                        /*.loginPage(\"/login\")\r\n                        .permitAll()*/\r\n                )\r\n                .logout(logout -> logout\r\n                                .disable()\r\n                        /*.permitAll()*/\r\n                )\r\n                .csrf(csrf -> csrf\r\n                        .disable()  // Disable CSRF for testing; enable and configure properly in production\r\n                );\r\n        return http.build();\r\n    }\r\n\r\n    /*** Configures the AuthenticationManagerBuilder for user authentication.* It sets the userDetailsService to the UserService and specifies the password* encoder.** @param auth the AuthenticationManagerBuilder object used for configuring authentication.* @throws Exception if an error occurs while configuring authentication.*/\r\n    @Autowired\r\n    public void configure(AuthenticationManagerBuilder auth) throws Exception {\r\n        auth.userDetailsService(userDetailsService)\r\n                .passwordEncoder(passwordEncoder);\r\n    }\r\n}\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/za/ac/cput/config/SecurityConfig.java b/src/main/java/za/ac/cput/config/SecurityConfig.java
+--- a/src/main/java/za/ac/cput/config/SecurityConfig.java	
++++ b/src/main/java/za/ac/cput/config/SecurityConfig.java	
+@@ -25,11 +25,11 @@
+ 
+     /**
+      * Configures the HttpSecurity for authorization and authentication settings.
+-     *
++     * <p>
+      * - Admin endpoints ("/api/admin/**") are restricted to users with the "ADMIN" role.
+      * - User endpoints ("/api/user/**") are restricted to users with the "USER" role.
+      * - Other endpoints are accessible to all users without authentication.
+-     *
++     * <p>
+      * It also configures a custom login page and enables logout functionality.
+      *
+      * @param http the HttpSecurity object used for configuring web-based security.
+@@ -40,20 +40,16 @@
+     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+         http
+                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
+-                        /* .requestMatchers("store/api/users/**").permitAll() // Allow access to product endpoints
+-                         .requestMatchers("/api/admin/**").has Role("ADMIN")
+-                         .requestMatchers("/api/user/**").hasRole("USER")
+-                         .anyRequest().authenticated()*/
+-                        .anyRequest().permitAll() //Allow all requests without authentication
++                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
++                        .requestMatchers("/api/user/**").hasRole("USER")
++                        .anyRequest().authenticated()
+                 )
+                 .formLogin(formLogin -> formLogin
+-                                .disable() // Disable form login
+-                        /*.loginPage("/login")
+-                        .permitAll()*/
++                        .loginPage("/login")
++                        .permitAll()
+                 )
+                 .logout(logout -> logout
+-                                .disable()
+-                        /*.permitAll()*/
++                        .permitAll()
+                 )
+                 .csrf(csrf -> csrf
+                         .disable()  // Disable CSRF for testing; enable and configure properly in production
+@@ -61,8 +57,14 @@
+         return http.build();
+     }
+ 
+-    /*** Configures the AuthenticationManagerBuilder for user authentication.* It sets the userDetailsService to the UserService and specifies the password* encoder.** @param auth the AuthenticationManagerBuilder object used for configuring authentication.* @throws Exception if an error occurs while configuring authentication.*/
+-    @Autowired
++/**
++ * Configures the AuthenticationManagerBuilder for user authentication.
++ * It sets the userDetailsService to the UserService and specifies the password
++ * encoder.
++ *
++ * @param auth the AuthenticationManagerBuilder object used for configuring authentication.
++ * @throws Exception if an error occurs while configuring authentication.
++ */ @Autowired
+     public void configure(AuthenticationManagerBuilder auth) throws Exception {
+         auth.userDetailsService(userDetailsService)
+                 .passwordEncoder(passwordEncoder);
+Index: .idea/dataSources.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/dataSources.xml b/.idea/dataSources.xml
+deleted file mode 100644
+--- a/.idea/dataSources.xml	
++++ /dev/null	
+@@ -1,19 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+-    <data-source source="LOCAL" name="sqlserver@shoeserver.database.windows.net" uuid="c2d8397f-a507-421d-8612-880b001b622a">
+-      <driver-ref>sqlserver.ms</driver-ref>
+-      <synchronize>true</synchronize>
+-      <imported>true</imported>
+-      <remarks>$PROJECT_DIR$/src/main/resources/application.properties</remarks>
+-      <jdbc-driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</jdbc-driver>
+-      <jdbc-url>jdbc:sqlserver://shoeserver.database.windows.net:1433;database=Capstone;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;</jdbc-url>
+-      <jdbc-additional-properties>
+-        <property name="com.intellij.clouds.kubernetes.db.host.port" />
+-        <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
+-        <property name="com.intellij.clouds.kubernetes.db.container.port" />
+-      </jdbc-additional-properties>
+-      <working-dir>$ProjectFileDir$</working-dir>
+-    </data-source>
+-  </component>
+-</project>
+\ No newline at end of file
+Index: src/test/java/za/ac/cput/service/OrdersServiceTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package za.ac.cput.service;\r\n\r\nimport org.junit.jupiter.api.*;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.boot.test.context.SpringBootTest;\r\nimport org.springframework.transaction.annotation.Transactional;\r\nimport za.ac.cput.domain.OrderItem;\r\nimport za.ac.cput.domain.Orders;\r\nimport za.ac.cput.factory.OrderFactory;\r\nimport za.ac.cput.factory.OrderItemFactory;\r\n\r\nimport java.time.LocalDate;\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\nimport static org.junit.jupiter.api.Assertions.*;\r\n\r\n\r\n@SpringBootTest\r\n@TestMethodOrder(MethodOrderer.MethodName.class)\r\nclass OrdersServiceTest {\r\n\r\n    @Autowired\r\n    private OrderService orderService;\r\n\r\n    @Autowired\r\n    private OrderItemService orderItemService;\r\n\r\n    private Orders order;\r\n\r\n    @BeforeEach\r\n    void setUp() {\r\n        // Create an initial order\r\n        order = OrderFactory.buildOrder(\r\n                null,  // ID should be null for auto-generation\r\n                2L,    // userID\r\n                5L,    // addressID\r\n                \"Pending\",\r\n                150.0,\r\n                LocalDate.now(),\r\n                new ArrayList<>()\r\n        );\r\n\r\n        // Save the order to generate an orderID\r\n        order = orderService.create(order);\r\n\r\n        // Create OrderItems\r\n        OrderItem orderItem1 = OrderItemFactory.buildOrderItem(\r\n                null,\r\n                order.getId(),\r\n                12,\r\n                12.00,\r\n                order\r\n        );\r\n\r\n        OrderItem orderItem2 = OrderItemFactory.buildOrderItem(\r\n                null,\r\n                order.getId(),\r\n                5,\r\n                10.00,\r\n                order\r\n        );\r\n\r\n        OrderItem orderItem3 = OrderItemFactory.buildOrderItem(\r\n                null,\r\n                order.getId(),\r\n                20,\r\n                20.00,\r\n                order\r\n        );\r\n\r\n        // Save OrderItems\r\n        orderItem1 = orderItemService.create(orderItem1);\r\n        orderItem2 = orderItemService.create(orderItem2);\r\n        orderItem3 = orderItemService.create(orderItem3);\r\n\r\n        // Ensure OrderItems are associated with the Order\r\n        List<OrderItem> orderItems = new ArrayList<>();\r\n        orderItems.add(orderItem1);\r\n        orderItems.add(orderItem2);\r\n        orderItems.add(orderItem3);\r\n\r\n        order = new Orders.Builder()\r\n                .copy(order)\r\n                .setOrderItems(orderItems)  // Add OrderItems\r\n                .build();\r\n\r\n        order = orderService.update(order); // Ensure the updated order is persisted\r\n    }\r\n\r\n    @Test\r\n    @Order(1)\r\n    void create() {\r\n        Orders newOrder = OrderFactory.buildOrder(\r\n                null,\r\n                2L,\r\n                5L,\r\n                \"Pending\",\r\n                200.0,\r\n                LocalDate.now(),\r\n                new ArrayList<>()\r\n        );\r\n\r\n        Orders createdOrder = orderService.create(newOrder);\r\n        assertNotNull(createdOrder);\r\n        assertNotNull(createdOrder.getId());  // Check if ID is generated\r\n        System.out.println(\"Created: \\n\" + createdOrder + \"\\n\");\r\n    }\r\n\r\n    @Test\r\n    @Order(2)\r\n    void read() {\r\n        Orders readOrder = orderService.read(order.getId());\r\n        assertNotNull(readOrder);\r\n        assertEquals(order.getId(), readOrder.getId());\r\n        System.out.println(\"Read: \\n\" + readOrder + \"\\n\");\r\n\r\n        // Debugging OrderItems\r\n        List<OrderItem> orderItems = readOrder.getOrderItems();\r\n        System.out.println(\"Order Items: \" + orderItems);\r\n    }\r\n\r\n    @Test\r\n    @Order(3)\r\n    void update() {\r\n        Orders updatedOrder = new Orders.Builder()\r\n                .copy(order)\r\n                .setUserID(3L) // Updated userID\r\n                .setTotalPrice(300.0) // Updated totalPrice\r\n                .setStatus(\"Shipped\") // Updated status\r\n                .build();\r\n\r\n        Orders result = orderService.update(updatedOrder);\r\n        assertNotNull(result);\r\n        assertEquals(updatedOrder.getTotalPrice(), result.getTotalPrice());\r\n        assertEquals(updatedOrder.getStatus(), result.getStatus());\r\n        System.out.println(\"Updated: \\n\" + result + \"\\n\");\r\n    }\r\n\r\n    @Test\r\n    @Order(4)\r\n    void getAll() {\r\n        List<Orders> orders = orderService.findAll();\r\n        assertFalse(orders.isEmpty());\r\n        System.out.println(\"All Orders: \\n\" + orders + \"\\n\");\r\n    }\r\n\r\n    @Test\r\n    @Order(5)\r\n    void delete() {\r\n        Long orderIdToDelete = order.getId();\r\n        orderService.deleteByOrderID(orderIdToDelete);\r\n\r\n        Orders deletedOrder = orderService.read(orderIdToDelete);\r\n        assertNull(deletedOrder);\r\n        System.out.println(\"Deleted Order ID: \" + orderIdToDelete);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/test/java/za/ac/cput/service/OrdersServiceTest.java b/src/test/java/za/ac/cput/service/OrdersServiceTest.java
+--- a/src/test/java/za/ac/cput/service/OrdersServiceTest.java	
++++ b/src/test/java/za/ac/cput/service/OrdersServiceTest.java	
+@@ -82,10 +82,10 @@
+ 
+         order = new Orders.Builder()
+                 .copy(order)
+-                .setOrderItems(orderItems)  // Add OrderItems
++                .setOrderItems(orderItems)
+                 .build();
+ 
+-        order = orderService.update(order); // Ensure the updated order is persisted
++        order = orderService.update(order);
+     }
+ 
+     @Test
+Index: src/main/resources/application.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+># Database configuration for SQL Server\r\nspring.datasource.url=jdbc:sqlserver://shoeserver.database.windows.net:1433;database=Capstone;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;\r\nspring.datasource.username=\r\nspring.datasource.password=\r\nspring.datasource.driver-class-name=com.microsoft.sqlserver.jdbc.SQLServerDriver\r\n\r\n# Hibernate configuration\r\nspring.jpa.hibernate.ddl-auto=update\r\n\r\n# Server configuration\r\nserver.servlet.context-path=/shopping_store\r\nserver.port=9090\r\n# Additional settings\r\nspring.jpa.open-in-view=false\r\n\r\n# AWS Configuration\r\naws.accessKeyId=\r\naws.secretKey=\r\naws.region=\r\naws.s3.bucket=
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>ISO-8859-1
+===================================================================
+diff --git a/src/main/resources/application.properties b/src/main/resources/application.properties
+--- a/src/main/resources/application.properties	
++++ b/src/main/resources/application.properties	
+@@ -1,20 +1,22 @@
+ # Database configuration for SQL Server
+ spring.datasource.url=jdbc:sqlserver://shoeserver.database.windows.net:1433;database=Capstone;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;
+-spring.datasource.username=
+-spring.datasource.password=
++spring.datasource.username=Rethabile@shoeserver
++spring.datasource.password=Ntsekhe12
+ spring.datasource.driver-class-name=com.microsoft.sqlserver.jdbc.SQLServerDriver
+ 
+ # Hibernate configuration
+ spring.jpa.hibernate.ddl-auto=update
++spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.SQLServer2016Dialect
++spring.jpa.show-sql=true 
+ 
+ # Server configuration
+ server.servlet.context-path=/shopping_store
+-server.port=9090
++
+ # Additional settings
+ spring.jpa.open-in-view=false
+ 
+ # AWS Configuration
+-aws.accessKeyId=
+-aws.secretKey=
+-aws.region=
+-aws.s3.bucket=
+\ No newline at end of file
++aws.accessKeyId=AKIA6ELKOAGBQJPXU57V
++aws.secretKey=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
++aws.region=eu-north-1
++aws.s3.bucket=capstone-bucket-cput
+\ No newline at end of file
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"19f97969-d2ac-477c-9706-498b2285e7ae\" name=\"Changes\" comment=\"controller classes done\">\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/resources/application.properties\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/resources/application.properties\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Interface\" />\r\n        <option value=\"Class\" />\r\n        <option value=\"JUnit5 Test Class\" />\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"PUSH_TAGS\">\r\n      <GitPushTagMode>\r\n        <option name=\"argument\" value=\"--tags\" />\r\n        <option name=\"title\" value=\"All\" />\r\n      </GitPushTagMode>\r\n    </option>\r\n  </component>\r\n  <component name=\"ProjectColorInfo\">{\r\n  &quot;associatedIndex&quot;: 6\r\n}</component>\r\n  <component name=\"ProjectId\" id=\"2ljgXhJH0PTyD9XyUBh5AmohWZs\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\">\r\n    <ConfirmationsSetting value=\"2\" id=\"Add\" />\r\n  </component>\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;HTTP Request.generated-requests | #18.executor&quot;: &quot;Run&quot;,\r\n    &quot;HTTP Request.generated-requests | #19.executor&quot;: &quot;Run&quot;,\r\n    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,\r\n    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,\r\n    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,\r\n    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,\r\n    &quot;Spring Boot.OnlineClothingStoreApp.executor&quot;: &quot;Run&quot;,\r\n    &quot;git-widget-placeholder&quot;: &quot;main&quot;,\r\n    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;\r\n  }\r\n}]]></component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"CreateTestDialog.Recents.Supers\">\r\n      <recent name=\"\" />\r\n    </key>\r\n    <key name=\"CreateTestDialog.RecentsKey\">\r\n      <recent name=\"za.ac.cput.controller\" />\r\n      <recent name=\"za.ac.cput.service\" />\r\n      <recent name=\"za.ac.cput.factory\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"RunDashboard\">\r\n    <option name=\"excludedTypes\">\r\n      <set>\r\n        <option value=\"HttpClient.HttpRequestRunConfigurationType\" />\r\n      </set>\r\n    </option>\r\n  </component>\r\n  <component name=\"RunManager\" selected=\"Spring Boot.OnlineClothingStoreApp\">\r\n    <configuration name=\"generated-requests | #18\" type=\"HttpClient.HttpRequestRunConfigurationType\" factoryName=\"HTTP Request\" temporary=\"true\" nameIsGenerated=\"true\" path=\"$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http\" index=\"18\" requestIdentifier=\"#18\" runType=\"Run single request\">\r\n      <method v=\"2\" />\r\n    </configuration>\r\n    <configuration name=\"generated-requests | #19\" type=\"HttpClient.HttpRequestRunConfigurationType\" factoryName=\"HTTP Request\" temporary=\"true\" nameIsGenerated=\"true\" path=\"$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http\" index=\"19\" requestIdentifier=\"#19\" runType=\"Run single request\">\r\n      <method v=\"2\" />\r\n    </configuration>\r\n    <configuration name=\"AddressServiceTest\" type=\"JUnit\" factoryName=\"JUnit\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"T-shirts\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"za.ac.cput.service.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <option name=\"PACKAGE_NAME\" value=\"za.ac.cput.service\" />\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"za.ac.cput.service.AddressServiceTest\" />\r\n      <option name=\"TEST_OBJECT\" value=\"class\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"UserServiceTest\" type=\"JUnit\" factoryName=\"JUnit\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <option name=\"TEST_OBJECT\" value=\"class\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"OnlineClothingStoreApp\" type=\"SpringBootApplicationConfigurationType\" factoryName=\"Spring Boot\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"za.ac.cput.service.UserServiceTest\" />\r\n      <module name=\"T-shirts\" />\r\n      <option name=\"SPRING_BOOT_MAIN_CLASS\" value=\"za.ac.cput.OnlineClothingStoreApp\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"za.ac.cput.service.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <list>\r\n      <item itemvalue=\"HTTP Request.generated-requests | #18\" />\r\n      <item itemvalue=\"HTTP Request.generated-requests | #19\" />\r\n      <item itemvalue=\"JUnit.UserServiceTest\" />\r\n      <item itemvalue=\"JUnit.AddressServiceTest\" />\r\n      <item itemvalue=\"Spring Boot.OnlineClothingStoreApp\" />\r\n    </list>\r\n    <recent_temporary>\r\n      <list>\r\n        <item itemvalue=\"Spring Boot.OnlineClothingStoreApp\" />\r\n        <item itemvalue=\"HTTP Request.generated-requests | #19\" />\r\n        <item itemvalue=\"HTTP Request.generated-requests | #18\" />\r\n      </list>\r\n    </recent_temporary>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"beb02c30-a586-400a-8512-1256548bff54\" name=\"Changes\" comment=\"repo\" />\r\n      <created>1725778494940</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1725778494940</updated>\r\n      <workItem from=\"1725778513527\" duration=\"2398000\" />\r\n      <workItem from=\"1725823782038\" duration=\"6575000\" />\r\n      <workItem from=\"1725953886169\" duration=\"13116000\" />\r\n      <workItem from=\"1726055401674\" duration=\"1291000\" />\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"controller\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1726055682050</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1726055682051</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"controller classes done\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1726101980408</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1726101980450</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00003\" summary=\"controller classes done\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1726106051750</created>\r\n      <option name=\"number\" value=\"00003\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1726106051750</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00004\" summary=\"controller classes done\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1726169697107</created>\r\n      <option name=\"number\" value=\"00004\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1726169697107</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00005\" summary=\"controller classes done\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1726169973911</created>\r\n      <option name=\"number\" value=\"00005\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00005\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1726169973911</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00006\" summary=\"controller classes done\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1726170670014</created>\r\n      <option name=\"number\" value=\"00006\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00006\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1726170670014</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00007\" summary=\"controller classes done\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1726170717263</created>\r\n      <option name=\"number\" value=\"00007\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00007\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1726170717263</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00008\" summary=\"controller classes done\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1726170826560</created>\r\n      <option name=\"number\" value=\"00008\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00008\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1726170826560</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00009\" summary=\"controller classes done\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1726170850694</created>\r\n      <option name=\"number\" value=\"00009\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00009\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1726170850694</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00010\" summary=\"controller classes done\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1726170906336</created>\r\n      <option name=\"number\" value=\"00010\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00010\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1726170906336</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"11\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"controller\" />\r\n    <MESSAGE value=\"controller classes done\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"controller classes done\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	
++++ b/.idea/workspace.xml	
+@@ -4,9 +4,14 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="19f97969-d2ac-477c-9706-498b2285e7ae" name="Changes" comment="controller classes done">
++    <list default="true" id="19f97969-d2ac-477c-9706-498b2285e7ae" name="Changes" comment="updated the addresses and OrderController.java">
++      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/config/SecurityConfig.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/controller/UserController.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/factory/UserFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/factory/UserFactory.java" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/test/java/za/ac/cput/service/OrdersServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/za/ac/cput/service/OrdersServiceTest.java" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -17,9 +22,9 @@
+     <option name="RECENT_TEMPLATES">
+       <list>
+         <option value="Interface" />
+-        <option value="Class" />
+         <option value="JUnit5 Test Class" />
+         <option value="Class" />
++        <option value="Class" />
+       </list>
+     </option>
+   </component>
+@@ -30,6 +35,7 @@
+         <option name="title" value="All" />
+       </GitPushTagMode>
+     </option>
++    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+   </component>
+   <component name="ProjectColorInfo">{
+   &quot;associatedIndex&quot;: 6
+@@ -44,17 +50,47 @@
+   </component>
+   <component name="PropertiesComponent">{
+   &quot;keyToString&quot;: {
++    &quot;HTTP Request.generated-requests | #11.executor&quot;: &quot;Run&quot;,
+     &quot;HTTP Request.generated-requests | #18.executor&quot;: &quot;Run&quot;,
+     &quot;HTTP Request.generated-requests | #19.executor&quot;: &quot;Run&quot;,
++    &quot;HTTP Request.generated-requests | #20.executor&quot;: &quot;Run&quot;,
++    &quot;HTTP Request.generated-requests | #21.executor&quot;: &quot;Run&quot;,
++    &quot;HTTP Request.generated-requests | #22.executor&quot;: &quot;Run&quot;,
++    &quot;HTTP Request.generated-requests | #24.executor&quot;: &quot;Run&quot;,
++    &quot;HTTP Request.generated-requests | #25.executor&quot;: &quot;Run&quot;,
++    &quot;HTTP Request.generated-requests | #26.executor&quot;: &quot;Run&quot;,
++    &quot;HTTP Request.generated-requests | #27.executor&quot;: &quot;Run&quot;,
++    &quot;HTTP Request.generated-requests | #28.executor&quot;: &quot;Run&quot;,
++    &quot;HTTP Request.generated-requests | #29.executor&quot;: &quot;Run&quot;,
++    &quot;HTTP Request.generated-requests | #30.executor&quot;: &quot;Run&quot;,
++    &quot;HTTP Request.generated-requests | #31.executor&quot;: &quot;Run&quot;,
++    &quot;HTTP Request.generated-requests | #4.executor&quot;: &quot;Run&quot;,
++    &quot;JUnit.OrderControllerTest and 1 more.executor&quot;: &quot;Run&quot;,
++    &quot;JUnit.OrderControllerTest and 3 more.executor&quot;: &quot;Run&quot;,
++    &quot;JUnit.OrderControllerTest.executor&quot;: &quot;Run&quot;,
++    &quot;JUnit.OrderItemControllerTest.executor&quot;: &quot;Run&quot;,
++    &quot;JUnit.OrderItemServiceTest and 1 more.executor&quot;: &quot;Run&quot;,
++    &quot;JUnit.OrdersServiceTest and 3 more.executor&quot;: &quot;Run&quot;,
++    &quot;JUnit.ProductControllerTest.executor&quot;: &quot;Run&quot;,
++    &quot;JUnit.ProductFactoryTest.executor&quot;: &quot;Run&quot;,
++    &quot;JUnit.ProductServiceTest.executor&quot;: &quot;Run&quot;,
+     &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+     &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+     &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+     &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
++    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
++    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+     &quot;Spring Boot.OnlineClothingStoreApp.executor&quot;: &quot;Run&quot;,
+     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;
++    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
++    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
++    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
++    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
++    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
++    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
++    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+   }
+-}]]></component>
++}</component>
+   <component name="RecentsManager">
+     <key name="CreateTestDialog.Recents.Supers">
+       <recent name="" />
+@@ -63,6 +99,9 @@
+       <recent name="za.ac.cput.controller" />
+       <recent name="za.ac.cput.service" />
+       <recent name="za.ac.cput.factory" />
++    </key>
++    <key name="ImportMappingsDialog.RecentPackages">
++      <recent name="" />
+     </key>
+   </component>
+   <component name="RunDashboard">
+@@ -73,40 +112,24 @@
+     </option>
+   </component>
+   <component name="RunManager" selected="Spring Boot.OnlineClothingStoreApp">
+-    <configuration name="generated-requests | #18" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="18" requestIdentifier="#18" runType="Run single request">
++    <configuration name="generated-requests | #26" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="26" requestIdentifier="#26" runType="Run single request">
+       <method v="2" />
+     </configuration>
+-    <configuration name="generated-requests | #19" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="19" requestIdentifier="#19" runType="Run single request">
++    <configuration name="generated-requests | #29" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="29" requestIdentifier="#29" runType="Run single request">
+       <method v="2" />
+     </configuration>
+-    <configuration name="AddressServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+-      <module name="T-shirts" />
+-      <extension name="coverage">
+-        <pattern>
+-          <option name="PATTERN" value="za.ac.cput.service.*" />
+-          <option name="ENABLED" value="true" />
+-        </pattern>
+-      </extension>
+-      <option name="PACKAGE_NAME" value="za.ac.cput.service" />
+-      <option name="MAIN_CLASS_NAME" value="za.ac.cput.service.AddressServiceTest" />
+-      <option name="TEST_OBJECT" value="class" />
+-      <method v="2">
+-        <option name="Make" enabled="true" />
+-      </method>
++    <configuration name="generated-requests | #30" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="30" requestIdentifier="#30" runType="Run single request">
++      <method v="2" />
+     </configuration>
+-    <configuration name="UserServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+-      <option name="TEST_OBJECT" value="class" />
+-      <method v="2">
+-        <option name="Make" enabled="true" />
+-      </method>
++    <configuration name="generated-requests | #31" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" index="31" requestIdentifier="#31" runType="Run single request">
++      <method v="2" />
+     </configuration>
+     <configuration name="OnlineClothingStoreApp" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+-      <option name="MAIN_CLASS_NAME" value="za.ac.cput.service.UserServiceTest" />
+       <module name="T-shirts" />
+       <option name="SPRING_BOOT_MAIN_CLASS" value="za.ac.cput.OnlineClothingStoreApp" />
+       <extension name="coverage">
+         <pattern>
+-          <option name="PATTERN" value="za.ac.cput.service.*" />
++          <option name="PATTERN" value="za.ac.cput.*" />
+           <option name="ENABLED" value="true" />
+         </pattern>
+       </extension>
+@@ -115,24 +138,35 @@
+       </method>
+     </configuration>
+     <list>
+-      <item itemvalue="HTTP Request.generated-requests | #18" />
+-      <item itemvalue="HTTP Request.generated-requests | #19" />
+-      <item itemvalue="JUnit.UserServiceTest" />
+-      <item itemvalue="JUnit.AddressServiceTest" />
++      <item itemvalue="HTTP Request.generated-requests | #29" />
++      <item itemvalue="HTTP Request.generated-requests | #30" />
++      <item itemvalue="HTTP Request.generated-requests | #31" />
++      <item itemvalue="HTTP Request.generated-requests | #26" />
+       <item itemvalue="Spring Boot.OnlineClothingStoreApp" />
+     </list>
+     <recent_temporary>
+       <list>
+         <item itemvalue="Spring Boot.OnlineClothingStoreApp" />
+-        <item itemvalue="HTTP Request.generated-requests | #19" />
+-        <item itemvalue="HTTP Request.generated-requests | #18" />
++        <item itemvalue="HTTP Request.generated-requests | #26" />
++        <item itemvalue="HTTP Request.generated-requests | #31" />
++        <item itemvalue="HTTP Request.generated-requests | #29" />
++        <item itemvalue="HTTP Request.generated-requests | #30" />
+       </list>
+     </recent_temporary>
+   </component>
++  <component name="SharedIndexes">
++    <attachedChunks>
++      <set>
++        <option value="jdk-17.0.10-corretto-17.0.10-4caba194b151-5cd809f4" />
++        <option value="jdk-17.0.9-jbr-17.0.9-4caba194b151-51f1b679" />
++        <option value="jdk-21.0.2-openjdk-21.0.2-4caba194b151-4f524021" />
++      </set>
++    </attachedChunks>
++  </component>
+   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+   <component name="TaskManager">
+     <task active="true" id="Default" summary="Default task">
+-      <changelist id="beb02c30-a586-400a-8512-1256548bff54" name="Changes" comment="repo" />
++      <changelist id="19f97969-d2ac-477c-9706-498b2285e7ae" name="Changes" comment="Merge remote-tracking branch 'origin/main'&#10;&#10;# Conflicts:&#10;#&#9;src/main/resources/application.properties" />
+       <created>1725778494940</created>
+       <option name="number" value="Default" />
+       <option name="presentableId" value="Default" />
+@@ -141,6 +175,16 @@
+       <workItem from="1725823782038" duration="6575000" />
+       <workItem from="1725953886169" duration="13116000" />
+       <workItem from="1726055401674" duration="1291000" />
++      <workItem from="1726204927631" duration="2542000" />
++      <workItem from="1726314640122" duration="3085000" />
++      <workItem from="1726330782948" duration="25047000" />
++      <workItem from="1726363560324" duration="2023000" />
++      <workItem from="1726396564090" duration="18644000" />
++      <workItem from="1726480425143" duration="26712000" />
++      <workItem from="1726552694431" duration="159000" />
++      <workItem from="1726605332216" duration="5443000" />
++      <workItem from="1726770268949" duration="834000" />
++      <workItem from="1726771374614" duration="1365000" />
+     </task>
+     <task id="LOCAL-00001" summary="controller">
+       <option name="closed" value="true" />
+@@ -222,7 +266,55 @@
+       <option name="project" value="LOCAL" />
+       <updated>1726170906336</updated>
+     </task>
+-    <option name="localTasksCounter" value="11" />
++    <task id="LOCAL-00011" summary="Merge remote-tracking branch 'origin/main'&#10;&#10;# Conflicts:&#10;#&#9;src/main/resources/application.properties">
++      <option name="closed" value="true" />
++      <created>1726171995309</created>
++      <option name="number" value="00011" />
++      <option name="presentableId" value="LOCAL-00011" />
++      <option name="project" value="LOCAL" />
++      <updated>1726171995309</updated>
++    </task>
++    <task id="LOCAL-00012" summary="Merge remote-tracking branch 'origin/main'&#10;&#10;# Conflicts:&#10;#&#9;src/main/resources/application.properties">
++      <option name="closed" value="true" />
++      <created>1726184060795</created>
++      <option name="number" value="00012" />
++      <option name="presentableId" value="LOCAL-00012" />
++      <option name="project" value="LOCAL" />
++      <updated>1726184060795</updated>
++    </task>
++    <task id="LOCAL-00013" summary="update project">
++      <option name="closed" value="true" />
++      <created>1726334898780</created>
++      <option name="number" value="00013" />
++      <option name="presentableId" value="LOCAL-00013" />
++      <option name="project" value="LOCAL" />
++      <updated>1726334898780</updated>
++    </task>
++    <task id="LOCAL-00014" summary="product and product Images.java">
++      <option name="closed" value="true" />
++      <created>1726357889848</created>
++      <option name="number" value="00014" />
++      <option name="presentableId" value="LOCAL-00014" />
++      <option name="project" value="LOCAL" />
++      <updated>1726357889848</updated>
++    </task>
++    <task id="LOCAL-00015" summary="updated the addresses and OrderController.java">
++      <option name="closed" value="true" />
++      <created>1726507989528</created>
++      <option name="number" value="00015" />
++      <option name="presentableId" value="LOCAL-00015" />
++      <option name="project" value="LOCAL" />
++      <updated>1726507989528</updated>
++    </task>
++    <task id="LOCAL-00016" summary="updated the addresses and OrderController.java">
++      <option name="closed" value="true" />
++      <created>1726514373270</created>
++      <option name="number" value="00016" />
++      <option name="presentableId" value="LOCAL-00016" />
++      <option name="project" value="LOCAL" />
++      <updated>1726514373270</updated>
++    </task>
++    <option name="localTasksCounter" value="17" />
+     <servers />
+   </component>
+   <component name="TypeScriptGeneratedFilesManager">
+@@ -242,6 +334,29 @@
+   <component name="VcsManagerConfiguration">
+     <MESSAGE value="controller" />
+     <MESSAGE value="controller classes done" />
+-    <option name="LAST_COMMIT_MESSAGE" value="controller classes done" />
++    <MESSAGE value="Merge remote-tracking branch 'origin/main'&#10;&#10;# Conflicts:&#10;#&#9;src/main/resources/application.properties" />
++    <MESSAGE value="update project" />
++    <MESSAGE value="product and product Images.java" />
++    <MESSAGE value="updated the addresses and" />
++    <MESSAGE value="updated the addresses and OrderController.java" />
++    <option name="LAST_COMMIT_MESSAGE" value="updated the addresses and OrderController.java" />
++  </component>
++  <component name="XDebuggerManager">
++    <breakpoint-manager>
++      <breakpoints>
++        <breakpoint enabled="true" type="java-exception">
++          <properties class="java.lang.UnsupportedOperationException" package="java.lang" />
++          <option name="timeStamp" value="1" />
++        </breakpoint>
++        <breakpoint enabled="true" type="java-exception">
++          <properties class="org.hibernate.HibernateException" package="org.hibernate" />
++          <option name="timeStamp" value="2" />
++        </breakpoint>
++        <breakpoint enabled="true" type="java-exception">
++          <properties class="java.lang.IllegalArgumentException" package="java.lang" />
++          <option name="timeStamp" value="4" />
++        </breakpoint>
++      </breakpoints>
++    </breakpoint-manager>
+   </component>
+ </project>
+\ No newline at end of file
+Index: src/main/java/za/ac/cput/factory/UserFactory.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package za.ac.cput.factory;\r\n\r\nimport za.ac.cput.domain.User;\r\nimport za.ac.cput.util.Helper;\r\n\r\nimport java.time.LocalDate;\r\nimport java.util.Set;\r\n\r\npublic class UserFactory {\r\n\r\n    public static User createUser(String avatar, String firstName, String lastName, String email,\r\n                                  LocalDate birthDate, Set<String> role, Integer phoneNumber, String password){\r\n\r\n        if (Helper.isNullOrEmpty(firstName) ||\r\n                Helper.isNullOrEmpty(lastName) ||\r\n                Helper.isNullOrEmpty(email) ||\r\n                Helper.isNullOrEmpty(password)) {\r\n            throw new IllegalArgumentException(\"First name, last name, email, and password cannot be null or empty\");\r\n        }\r\n        // Create a new User object using the Builder pattern\r\n        return new User.Builder()\r\n                .setAvatar(avatar)\r\n                .setFirstName(firstName)\r\n                .setLastName(lastName)\r\n                .setEmail(email)\r\n                .setBirthDate(birthDate)\r\n                .setRole(role) // Set the roles as a Set<String>\r\n                .setPhoneNumber(phoneNumber)\r\n                .setPassword(password)\r\n                .build();\r\n    }\r\n    public static User createUserForSignIn(String email, String password) {\r\n        // Validation checks\r\n        if (Helper.isNullOrEmpty(email) || Helper.isNullOrEmpty(password)) {\r\n            throw new IllegalArgumentException(\"Email and password cannot be null or empty\");\r\n        }\r\n\r\n        return new User.Builder()\r\n                .setEmail(email)\r\n                .setPassword(password)\r\n                .build();\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/za/ac/cput/factory/UserFactory.java b/src/main/java/za/ac/cput/factory/UserFactory.java
+--- a/src/main/java/za/ac/cput/factory/UserFactory.java	
++++ b/src/main/java/za/ac/cput/factory/UserFactory.java	
+@@ -24,7 +24,7 @@
+                 .setLastName(lastName)
+                 .setEmail(email)
+                 .setBirthDate(birthDate)
+-                .setRole(role) // Set the roles as a Set<String>
++                .setRole(role)
+                 .setPhoneNumber(phoneNumber)
+                 .setPassword(password)
+                 .build();
