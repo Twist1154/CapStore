@@ -10,7 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import za.ac.cput.domain.User;
 import za.ac.cput.factory.UserFactory;
-import za.ac.cput.repo.UserRepository;
+import za.ac.cput.repository.UserRepository;
 
 import java.time.LocalDate;
 import java.util.List;
