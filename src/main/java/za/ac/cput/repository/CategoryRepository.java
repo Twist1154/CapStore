@@ -19,6 +19,4 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     List<Category> findByCategoryId (Long categoryId);
     List<Category> findByCategoryName (String categoryName);
 
-    boolean deleteByCategoryId(Long categoryId);
-
 }

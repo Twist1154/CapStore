@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import za.ac.cput.domain.Category;
-import za.ac.cput.domain.ProductReview;
 import za.ac.cput.service.CategoryService;
 
 import java.util.List;
@@ -45,16 +44,6 @@ public class CategoryController {
         Category updated = categoryService.update(category);
         if (updated != null) {
             return ResponseEntity.ok(updated);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @DeleteMapping("/delete/{categoryId}")
-    public ResponseEntity<Void> delete(@PathVariable Long categoryId) {
-        if (categoryService.read(categoryId) != null) {
-            categoryService.delete(categoryId);
-            return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.notFound().build();
         }
