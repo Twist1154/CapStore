@@ -17,7 +17,7 @@ import java.util.List;
 public interface ProductReviewRepository extends JpaRepository<ProductReview, Long> {
 
     List<ProductReview> findByProductReviewId (Long productReviewID);
-    List<ProductReview> findByProduct_ProductId(Long productID);
+    List<ProductReview> findByProduct_Id(Long id);
     List<ProductReview> findByUser_UserID (Long userID);
     List<ProductReview> findByRating (int rating);
     boolean deleteByProductReviewId(Long productReviewID);

@@ -4,11 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import za.ac.cput.domain.Orders;
 import za.ac.cput.domain.Product;
 import za.ac.cput.service.IProductService;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -46,7 +44,7 @@ public class ProductController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product product) {
-        if (!id.equals(product.getProductId())) {
+        if (!id.equals(product.getId())) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         Product updatedProduct = productService.update(product);

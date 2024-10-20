@@ -39,7 +39,7 @@ class ProductReviewControllerTest {
     public static void setup(@Autowired ProductService productService, @Autowired UserService userService) {
         // Save the product and user entities first
         product = new Product.Builder()
-                .setProductId(null)
+                .setId(null)
                 .setName("Test Product")
                 .build();
         product = productService.create(product);
@@ -153,7 +153,7 @@ class ProductReviewControllerTest {
     @Test
     @Order(8)
     void findByProductId_ProductId() {
-        String url = BASE_URL + "/product/" + product.getProductId();
+        String url = BASE_URL + "/product/" + product.getId();
         System.out.println("URL: " + url);
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
         System.out.println("Find by product ID: ");

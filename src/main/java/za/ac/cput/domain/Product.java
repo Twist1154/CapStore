@@ -6,8 +6,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -20,9 +18,11 @@ import java.util.Objects;
 @Getter
 @Entity
 public class Product {
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long productId;
+    private Long id;
     private String name;
     private String description;
     private double price;
@@ -40,7 +40,7 @@ public class Product {
     }
 
     public Product(Builder builder){
-        this.productId = builder.productId;
+        this.id = builder.id;
         this.name = builder.name;
         this.description = builder.description;
         this.price = builder.price;
@@ -51,8 +51,8 @@ public class Product {
         this.images = builder.images;
     }
 
-    public Long getProductId() {
-        return productId;
+    public Long getId() {
+        return id;
     }
 
     public String getName() {
@@ -94,7 +94,7 @@ public class Product {
         Product product = (Product) o;
         return Double.compare(product.price, price) == 0 &&
                 stock == product.stock &&
-                Objects.equals(productId, product.productId) &&
+                Objects.equals(id, product.id) &&
                 Objects.equals(name, product.name) &&
                 Objects.equals(description, product.description) &&
                 Objects.equals(categoryId, product.categoryId) &&
@@ -105,13 +105,13 @@ public class Product {
 
     @Override
     public int hashCode() {
-        return Objects.hash(productId, name, description, price, stock, categoryId, createdAt, updatedAt, images);
+        return Objects.hash(id, name, description, price, stock, categoryId, createdAt, updatedAt, images);
     }
 
     @Override
     public String toString() {
         return "Product{" +
-                "productId=" + productId +
+                "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", price=" + price +
@@ -124,7 +124,7 @@ public class Product {
     }
 
     public static class Builder{
-        private Long productId;
+        private Long id;
         private String name;
         private String description;
         private double price;
@@ -134,8 +134,8 @@ public class Product {
         private LocalDateTime updatedAt;
         private Images images; // Use Images in the builder
 
-        public Builder setProductId(Long productId){
-            this.productId = productId;
+        public Builder setId(Long id){
+            this.id = id;
             return this;
         }
 
@@ -180,7 +180,7 @@ public class Product {
         }
 
         public Builder copy(Product product) {
-            this.productId = product.getProductId();
+            this.id = product.getId();
             this.name = product.getName();
             this.description = product.getDescription();
             this.price = product.getPrice();

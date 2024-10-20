@@ -91,7 +91,7 @@ class ProductServiceTest {
     void read() {
         Product readProduct1 = productService.read(1L);
         assertNotNull(readProduct1);
-        assertEquals(1L, readProduct1.getProductId());
+        assertEquals(1L, readProduct1.getId());
         System.out.println("Read product 1: " + readProduct1);
     }
 
@@ -126,7 +126,7 @@ class ProductServiceTest {
     @Test
     void delete() {
         System.out.println("Product to be deleted: " + product3);
-        Long product3Id = product3.getProductId();
+        Long product3Id = product3.getId();
         productService.delete(product3Id);
 
         Product deletedProduct = productService.read(product3Id);

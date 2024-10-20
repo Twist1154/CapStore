@@ -30,10 +30,10 @@ public class ProductService implements IProductService {
     @Override
     public Product update(Product product) {
         // Check if product exists, update if it does, otherwise return null
-        return productRepository.findById(product.getProductId()).map(existingProduct -> {
+        return productRepository.findById(product.getId()).map(existingProduct -> {
             Product updatedProduct = new Product.Builder()
                     .copy(existingProduct)
-                    .setProductId(product.getProductId())
+                    .setId(product.getId())
                     .setName(product.getName())
                     .setDescription(product.getDescription())
                     .setPrice(product.getPrice())
@@ -45,7 +45,7 @@ public class ProductService implements IProductService {
                     .build();
             return productRepository.save(updatedProduct);
         }).orElseGet(() -> {
-            System.out.println("Attempt to update non-existing product with ID: " + product.getProductId());
+            System.out.println("Attempt to update non-existing product with ID: " + product.getId());
             return null;
         });
     }

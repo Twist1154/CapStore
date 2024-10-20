@@ -24,7 +24,7 @@ class ProductReviewFactoryTest {
     String review = "Great product!";
 
     Product product = new Product.Builder()
-            .setProductId(1L)
+            .setId(1L)
             .setName("Test Product")
             .build();
 

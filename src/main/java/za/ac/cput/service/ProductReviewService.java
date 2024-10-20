@@ -63,7 +63,7 @@ public class ProductReviewService implements IProductReviewService{
 
     @Override
     public List<ProductReview> findByProduct_ProductId(Long productId) {
-        return this.productReviewRepository.findByProduct_ProductId(productId);
+        return this.productReviewRepository.findByProduct_Id(productId);
     }
 
     @Override

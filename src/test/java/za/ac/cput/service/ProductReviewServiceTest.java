@@ -26,7 +26,7 @@ class ProductReviewServiceTest {
     private static ProductReview productReview;
 
     Product product = new Product.Builder()
-            .setProductId(null)
+            .setId(null)
             .setName("Test Product")
             .build();
 

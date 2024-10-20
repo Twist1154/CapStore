@@ -30,7 +30,7 @@ public class ProductFactory {
 
         // Construct and return a new Product object using the builder pattern
         return new Product.Builder()
-                .setProductId(productId)
+                .setId(productId)
                 .setName(name)
                 .setDescription(description)
                 .setPrice(price)
