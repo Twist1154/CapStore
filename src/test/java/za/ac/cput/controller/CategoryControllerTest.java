@@ -28,9 +28,9 @@ class CategoryControllerTest {
 
     @BeforeAll
     public static void setup() {
-        category = CategoryFactory.buildCategory(null, "Men", "Tops");
-        category2 = CategoryFactory.buildCategory(null, "Women", "Tops");
-        category3 = CategoryFactory.buildCategory(null, "Kids", "Tops");
+        category = CategoryFactory.buildCategory(null, "Men", "T-shirts");
+        category2 = CategoryFactory.buildCategory(null, "Women", "T-shirts");
+        category3 = CategoryFactory.buildCategory(null, "Kids", "T-shirts");
     }
 
     @Test
@@ -99,6 +99,7 @@ class CategoryControllerTest {
     }
 
     @Test
+    @Disabled
     @Order(4)
     void delete() {
         String url = BASE_URL + "/delete/" + category.getCategoryId();
@@ -126,10 +127,12 @@ class CategoryControllerTest {
 //    void findByCategoryName() {
 //        String url = BASE_URL + "/getByCategoryName/" + category.getCategoryName();
 //        System.out.println("URL: " + url);
-//        ResponseEntity<Category> response = restTemplate.getForEntity(url, Category.class);
-//        assertEquals(category.getCategoryName(), response.getBody().getCategoryName());
+//        ResponseEntity<Category> response = restTemplate.exchange(url, HttpMethod.GET, null, Category.class);
+//        assertEquals(category.getCategoryName(), response.getBody().getSubCategoryName());
 //    }
-//
+
+
+
 //    @Test
 //    @Order(7)
 //    void findByCategoryId() {

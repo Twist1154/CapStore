@@ -27,7 +27,7 @@ class CategoryServiceTest {
     @Test
     @Order(1)
     void setup() {
-        category = CategoryFactory.buildCategory(null, "Kids", "Shoes"); //id auto generated
+        category = CategoryFactory.buildCategory(null, "Kids", "T-shirts"); //id auto generated
         assertNotNull(category);
         System.out.println("Category: " + category);
     }
@@ -73,15 +73,25 @@ class CategoryServiceTest {
     }
 
     @Test
+    @Disabled
     @Order(7)
-    void findByCategoryId() {
-        System.out.println("Category by Id: " + categoryService.findByCategoryId(category.getCategoryId()));
+    void getDefaultCategories() {
+        List<Category> defaultCategories = CategoryFactory.getDefaultCategories();
+        assertNotNull(defaultCategories);
+        assertEquals(3, defaultCategories.size());
+        System.out.println("Default categories: " + defaultCategories);
     }
 
     @Test
     @Order(8)
     void findByCategoryName() {
         System.out.println("Category by Category Name: " + categoryService.findByCategoryName(category.getCategoryName()));
+    }
+
+    @Test
+    @Order(9)
+    void findByCategoryId() {
+        System.out.println("Category by Id: " + categoryService.findByCategoryId(category.getCategoryId()));
     }
 
 }
