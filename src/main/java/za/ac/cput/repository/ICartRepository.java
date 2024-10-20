@@ -2,13 +2,11 @@ package za.ac.cput.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import za.ac.cput.domain.Cart;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -26,18 +24,12 @@ public interface ICartRepository extends JpaRepository<Cart, Long> {
     /**
      * Finds carts by user ID.
      *
-     * @param userID The ID of the user.
+     * @param id The ID of the user.
      * @return A list of carts for the specified user.
      */
-    List<Cart> findByUserID(Long userID);
+    List<Cart> findByUser_Id(Long id);
 
-//    /**
-//     * Finds carts by status.
-//     *
-//     * @param status The status of the carts.
-//     * @return A list of carts with the specified status.
-//     */
-//    List<Cart> findByStatus(String status);
+
 
     /**
      * Finds carts within a date range.
@@ -46,23 +38,16 @@ public interface ICartRepository extends JpaRepository<Cart, Long> {
      * @param endDate   The end date of the range.
      * @return A list of carts within the specified date range.
      */
-    List<Cart> findByCartDateBetween(LocalDate startDate, LocalDate endDate);
-//
-//    /**
-//     * Finds carts by address ID.
-//     *
-//     * @param addressID The ID of the address.
-//     * @return A list of carts for the specified address.
-//     */
-//    List<Cart> findByAddressID(Long addressID);
+    List<Cart> findByCreatedAtBetween(LocalDateTime startDate, LocalDateTime endDate);
+
 
     /**
      * Finds carts with a total price greater than the specified amount.
      *
-     * @param total_price The minimum total price.
+     * @param total The minimum total price.
      * @return A list of carts with a total price greater than the specified amount.
      */
-    List<Cart> findByTotalPriceGreaterThan(double total_price);
+    List<Cart> findByTotalGreaterThan(double total);
 
     /**
      * Deletes a cart by its ID.
@@ -72,13 +57,4 @@ public interface ICartRepository extends JpaRepository<Cart, Long> {
     @Transactional
     @Modifying
     void deleteById(Long id);
-
-//    /**
-//     * Finds all carts that contain a specific product ID in their cart items.
-//     *
-//     * @param productID The ID of the product.
-//     * @return A list of carts that include the specified product ID.
-//     */
-//    @Query("SELECT c FROM Cart c JOIN c.cartItems i WHERE i.productID = :productID")
-//    List<Cart> findByProductIDInCartItems(@Param("productID") Long productID);
 }

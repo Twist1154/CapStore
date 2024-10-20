@@ -15,7 +15,6 @@ import za.ac.cput.service.UserService;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -40,9 +39,9 @@ public class UserControllerTest {
                 .setEmail("john.doe@example.com")
                 .setPassword("password")
                 .setAvatar("default-avatar.png")
-                .setPhoneNumber(1234567890)
+                .setPhoneNumber("1234567890")
                 .setBirthDate(LocalDate.of(1990, 1, 1))
-                .setRole(Collections.singleton("USER"))
+                .setAuthorities(Collections.singleton("USER"))
                 .build();
     }
 
@@ -62,7 +61,7 @@ public class UserControllerTest {
         User createdUser = response.getBody();
 
         // Assert that the User ID is greater than 0
-        assertThat(createdUser.getUserID()).isGreaterThan(0L);
+        assertThat(createdUser.getId()).isGreaterThan(0L);
     }
 
     @Order(2)
@@ -111,7 +110,7 @@ public class UserControllerTest {
                 .setAvatar("new-avatar.png")
                 .setPhoneNumber(987654321)
                 .setBirthDate(LocalDate.of(1992, 5, 10))
-                .setRole(Collections.singleton("ADMIN"))
+                .setAuthorities(Collections.singleton("ADMIN"))
                 .build();
 
 
@@ -129,7 +128,7 @@ public class UserControllerTest {
         assertThat(updatedResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
         assert updatedResponseBody != null;
         assertThat(updatedResponseBody.getFirstName()).isEqualTo("Jane");
-        assertThat(updatedResponseBody.getRole()).isEqualTo("ADMIN");
+        assertThat(updatedResponseBody.getAuthorities()).isEqualTo("ADMIN");
     }
 
     @Order(4)

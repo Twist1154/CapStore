@@ -3,9 +3,7 @@ package za.ac.cput.service;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
-import za.ac.cput.domain.OrderItem;
-import za.ac.cput.domain.Orders;
+import za.ac.cput.domain.*;
 import za.ac.cput.factory.OrderFactory;
 import za.ac.cput.factory.OrderItemFactory;
 
@@ -26,18 +24,32 @@ class OrdersServiceTest {
     @Autowired
     private OrderItemService orderItemService;
 
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private AddressService addressService;
+    @Autowired
+    private ProductService productService;
+
     private Orders order;
+    private User user;
+    private Product product;
+    private Address address;
 
     @BeforeEach
     void setUp() {
+
+        user = userService.read(1L);
+        address = addressService.read(1L);
+        product = productService.read(1L);
+
         // Create an initial order
         order = OrderFactory.buildOrder(
-                null,  // ID should be null for auto-generation
-                2L,    // userID
-                5L,    // addressID
+                null,
+                user,
+                address,
                 "Pending",
                 150.0,
-                LocalDate.now(),
                 new ArrayList<>()
         );
 
@@ -47,7 +59,7 @@ class OrdersServiceTest {
         // Create OrderItems
         OrderItem orderItem1 = OrderItemFactory.buildOrderItem(
                 null,
-                order.getId(),
+                product,
                 12,
                 12.00,
                 order
@@ -55,7 +67,7 @@ class OrdersServiceTest {
 
         OrderItem orderItem2 = OrderItemFactory.buildOrderItem(
                 null,
-                order.getId(),
+                product,
                 5,
                 10.00,
                 order
@@ -63,7 +75,7 @@ class OrdersServiceTest {
 
         OrderItem orderItem3 = OrderItemFactory.buildOrderItem(
                 null,
-                order.getId(),
+                product,
                 20,
                 20.00,
                 order
@@ -93,11 +105,10 @@ class OrdersServiceTest {
     void create() {
         Orders newOrder = OrderFactory.buildOrder(
                 null,
-                2L,
-                5L,
+                user,
+                address,
                 "Pending",
                 200.0,
-                LocalDate.now(),
                 new ArrayList<>()
         );
 
@@ -125,7 +136,7 @@ class OrdersServiceTest {
     void update() {
         Orders updatedOrder = new Orders.Builder()
                 .copy(order)
-                .setUserID(3L) // Updated userID
+                .setUser(user) // Updated userID
                 .setTotalPrice(300.0) // Updated totalPrice
                 .setStatus("Shipped") // Updated status
                 .build();

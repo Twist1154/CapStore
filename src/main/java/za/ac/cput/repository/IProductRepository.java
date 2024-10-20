@@ -28,7 +28,7 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
             "LOWER(p.description) LIKE LOWER(CONCAT('%', :description, '%'))")
     List<Product> findByDescription(String description);
 
-    List<Product> findByCategoryId(Long categoryId);
+    List<Product> findBySubCategories_Id(Long id);
 
     List<Product> findByPriceBetween(double minPrice, double maxPrice);
 

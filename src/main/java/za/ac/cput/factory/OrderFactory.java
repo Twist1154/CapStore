@@ -1,7 +1,9 @@
 package za.ac.cput.factory;
 
+import za.ac.cput.domain.Address;
 import za.ac.cput.domain.Orders;
 import za.ac.cput.domain.OrderItem;
+import za.ac.cput.domain.User;
 import za.ac.cput.util.Helper;
 
 import java.time.LocalDate;
@@ -19,28 +21,26 @@ public class OrderFactory {
     /**
      * Creates an Orders object.
      * @param id     The ID of the Order being placed
-     * @param userID      The ID of the customer placing the order.
-     * @param addressID   The ID of the address where the order should be delivered.
+     * @param user      The ID of the customer placing the order.
+     * @param address   The ID of the address where the order should be delivered.
      * @param totalPrice  The total price of the order.
      * @param status      The status of the order.
-     * @param orderDate   The date and time when the order was placed.
      * @param orderItems  The list of order items included in the order.
      * @return            The created Orders object.
      * @throws IllegalArgumentException if any parameter is invalid.
      */
     public static Orders buildOrder(
             Long id,
-            Long userID,
-            Long addressID,
+            User user,
+            Address address,
             String status,
             double totalPrice,
-            LocalDate orderDate,
             List<OrderItem> orderItems
     ) {
 
         // Validating input fields
-        if (Helper.isNullOrEmpty(userID) ||
-            Helper.isNullOrEmpty(addressID) ||
+        if (Helper.isNullOrEmpty(user) ||
+            Helper.isNullOrEmpty(address) ||
             Helper.isNullOrEmpty(status)) {
             throw new IllegalArgumentException("UserID, AddressID, and Status must not be null or empty.");
         }
@@ -51,11 +51,10 @@ public class OrderFactory {
 
         return new Orders.Builder()
                 .setId(id)
-                .setUserID(userID)
-                .setAddressID(addressID)
+                .setUser(user)
+                .setAddress(address)
                 .setStatus(status)
                 .setTotalPrice(totalPrice)
-                .setOrderDate(orderDate != null ? orderDate : LocalDate.now())
                 .setOrderItems(orderItems)
                 .build();
     }

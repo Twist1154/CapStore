@@ -1,5 +1,6 @@
 package za.ac.cput.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -20,21 +21,22 @@ public class OrderItem implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private Long productID;
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
     private int quantity;
     private double price;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "order_id")
-    @JsonIgnore
+    @JsonBackReference("orderReference")
     private Orders order;
 
     public OrderItem() {}
 
     public OrderItem(Builder builder) {
         this.id = builder.id;
-        this.productID = builder.productID;
+        this.product = builder.product;
         this.quantity = builder.quantity;
         this.price = builder.price;
         this.order = builder.order;
@@ -48,20 +50,20 @@ public class OrderItem implements Serializable {
         return quantity == that.quantity &&
                 Double.compare(that.price, price) == 0 &&
                 Objects.equals(id, that.id) &&
-                Objects.equals(productID, that.productID) &&
+                Objects.equals(product, that.product) &&
                 Objects.equals(order, that.order);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, productID, quantity, price, order);
+        return Objects.hash(id, product, quantity, price, order);
     }
 
     @Override
     public String toString() {
         return "\n OrderItem{" +
                 ", id=" + id +
-                ", productID=" + productID +
+                ", productID=" + product +
                 ", quantity=" + quantity +
                 ", price=" + price +
                 ", order=" + order.getId() +
@@ -70,7 +72,7 @@ public class OrderItem implements Serializable {
 
     public static class Builder {
         private Long id;
-        private Long productID;
+        private Product product;
         private int quantity;
         private double price;
         private Orders order;
@@ -80,8 +82,8 @@ public class OrderItem implements Serializable {
             return this;
         }
 
-        public Builder setProductID(Long productID) {
-            this.productID = productID;
+        public Builder setProduct(Product product) {
+            this.product = product;
             return this;
         }
 
@@ -102,7 +104,7 @@ public class OrderItem implements Serializable {
 
         public Builder copy(OrderItem orderItem) {
             this.id = orderItem.id;
-            this.productID = orderItem.productID;
+            this.product = orderItem.product;
             this.quantity = orderItem.quantity;
             this.price = orderItem.price;
             this.order = orderItem.order;

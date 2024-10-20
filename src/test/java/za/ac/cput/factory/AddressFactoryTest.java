@@ -9,11 +9,12 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.*;
 
 class AddressFactoryTest {
+    private User user;
     @Test
     void buildAddress() {
         Address address = AddressFactory.createAddress(
                 1L,
-                1L,
+                user,
                 "Home",
                 "10 Sir Street",
                 "Parow North",

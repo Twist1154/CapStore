@@ -9,7 +9,9 @@ import org.springframework.test.context.ActiveProfiles;
 import za.ac.cput.OnlineClothingStoreApp;
 import za.ac.cput.domain.Images;
 import za.ac.cput.domain.Product;
+import za.ac.cput.domain.SubCategory;
 import za.ac.cput.service.ProductService;
+import za.ac.cput.service.SubCategoryService;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -29,10 +31,19 @@ class ProductControllerTest {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private SubCategoryService subService;
+
     private Product product;
+
+    private SubCategory subCategory;
+    private SubCategory subCategory2;
 
     @BeforeEach
     void setUp() {
+        subCategory = subService.read(1L);
+        subCategory2 = subService.read(2L);
+
         Images images = new Images(
                 "path/Controller/image1.jpg",
                 "path/Controller/image2.jpg",
@@ -41,14 +52,12 @@ class ProductControllerTest {
         );
 
         product = new Product.Builder()
-                .setProductId(null)  // Set to null for ID to be generated
+                .setId(null)  // Set to null for ID to be generated
                 .setName("Golfer t-shirt")
                 .setDescription("Black medium shirt.")
                 .setPrice(200)
                 .setStock(10)
-                .setCategoryId(1L)
-                .setCreatedAt(LocalDate.now().atStartOfDay())
-                .setUpdatedAt(LocalDate.now().atStartOfDay())
+                .setSubCategories(List.of(subCategory,subCategory2))
                 .setImages(images)
                 .build();
 
@@ -70,14 +79,12 @@ class ProductControllerTest {
     void createProduct() {
         // Arrange
         Product newProduct = new Product.Builder()
-                .setProductId(null)  // ID will be generated
+                .setId(null)  // ID will be generated
                 .setName("New Product")
                 .setDescription("Description for the new product.")
                 .setPrice(300)
                 .setStock(5)
-                .setCategoryId(1L)
-                .setCreatedAt(LocalDate.now().atStartOfDay())
-                .setUpdatedAt(LocalDate.now().atStartOfDay())
+                .setSubCategories(List.of(subCategory,subCategory2))
                 .setImages(new Images(
                         "newPath/image1.jpg",
                         "newPath/image2.jpg",
@@ -102,12 +109,12 @@ class ProductControllerTest {
     @Order(2)
     void readProduct() {
         // Act
-        ResponseEntity<Product> response = productController.getProductById(product.getProductId());
+        ResponseEntity<Product> response = productController.getProductById(product.getId());
 
         // Assert
         assertNotNull(response.getBody());
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(product.getProductId(), response.getBody().getProductId());
+        assertEquals(product.getId(), response.getBody().getId());
         System.out.println("Product read: " + response.getBody());
     }
 
@@ -123,7 +130,7 @@ class ProductControllerTest {
                 .build();
 
         // Act
-        ResponseEntity<Product> response = productController.updateProduct(product.getProductId(), updatedProduct);
+        ResponseEntity<Product> response = productController.updateProduct(product.getId(), updatedProduct);
 
         // Assert
         assertNotNull(response.getBody());
@@ -137,13 +144,13 @@ class ProductControllerTest {
     @Order(4)
     void deleteProduct() {
         // Act
-        ResponseEntity<Void> response = productController.deleteProduct(product.getProductId());
+        ResponseEntity<Void> response = productController.deleteProduct(product.getId());
 
         // Assert
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
 
         // Verify that the product is deleted by trying to read it again
-        ResponseEntity<Product> readResponse = productController.getProductById(product.getProductId());
+        ResponseEntity<Product> readResponse = productController.getProductById(product.getId());
         assertNull(readResponse.getBody());
     }
 

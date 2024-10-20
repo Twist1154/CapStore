@@ -7,7 +7,6 @@ import za.ac.cput.domain.CartItem;
 import za.ac.cput.repository.ICartItemRepository;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.logging.Logger;
 
 /**
@@ -45,9 +44,8 @@ public class CartItemService implements ICartItemService {
         if (existingCartItem != null) {
             CartItem updatedCartItem = new CartItem.Builder()
                     .copy(existingCartItem)
-                    .setProductID(cartItem.getProductID())
-                    //.setQuantity(cartItem.getQuantity())
-                    .setPrice(cartItem.getPrice())
+                    .setProduct(cartItem.getProduct())
+                    .setQuantity(cartItem.getQuantity())
                     .setCart(cartItem.getCart())
                     .build();
             return repository.save(updatedCartItem);

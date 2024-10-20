@@ -12,8 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import za.ac.cput.domain.Category;
 import za.ac.cput.factory.CategoryFactory;
 
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -27,7 +25,11 @@ class CategoryServiceTest {
     @Test
     @Order(1)
     void setup() {
-        category = CategoryFactory.buildCategory(null, "Kids", "Shoes"); //id auto generated
+        category = CategoryFactory.buildCategory(
+                null,
+                "Shoes"
+        );
+
         assertNotNull(category);
         System.out.println("Category: " + category);
     }
@@ -36,14 +38,14 @@ class CategoryServiceTest {
     @Order(2)
     void create() {
         Category created = categoryService.create(category);
-        assertEquals(category.getCategoryId(), created.getCategoryId());
+        assertEquals(category.getId(), created.getId());
         System.out.println("Created category: " + created);
     }
 
     @Test
     @Order(3)
     void read() {
-        Category read = categoryService.read(category.getCategoryId());
+        Category read = categoryService.read(category.getId());
         assertNotNull(read);
         System.out.println("Read category: " + read);
     }
@@ -51,9 +53,9 @@ class CategoryServiceTest {
     @Test
     @Order(4)
     void update() {
-        Category newCategory = new Category.Builder().copy(category).setCategoryName("Women").setSubCategoryName("Tops").build();
+        Category newCategory = new Category.Builder().copy(category).setName("Women").setName("Tops").build();
         Category updated = categoryService.update(newCategory);
-        assertEquals(newCategory.getCategoryName(), updated.getCategoryName());
+        assertEquals(newCategory.getName(), updated.getName());
         System.out.println("Updated category: " + updated);
     }
 
@@ -61,7 +63,7 @@ class CategoryServiceTest {
     @Order(5)
     @Disabled
     void delete() {
-        boolean deleted = categoryService.delete(category.getCategoryId());
+        boolean deleted = categoryService.delete(category.getId());
         assertTrue(deleted);
         System.out.println("Category deleted: " + deleted);
     }
@@ -75,13 +77,9 @@ class CategoryServiceTest {
     @Test
     @Order(7)
     void findByCategoryId() {
-        System.out.println("Category by Id: " + categoryService.findByCategoryId(category.getCategoryId()));
+        System.out.println("Category by Id: " + categoryService.read(category.getId()));
     }
 
-    @Test
-    @Order(8)
-    void findByCategoryName() {
-        System.out.println("Category by Category Name: " + categoryService.findByCategoryName(category.getCategoryName()));
-    }
+
 
 }

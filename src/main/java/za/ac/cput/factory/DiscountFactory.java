@@ -6,9 +6,13 @@ import za.ac.cput.util.Helper;
 import java.time.LocalDate;
 
 public class DiscountFactory {
-    public static Discount buildDiscount(long discount_id, String code, String description,
-                                         double discount_percent, LocalDate start_date,
-                                         LocalDate end_date, int max_uses) {
+    public static Discount buildDiscount(Long id,
+                                         String code,
+                                         String description,
+                                         double discount_percent,
+                                         LocalDate start_date,
+                                         LocalDate end_date,
+                                         int max_uses) {
 
         if (Helper.isNullOrEmpty(code) ||
                 Helper.isNullOrEmpty(description) ||
@@ -17,7 +21,7 @@ public class DiscountFactory {
         ) return null;
 
         return new Discount.Builder()
-                .setDiscount_id(discount_id)
+                .setId(id)
                 .setCode(code)
                 .setDescription(description)
                 .setDiscount_percent(discount_percent)

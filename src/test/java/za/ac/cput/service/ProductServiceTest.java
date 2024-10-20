@@ -5,9 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import za.ac.cput.domain.Images;
 import za.ac.cput.domain.Product;
+import za.ac.cput.domain.SubCategory;
 import za.ac.cput.factory.ProductFactory;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -19,11 +19,17 @@ import static org.junit.jupiter.api.Assertions.*;
 class ProductServiceTest {
     @Autowired
     private ProductService productService;
+    @Autowired
+    private SubCategoryService subCategoryService;
+
+    private SubCategory subCategory, subCategory2;
 
     private static Product product1, product2, product3;
 
     @BeforeEach
     void setUp() {
+        subCategory = subCategoryService.read(1L);
+        subCategory2 = subCategoryService.read(2L);
         // Create product objects with individual image URLs using the ProductFactory
         product1 = ProductFactory.buildProduct(
                 1L,
@@ -31,9 +37,7 @@ class ProductServiceTest {
                 "Black medium shirt.",
                 200,
                 10,
-                1L,
-                LocalDate.now().atStartOfDay(),
-                LocalDate.now().atStartOfDay(),
+                List.of(subCategory,subCategory2),
                 "path/to/image1.jpg", "path/to/image2.jpg", "path/to/image3.jpg", "path/to/image4.jpg"
         );
 
@@ -43,9 +47,7 @@ class ProductServiceTest {
                 "Blue slim fit shirt.",
                 150,
                 15,
-                1L,
-                LocalDate.now().atStartOfDay(),
-                LocalDate.now().atStartOfDay(),
+                List.of(subCategory,subCategory2),
                 "path/to/image1.jpg",
                 "path/to/image2.jpg",
                 "path/to/image3.jpg",
@@ -58,9 +60,7 @@ class ProductServiceTest {
                 "Green slim fit shirt.",
                 125,
                 20,
-                1L,
-                LocalDate.now().atStartOfDay(),
-                LocalDate.now().atStartOfDay(),
+                List.of(subCategory,subCategory2),
                 "path/to/image1.jpg",
                 "path/to/image2.jpg",
                 "path/to/image3.jpg",
@@ -91,7 +91,7 @@ class ProductServiceTest {
     void read() {
         Product readProduct1 = productService.read(1L);
         assertNotNull(readProduct1);
-        assertEquals(1L, readProduct1.getProductId());
+        assertEquals(1L, readProduct1.getId());
         System.out.println("Read product 1: " + readProduct1);
     }
 
@@ -126,7 +126,7 @@ class ProductServiceTest {
     @Test
     void delete() {
         System.out.println("Product to be deleted: " + product3);
-        Long product3Id = product3.getProductId();
+        Long product3Id = product3.getId();
         productService.delete(product3Id);
 
         Product deletedProduct = productService.read(product3Id);
@@ -160,8 +160,8 @@ class ProductServiceTest {
 
     @Order(8)
     @Test
-    void findByCategoryId(){
-        List<Product> product = productService.findByCategoryId(2L);
+    void findBySubCategories_Id(){
+        List<Product> product = productService.findBySubCategories_Id(2L);
         assertNotNull(product);
         System.out.println(product);
     }

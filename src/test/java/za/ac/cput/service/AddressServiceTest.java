@@ -4,6 +4,7 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import za.ac.cput.domain.Address;
+import za.ac.cput.domain.User;
 import za.ac.cput.factory.AddressFactory;
 import za.ac.cput.repository.AddressRepository;
 
@@ -21,7 +22,7 @@ class AddressServiceTest {
     private AddressService service;
 
     private static Address address;  // Single Address instance to use across tests
-
+    private User user;
     @Autowired
     private AddressRepository repository;
 
@@ -30,9 +31,10 @@ class AddressServiceTest {
      */
     @BeforeEach
     void setup() {
+        user = new User();
         address = AddressFactory.createAddress(
                 1L,
-                1L,
+                user,
                 "Home",
                 "10 Sir Street",
                 "Parow North",
@@ -105,7 +107,7 @@ class AddressServiceTest {
     }
 
     /**
-     * Tests the findByUserId method of AddressService.
+     * Tests the findByUser_Id method of AddressService.
      */
     @Order(4)
     @Test

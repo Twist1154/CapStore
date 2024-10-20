@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Getter;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -18,10 +19,10 @@ import java.util.Objects;
  */
 @Getter
 @Entity
-public class Discount {
+public class Discount implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long discountId;
+    private Long id;
     private String code;
     private String description;
     private double discount_percent;
@@ -33,7 +34,7 @@ public class Discount {
     }
 
     public Discount(Builder builder) {
-        this.discountId = builder.discountId;
+        this.id = builder.id;
         this.code = builder.code;
         this.description = builder.description;
         this.discount_percent = builder.discount_percent;
@@ -47,18 +48,18 @@ public class Discount {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Discount discount = (Discount) o;
-        return discountId == discount.discountId && Double.compare(discount.discount_percent, discount_percent) == 0 && max_uses == discount.max_uses && Objects.equals(code, discount.code) && Objects.equals(description, discount.description) && Objects.equals(start_date, discount.start_date) && Objects.equals(end_date, discount.end_date);
+        return id == discount.id && Double.compare(discount.discount_percent, discount_percent) == 0 && max_uses == discount.max_uses && Objects.equals(code, discount.code) && Objects.equals(description, discount.description) && Objects.equals(start_date, discount.start_date) && Objects.equals(end_date, discount.end_date);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(discountId, code, description, discount_percent, start_date, end_date, max_uses);
+        return Objects.hash(id, code, description, discount_percent, start_date, end_date, max_uses);
     }
 
     @Override
     public String toString() {
         return "Discounts{" +
-                "discountId=" + discountId +
+                "discountId=" + id +
                 ", code='" + code + '\'' +
                 ", description='" + description + '\'' +
                 ", discount_percent=" + discount_percent +
@@ -69,7 +70,7 @@ public class Discount {
     }
 
     public static class Builder {
-        private long discountId;
+        private Long id;
         private String code;
         private String description;
         private double discount_percent;
@@ -77,8 +78,8 @@ public class Discount {
         private LocalDate end_date;
         private int max_uses;
 
-        public Builder setDiscount_id(long discountId) {
-            this.discountId = discountId;
+        public Builder setId(Long id) {
+            this.id = id;
             return this;
         }
 
@@ -113,7 +114,7 @@ public class Discount {
         }
 
         public Builder copy(Discount discount) {
-            this.discountId = discount.getDiscountId();
+            this.id = discount.getId();
             this.code = discount.getCode();
             this.description = discount.getDescription();
             this.discount_percent = discount.getDiscount_percent();

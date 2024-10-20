@@ -7,14 +7,18 @@
 
 package za.ac.cput.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import za.ac.cput.domain.Category;
 import za.ac.cput.repository.CategoryRepository;
 
 import java.util.List;
 
+@Slf4j
 @Service
+@Transactional
 public class CategoryService implements ICategoryService {
 
     private final CategoryRepository categoryRepository;
@@ -36,9 +40,16 @@ public class CategoryService implements ICategoryService {
 
     @Override
     public Category update(Category category) {
-        if (this.categoryRepository.existsById(category.getCategoryId())) {
-            return this.categoryRepository.save(category);
+        Category existingCategory = read(category.getId());
+        if (existingCategory != null) {
+            Category updatedCategory = new Category.Builder()
+                    .copy(category)
+                    .setId(existingCategory.getId())
+                    .setName(category.getName())
+                    .build();
+            return categoryRepository.save(updatedCategory);
         }
+        log.error("Attempted to update a non-existent Category with ID: {}", category.getId());
         return null;
     }
 
@@ -56,14 +67,6 @@ public boolean delete(Long categoryId) {
         return this.categoryRepository.findAll();
     }
 
-    @Override
-    public List<Category> findByCategoryId(Long categoryId) {
-        return this.categoryRepository.findByCategoryId(categoryId);
-    }
 
-    @Override
-    public List<Category> findByCategoryName(String categoryName) {
-        return this.categoryRepository.findByCategoryName(categoryName);
-    }
 
 }
