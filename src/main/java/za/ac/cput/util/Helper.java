@@ -21,13 +21,16 @@ public class Helper {
         return i == null;
     }
 
+    public static boolean isDoubleNullOrEmpty(Double s) {
+        return s == null || s.isNaN();
+    }
 
     public static boolean isOrderNullorEmpty(Double s) {
         return s == null || Double.isNaN(s);
     }
 
-    public static boolean isNullOrEmpty(List<Object> s) {
-        return s == null || s.isEmpty();
+    public static boolean isNullOrEmpty(Object s) {
+        return s == null ;
     }
 
     public static boolean isValidRange(int rating) {

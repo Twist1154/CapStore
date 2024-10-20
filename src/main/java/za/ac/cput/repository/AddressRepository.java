@@ -25,7 +25,7 @@ public interface AddressRepository extends JpaRepository<Address, Long> {
      * @param id the User entity to search by
      * @return a list of Addresses associated with the given User
      */
-    Optional<Address> findByUserId(Long id);
+    Optional<Address> findByUser_Id(Long id);
 
     /**
      * Finds all Addresses with a given title.

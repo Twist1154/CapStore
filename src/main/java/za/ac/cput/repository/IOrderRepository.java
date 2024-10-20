@@ -28,10 +28,10 @@ public interface IOrderRepository extends JpaRepository<Orders, Long> {
     /**
      * Finds orders by user ID.
      *
-     * @param userID The ID of the user.
+     * @param id The ID of the user.
      * @return A list of orders for the specified user.
      */
-    List<Orders> findByUserID(Long userID);
+    List<Orders> findByUser_Id(Long id);
 
     /**
      * Finds orders by status.
@@ -53,10 +53,10 @@ public interface IOrderRepository extends JpaRepository<Orders, Long> {
     /**
      * Finds orders by address ID.
      *
-     * @param addressID The ID of the address.
+     * @param id The ID of the address.
      * @return A list of orders for the specified address.
      */
-    List<Orders> findByAddressID(Long addressID);
+    List<Orders> findByAddress_Id(Long id);
 
     /**
      * Finds orders with a total price greater than the specified amount.
@@ -84,6 +84,6 @@ public interface IOrderRepository extends JpaRepository<Orders, Long> {
      * @param productID The ID of the product.
      * @return A list of orders that include the specified product ID.
      */
-    @Query("SELECT o FROM Orders o JOIN o.orderItems i WHERE i.productID = :productID")
+    @Query("SELECT o FROM Orders o JOIN o.orderItems i WHERE i.product = :productID")
     List<Orders> findByProductIDInOrderItems(@Param("productID") Long productID);
 }

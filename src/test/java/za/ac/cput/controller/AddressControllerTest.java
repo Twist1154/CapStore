@@ -9,7 +9,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import za.ac.cput.domain.Address;
-import za.ac.cput.domain.Orders;
+import za.ac.cput.domain.User;
 import za.ac.cput.factory.AddressFactory;
 import za.ac.cput.service.AddressService;
 
@@ -38,13 +38,15 @@ class AddressControllerTest {
 
     private final String BASE_URL = "/address";
     private static Address address1;
+    private User user;
 
     @BeforeEach
     void setUp() {
+        user = new User();
         // Building and creating an address using the AddressFactory
         address1 = AddressFactory.createAddress(
                 6L,
-                6L,
+                user,
                 "Home",
                 "34 Timmy Str",
                 "18 northridge",
@@ -71,7 +73,7 @@ class AddressControllerTest {
         // Creating a new address using the API
         Address address2 = AddressFactory.createAddress(
                 7L,
-                7L,
+                user,
                 "Home",
                 "45 Park Lane",
                 "Park verk",
@@ -146,12 +148,12 @@ class AddressControllerTest {
     @Test
     void getAddressByUserID() {
         // Reading an address by its userID using the API
-        ResponseEntity<Address> response = restTemplate.getForEntity(BASE_URL + "/user/" + address1.getUserId(), Address.class);
+        ResponseEntity<Address> response = restTemplate.getForEntity(BASE_URL + "/user/" + address1.getUser(), Address.class);
 
         // Asserting that the response status is OK
         assertEquals(HttpStatus.OK, response.getStatusCode());
         // Asserting that the address is correctly returned for the given userID
-        assertEquals(address1.getUserId(), response.getBody().getUserId());
+        assertEquals(address1.getUser(), response.getBody().getUser());
     }
 
     @Test

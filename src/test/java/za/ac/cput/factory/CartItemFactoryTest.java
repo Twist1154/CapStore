@@ -1,7 +1,9 @@
 package za.ac.cput.factory;
 
 import org.junit.jupiter.api.Test;
+import za.ac.cput.domain.Cart;
 import za.ac.cput.domain.CartItem;
+import za.ac.cput.domain.Product;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,15 +18,17 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 
 class CartItemFactoryTest {
+private Cart cart;
+private Product product;
 
     @Test
     void buildCartItem() {
         // Create test CartItem with valid data
-        CartItem cartItem = CartItemFactory.buildCartItem(
-                1L,
-                12L,
-                12.00,
-                null
+        CartItem cartItem = CartItemFactory.createCartItem(
+                null,
+                cart,
+                product,
+                20
         );
 
         // Ensure that the CartItem was created successfully and is not null
@@ -32,19 +36,19 @@ class CartItemFactoryTest {
 
         // Additional assertions to ensure the cart item details are correct
         assertEquals(1L, cartItem.getId());
-        assertEquals(12L, cartItem.getProductID());
-        assertEquals(12.00, cartItem.getPrice());
+        assertEquals(12L, cartItem.getProduct().getId());
+        assertEquals(20, cartItem.getQuantity());
     }
 
     @Test
     void buildCartItemWithInvalidData() {
         // Expecting IllegalArgumentException for invalid data
         IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> {
-            CartItemFactory.buildCartItem(
+            CartItemFactory.createCartItem(
                     null,
                     null,
-                    -10.00,
-                    null
+                    product,
+                    5
             );
         });
 

@@ -204,39 +204,4 @@ public class OrderController {
         }
     }
 
-    /**
-     * Endpoint to add an item to an existing order and update the total price.
-     *
-     * @param orderId   The ID of the order to which the item is to be added.
-     * @param orderItem The item to be added to the order.
-     * @return The updated order with the new item and recalculated total price.
-     */
-    @PostMapping("/{orderId}/add-item")
-    public ResponseEntity<Orders> addOrderItem(@PathVariable Long orderId, @RequestBody OrderItem orderItem) {
-        Orders updatedOrder = orderService.addOrderItem(orderId, orderItem);
-
-        if (updatedOrder != null) {
-            return new ResponseEntity<>(updatedOrder, HttpStatus.OK); // 200 OK
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // 404 Not Found
-        }
-    }
-
-    /**
-     * Endpoint to remove an item from an existing order and update the total price.
-     *
-     * @param orderId   The ID of the order from which the item is to be removed.
-     * @param orderItem The item to be removed from the order.
-     * @return The updated order with the item removed and recalculated total price.
-     */
-    @PostMapping("/{orderId}/remove-item")
-    public ResponseEntity<Orders> removeOrderItem(@PathVariable Long orderId, @RequestBody OrderItem orderItem) {
-        Orders updatedOrder = orderService.removeOrderItem(orderId, orderItem);
-
-        if (updatedOrder != null) {
-            return new ResponseEntity<>(updatedOrder, HttpStatus.OK); // 200 OK
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // 404 Not Found
-        }
-    }
 }

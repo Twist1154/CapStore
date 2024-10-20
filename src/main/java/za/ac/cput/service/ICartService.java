@@ -2,7 +2,7 @@ package za.ac.cput.service;
 
 import za.ac.cput.domain.Cart;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -20,10 +20,10 @@ public interface ICartService extends IService<Cart, Long> {
     /**
      * Finds carts by user ID.
      *
-     * @param userID The ID of the user.
+     * @param id The ID of the user.
      * @return A list of carts associated with the specified user.
      */
-    List<Cart> findByUserID(Long userID);
+    List<Cart> findByUser_Id(Long id);
 
     /**
      * Finds carts by their status.
@@ -40,28 +40,21 @@ public interface ICartService extends IService<Cart, Long> {
      * @param endDate   The end of the date range.
      * @return A list of carts placed within the given date range.
      */
-    List<Cart> findByCartDateBetween(LocalDate startDate, LocalDate endDate);
+    List<Cart> findByCreatedAtBetween(LocalDateTime startDate, LocalDateTime endDate);
 
-    /**
-     * Finds carts by the address ID associated with them.
-     *
-     * @param addressID The ID of the address.
-     * @return A list of carts associated with the specified address.
-     */
-    List<Cart> findByAddressID(Long addressID);
 
     /**
      * Finds carts with a total price greater than a specified amount.
      *
-     * @param totalPrice The minimum total price.
+     * @param total The minimum total price.
      * @return A list of carts where the total price exceeds the specified amount.
      */
-    List<Cart> findByTotalPriceGreaterThan(double totalPrice);
+    List<Cart> findByTotalGreaterThan(double total);
 
     /**
      * Deletes a cart by its ID.
      *
-     * @param cartID The ID of the cart to delete.
+     * @param id The ID of the cart to delete.
      */
-    void deleteByCartID(Long cartID);
+    void deleteByCartID(Long id);
 }

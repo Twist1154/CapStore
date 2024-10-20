@@ -1,9 +1,9 @@
 package za.ac.cput.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serializable;
@@ -25,50 +25,40 @@ public class Orders implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
-    private Long userID;
-    private Long addressID;
+    @ManyToOne
+    @JoinColumn(name = "address_id", nullable = false)
+    @JsonManagedReference("addressReference")
+    private Address address;
+
     private double totalPrice;
+
     private String status;
 
     @CreationTimestamp
     private LocalDate orderDate;
 
-    // OneToMany relationship with OrderItems
-    @Setter
-    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+
+    @OneToMany
+    @JoinColumn(name = "order_id")
+    @JsonManagedReference("orderItemReference")
     @JsonIgnore
-    private List<OrderItem> orderItems = new ArrayList<>();
+    private List<OrderItem> orderItems;
 
     public Orders() {
     }
 
     public Orders(Builder builder) {
         this.id = builder.id;
-        this.userID = builder.userID;
-        this.addressID = builder.addressID;
+        this.user = builder.user;
+        this.address = builder.address;
         this.totalPrice = builder.totalPrice;
         this.status = builder.status;
         this.orderDate = builder.orderDate;
         this.orderItems = builder.orderItems;
-    }
-
-    // Method to add an order item
-    public void addOrderItem(OrderItem orderItem) {
-        if (orderItem != null) {
-            this.orderItems.add(orderItem);
-
-            // Update total price
-            this.totalPrice += orderItem.getPrice() * orderItem.getQuantity();
-        }
-    }
-
-    // Method to remove an order item
-    public void removeOrderItem(OrderItem orderItem) {
-        if (orderItem != null && this.orderItems.remove(orderItem)) {
-            // Update total price
-            this.totalPrice -= orderItem.getPrice() * orderItem.getQuantity();
-        }
     }
 
     @Override
@@ -78,8 +68,8 @@ public class Orders implements Serializable {
         Orders orders = (Orders) o;
         return Double.compare(orders.totalPrice, totalPrice) == 0 &&
                 Objects.equals(id, orders.id) &&
-                Objects.equals(userID, orders.userID) &&
-                Objects.equals(addressID, orders.addressID) &&
+                Objects.equals(user, orders.user) &&
+                Objects.equals(address, orders.address) &&
                 Objects.equals(status, orders.status) &&
                 Objects.equals(orderDate, orders.orderDate) &&
                 Objects.equals(orderItems, orders.orderItems);
@@ -89,8 +79,8 @@ public class Orders implements Serializable {
     public int hashCode() {
         return Objects.hash(
                 id,
-                userID,
-                addressID,
+                user,
+                address,
                 totalPrice,
                 status,
                 orderDate,
@@ -102,8 +92,8 @@ public class Orders implements Serializable {
     public String toString() {
         return "\n Orders: " +
                 "\n id=" + id +
-                "\n userID=" + userID +
-                "\n addressID=" + addressID +
+                "\n userID=" + user +
+                "\n addressID=" + address +
                 "\n totalPrice=" + totalPrice +
                 "\n status='" + status + '\'' +
                 "\n orderDate=" + orderDate +
@@ -113,25 +103,25 @@ public class Orders implements Serializable {
 
     public static class Builder {
         private Long id;
-        private Long userID;
-        private Long addressID;
+        private User user;
+        private Address address;
         private String status;
         private double totalPrice;
         private LocalDate orderDate;
-        private List<OrderItem> orderItems = new ArrayList<>();
+        private List<OrderItem> orderItems;
 
         public Builder setId(Long id) {
             this.id = id;
             return this;
         }
 
-        public Builder setUserID(Long userID) {
-            this.userID = userID;
+        public Builder setUser(User user) {
+            this.user = user;
             return this;
         }
 
-        public Builder setAddressID(Long addressID) {
-            this.addressID = addressID;
+        public Builder setAddress(Address address) {
+            this.address = address;
             return this;
         }
 
@@ -157,8 +147,8 @@ public class Orders implements Serializable {
 
         public Builder copy(Orders orders) {
             this.id = orders.getId();
-            this.userID = orders.getUserID();
-            this.addressID = orders.getAddressID();
+            this.user = orders.getUser();
+            this.address = orders.getAddress();
             this.totalPrice = orders.getTotalPrice();
             this.status = orders.getStatus();
             this.orderItems = orders.getOrderItems();

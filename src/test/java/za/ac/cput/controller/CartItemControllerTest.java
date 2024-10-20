@@ -9,9 +9,13 @@ import org.springframework.test.context.ActiveProfiles;
 import za.ac.cput.OnlineClothingStoreApp;
 import za.ac.cput.domain.CartItem;
 import za.ac.cput.domain.Cart;
+import za.ac.cput.domain.Product;
+import za.ac.cput.domain.User;
 import za.ac.cput.factory.CartItemFactory;
 import za.ac.cput.service.CartItemService;
 import za.ac.cput.service.CartService;
+import za.ac.cput.service.ProductService;
+import za.ac.cput.service.UserService;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -25,33 +29,39 @@ class CartItemControllerTest {
 
     @Autowired
     private CartItemController cartItemController;
-
     @Autowired
     private CartItemService cartItemService;
-
     @Autowired
     private CartService cartService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private ProductService productService;
 
+    private Product product;
+
+    private User user;
     private Cart cart;
     private CartItem cartItem;
 
     @BeforeEach
     void setUp() {
+        user = userService.read(1L);
+        product = productService.read(1L);
         // Setup a test cart
         cart = new Cart.Builder()
                 .setId(null)
-                .setUserID(1L)
-                .setTotalPrice(100.0)
-                .setCartDate(LocalDate.now())
+                .setUser(user)
+                .setTotal(100.0)
                 .build();
         cart = cartService.create(cart); // Save cart to get an ID
 
         // Create a new cart item associated with the saved cart
-        cartItem = CartItemFactory.buildCartItem(
+        cartItem = CartItemFactory.createCartItem(
                 null,
-                1L,
-                10.00,
-                cart
+                cart,
+                product,
+                5
         );
 
         // Save the cartItem to generate a cartItemID
@@ -70,11 +80,11 @@ class CartItemControllerTest {
     @Order(1)
     void createCartItem() {
         // Arrange
-        CartItem newCartItem = CartItemFactory.buildCartItem(
-                null,  // ID will be generated
-                1L,
-                5.00,
-                cart  // The existing cart created in the setup
+        CartItem newCartItem = CartItemFactory.createCartItem(
+                null,
+                cart,
+                product,
+                23
         );
 
         // Act

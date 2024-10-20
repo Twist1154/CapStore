@@ -9,11 +9,16 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import za.ac.cput.domain.CartItem;
 import za.ac.cput.domain.Cart;
+import za.ac.cput.domain.Product;
+import za.ac.cput.domain.User;
 import za.ac.cput.factory.CartFactory;
 import za.ac.cput.factory.CartItemFactory;
 import za.ac.cput.service.CartService;
+import za.ac.cput.service.ProductService;
+import za.ac.cput.service.UserService;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,41 +36,54 @@ class CartControllerTest {
     @Autowired
     private CartService cartService;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private ProductService productService;
+
     private Cart cart;
+
+    private User user;
+    private  Product product;
+
+    private CartItem cartItem1, cartItem2, cartItem3;
 
     @BeforeEach
     void setUp() {
+        user = userService.read(1L);
+        product = productService.read(1L);
         // Create an initial cart without items
-        cart = CartFactory.buildCart(
+        cart = CartFactory.createCart(
                 null,
-                150.0,
-                LocalDate.now(),
-                new ArrayList<>()
+                user,
+                150.0
+
         );
 
         // Save the cart to generate a cartID
         cart = cartService.create(cart);
 
         // Create test CartItems for the saved cart
-        CartItem cartItem1 = CartItemFactory.buildCartItem(
+        CartItem cartItem1 = CartItemFactory.createCartItem(
                 null,
-                1L,
-                12.00,
-                cart
+                cart,
+                product,
+                12
         );
 
-        CartItem cartItem2 = CartItemFactory.buildCartItem(
+        CartItem cartItem2 = CartItemFactory.createCartItem(
                 null,
-                1L,
-                10.00,
-                cart
+                cart,
+                product,
+                10
         );
 
-        CartItem cartItem3 = CartItemFactory.buildCartItem(
+        CartItem cartItem3 = CartItemFactory.createCartItem(
                 null,
-                1L,
-                20.00,
-                cart
+                cart,
+                product,
+                20
         );
 
         List<CartItem> cartItems = new ArrayList<>();
@@ -76,10 +94,8 @@ class CartControllerTest {
         // Update the cart with CartItems and save it
         cart = new Cart.Builder()
                 .setId(cart.getId())
-                .setUserID(cart.getUserID())
-                .setTotalPrice(cart.getTotalPrice())
-                .setCartDate(cart.getCartDate())
-                .setCartItems(cartItems)
+                .setUser(cart.getUser())
+                .setTotal(cart.getTotal())
                 .build();
 
         cartService.update(cart);
@@ -98,16 +114,32 @@ class CartControllerTest {
     void createCart() {
         // Arrange
         List<CartItem> cartItems = List.of(
-                CartItemFactory.buildCartItem(null, 1L,  12.00, null),
-                CartItemFactory.buildCartItem(null, 1L,  10.00, null),
-                CartItemFactory.buildCartItem(null, 1L, 20.00, null)
+                 cartItem1 = CartItemFactory.createCartItem(
+                        null,
+                        cart,
+                        product,
+                        12
+                ),
+
+         cartItem2 = CartItemFactory.createCartItem(
+                null,
+                cart,
+                product,
+                10
+        ),
+
+         cartItem3 = CartItemFactory.createCartItem(
+                null,
+                cart,
+                product,
+                20
+        )
         );
 
-        Cart newCart = CartFactory.buildCart(
+        Cart newCart = CartFactory.createCart(
                 null,
-                234,
-                LocalDate.now(),
-                cartItems
+                user,
+                150.0
         );
 
         // Act
@@ -116,7 +148,7 @@ class CartControllerTest {
         // Assert
         assertNotNull(response.getBody());
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals(newCart.getTotalPrice(), response.getBody().getTotalPrice());
+        assertEquals(newCart.getTotal(), response.getBody().getTotal());
         System.out.println(response.getBody());
 
         // Cleanup
@@ -142,7 +174,7 @@ class CartControllerTest {
         // Arrange
         Cart updatedCart = new Cart.Builder()
                 .copy(cart)
-                .setTotalPrice(200.0)
+                .setTotal(200.0)
                 .build();
 
         // Act
@@ -151,7 +183,7 @@ class CartControllerTest {
         // Assert
         assertNotNull(response.getBody());
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(200.0, response.getBody().getTotalPrice());
+        assertEquals(200.0, response.getBody().getTotal());
     }
 
     @Test
@@ -186,7 +218,7 @@ class CartControllerTest {
     @Order(6)
     void getCartsByUserID() {
         // Act
-        ResponseEntity<List<Cart>> response = cartController.getCartsByUserID(cart.getUserID());
+        ResponseEntity<List<Cart>> response = cartController.getCartsByUserID(cart.getUser().getId());
 
         System.out.println(response.getBody());
 
@@ -212,8 +244,8 @@ class CartControllerTest {
     @Order(8)
     void getCartsByDateRange() {
         // Arrange
-        LocalDate startDate = LocalDate.now().minusDays(10);
-        LocalDate endDate = LocalDate.now();
+        LocalDateTime startDate = LocalDateTime.now().minusDays(10);
+        LocalDateTime endDate = LocalDateTime.now();
         // Act
         ResponseEntity<List<Cart>> response = cartController.getCartsByDateRange(startDate, endDate);
         System.out.println(response.getBody());

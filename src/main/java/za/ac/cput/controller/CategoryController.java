@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import za.ac.cput.domain.Category;
-import za.ac.cput.domain.ProductReview;
 import za.ac.cput.service.CategoryService;
 
 import java.util.List;
@@ -65,15 +64,6 @@ public class CategoryController {
         return categoryService.findAll();
     }
 
-    //categoryName
-    @GetMapping("/getByCategoryName/{categoryName}")
-    public List<Category> findByCategoryName(@PathVariable String categoryName) {
-        return categoryService.findByCategoryName(categoryName);
-    }
 
-    //categoryId
-    @GetMapping("/getByCategoryId/{categoryId}")
-    public List<Category> findByCategoryId(@PathVariable Long categoryId) {
-        return categoryService.findByCategoryId(categoryId);
-    }
+
 }

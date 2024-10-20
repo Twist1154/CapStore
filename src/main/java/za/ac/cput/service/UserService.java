@@ -5,10 +5,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 import za.ac.cput.domain.User;
-import za.ac.cput.repository.UserRepository;
+import za.ac.cput.factory.UserFactory;
+import za.ac.cput.repo.UserRepository;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -20,18 +22,18 @@ import java.util.stream.Collectors;
 public class UserService implements UserDetailsService, IUserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(5);
+
+    private UserFactory userFactory;
 
     /**
      * Constructs a UserService with the specified {@link UserRepository} and {@link PasswordEncoder}.
      *
      * @param userRepository  the repository for interacting with the User entity in the database
-     * @param passwordEncoder the encoder for encoding user passwords
      */
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
     }
 
     /**
@@ -42,7 +44,18 @@ public class UserService implements UserDetailsService, IUserService {
      */
     @Override
     public User create(User user) {
-        return userRepository.save(user);
+        User encrptedPasword= new User.Builder()
+                .copy(user)
+                .setId(user.getId())
+                .setFirstName(user.getFirstName())
+                .setLastName(user.getLastName())
+                .setEmail(user.getEmail())
+                .setPassword(encoder.encode(user.getPassword()) )
+                .setAuthorities(user.getAuthorities())
+                .setBirthDate(user.getBirthDate())
+                .setPhoneNumber(user.getPhoneNumber())
+                .build();
+        return userRepository.save(encrptedPasword);
     }
 
     /**
@@ -64,20 +77,22 @@ public class UserService implements UserDetailsService, IUserService {
      */
     @Override
     public User update(User user) {
-        if (userRepository.existsById(user.getUserID())) {
-            return userRepository.save(user);
+        User existing = userRepository.findById(user.getId()).orElse(null);
+        if (existing != null) {
+            User updatedusers= new User.Builder()
+                    .copy(existing)
+                    .setId(existing.getId())
+                    .setFirstName(user.getFirstName())
+                    .setLastName(user.getLastName())
+                    .setEmail(user.getEmail())
+                    .setPassword(user.getPassword())
+                    .setAuthorities(user.getAuthorities())
+                    .setBirthDate(user.getBirthDate())
+                    .setPhoneNumber(user.getPhoneNumber())
+                    .build();
+            return userRepository.save(updatedusers);
         }
         return null;
-    }
-
-    /**
-     * Retrieves all users in the system.
-     *
-     * @return a list of all users
-     */
-    @Override
-    public List<User> getAll() {
-        return userRepository.findAll(); // This can be updated to return actual data if needed
     }
 
     /**
@@ -114,16 +129,16 @@ public class UserService implements UserDetailsService, IUserService {
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + username));
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with Username: " + username));
 
         // Convert roles to SimpleGrantedAuthority
-        List<SimpleGrantedAuthority> authorities = user.getRole().stream()
+        List<SimpleGrantedAuthority> authorities = user.getAuthorities().stream()
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
 
         return new org.springframework.security.core.userdetails.User(
-                user.getEmail(),
+                user.getUsername(),
                 user.getPassword(),
                 authorities
         );
@@ -180,7 +195,7 @@ public class UserService implements UserDetailsService, IUserService {
      * @return a list of users with the specified phone number
      */
     @Override
-    public List<User> findByPhoneNumber(Integer phoneNumber) {
+    public List<User> findByPhoneNumber(String phoneNumber) {
         return userRepository.findByPhoneNumber(phoneNumber);
     }
 
@@ -191,12 +206,28 @@ public class UserService implements UserDetailsService, IUserService {
      * @return a list of users with the specified role
      */
     @Override
-    public List<User> findByRole(String role) {
-        return userRepository.findByRole(role);
+    public List<User> findByAuthoritiesContaining(String role) {
+        return userRepository.findByAuthoritiesContaining(role);
     }
-
-    /*** Verifies a user's credentials.** @param email the email address* @param password the password* @return the User if credentials are valid, otherwise null*/
+    /**
+     * Verifies a user's credentials.
+     *
+     * @param email    the email address to verify
+     * @param password the password to verify
+     * @return a Set of Users if the credentials are valid, or an empty Set if invalid
+     */
     public Set<User> verifyUser(String email, String password) {
         return userRepository.findByEmailAndPassword(email, password);
+    }
+
+    /**
+     * Finds users by their username.
+     *
+     * @param username the username of the users
+     * @return a list of users with the specified username
+     */
+    @Override
+    public Optional<User> findByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 }

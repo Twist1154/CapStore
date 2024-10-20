@@ -50,8 +50,8 @@ public class OrderService implements IOrderService {
         return repository.findById(orders.getId()).map(existingOrder -> {
             Orders updatedOrder = new Orders.Builder()
                     .copy(existingOrder)
-                    .setUserID(orders.getUserID())
-                    .setAddressID(orders.getAddressID())
+                    .setUser(orders.getUser())
+                    .setAddress(orders.getAddress())
                     .setOrderDate(orders.getOrderDate())
                     .setTotalPrice(orders.getTotalPrice())
                     .setStatus(orders.getStatus())
@@ -70,8 +70,8 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public List<Orders> findByUserID(Long userID) {
-        return repository.findByUserID(userID);
+    public List<Orders> findByUserID(Long id) {
+        return repository.findByUser_Id(id);
     }
 
     @Override
@@ -85,8 +85,8 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public List<Orders> findByAddressID(Long addressID) {
-        return repository.findByAddressID(addressID);
+    public List<Orders> findByAddressID(Long id) {
+        return repository.findByAddress_Id(id);
     }
 
     @Override
@@ -95,73 +95,12 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public void deleteByOrderID(Long orderID) {
-        if (repository.existsById(orderID)) {
-            repository.deleteById(orderID);
+    public void deleteByOrderID(Long id) {
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
         } else {
-            logger.warning("Attempt to delete non-existent order with ID: " + orderID);
+            logger.warning("Attempt to delete non-existent order with ID: " + id);
         }
     }
-
-
-    public Orders addOrderItem(Long orderId, OrderItem orderItem) {
-
-        Optional<Orders> optionalOrder = repository.findById(orderId);
-
-        if (optionalOrder.isPresent()) {
-            Orders order = optionalOrder.get();
-
-            orderItem = new OrderItem.Builder()
-                    .copy(orderItem)
-                    .setProductID(orderItem.getProductID())
-                    .setOrder(orderItem.getOrder())
-                    .setPrice(orderItem.getPrice())
-                    .setQuantity(orderItem.getQuantity())
-                    .build();
-
-            order.addOrderItem(orderItem);
-
-            double updatedTotalPrice = 0;
-            for (OrderItem item : order.getOrderItems()) {
-                updatedTotalPrice += item.getPrice() * item.getQuantity();
-            }
-
-            Orders updatedOrder = new Orders.Builder()
-                    .copy(order)
-                    .setTotalPrice(updatedTotalPrice)
-                    .build();
-            iOrderItemRepository.save(orderItem);
-            return repository.save(updatedOrder);
-        } else {
-            logger.warning("Attempt to add item to non-existent order with ID: " + orderId);
-            return null;
-        }
-    }
-
-    public Orders removeOrderItem(Long orderId, OrderItem orderItem) {
-        Optional<Orders> optionalOrder = repository.findById(orderId);
-
-        if (optionalOrder.isPresent()) {
-            Orders order = optionalOrder.get();
-
-            order.removeOrderItem(orderItem);
-
-            double updatedTotalPrice = 0;
-            for (OrderItem item : order.getOrderItems()) {
-                updatedTotalPrice += item.getPrice() * item.getQuantity();
-            }
-
-            Orders updatedOrder = new Orders.Builder()
-                    .copy(order)
-                    .setTotalPrice(updatedTotalPrice)
-                    .build();
-            iOrderItemRepository.deleteById(orderItem.getId());
-            return repository.save(updatedOrder);
-        } else {
-            logger.warning("Attempt to remove item from non-existent order with ID: " + orderId);
-            return null;
-        }
-    }
-
 
 }

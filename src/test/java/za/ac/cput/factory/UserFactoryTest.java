@@ -16,24 +16,25 @@ import static org.junit.jupiter.api.Assertions.*;
 class UserFactoryTest {
 
     private User user;
-    private Set<String> roles;
+    private Set<String> authorities;
 
     @BeforeEach
     void setup() {
-        // Set up a sample set of roles
-        roles = new HashSet<>();
-        roles.add("Admin");
-        roles.add("User");
+        // Set up a sample set of roles (authorities)
+        authorities = new HashSet<>();
+        authorities.add("Admin");
+        authorities.add("User");
 
         // Set up a sample User object using the factory method
         user = UserFactory.createUser(
                 "avatar.jpg",
                 "John",
-                "Doee",
+                "Doe",
+                "johndoe",
                 "johndoe@example.com",
                 LocalDate.parse("1990-01-01"),
-                roles,
-                123456789,
+                authorities,
+                "123456789",
                 "password123");
     }
 
@@ -45,11 +46,12 @@ class UserFactoryTest {
         // Additional assertions to verify field values
         assertEquals("John", user.getFirstName());
         assertEquals("Doe", user.getLastName());
+        assertEquals("johndoe", user.getUsername());  // Verify username
         assertEquals("johndoe@example.com", user.getEmail());
         assertEquals(LocalDate.parse("1990-01-01"), user.getBirthDate());
-        assertEquals(123456789, user.getPhoneNumber());
+        assertEquals("123456789", user.getPhoneNumber());  // Phone number is now a String
         assertEquals("password123", user.getPassword());
-        assertEquals(roles, user.getRole());
+        assertEquals(authorities, user.getAuthorities());
 
         // Print the created User object to the terminal
         System.out.println("Created User: " + user);
@@ -63,10 +65,11 @@ class UserFactoryTest {
                         "avatar.jpg",
                         null,
                         "Doe",
+                        "johndoe",
                         "johndoe@example.com",
                         LocalDate.parse("1990-01-01"),
-                        roles,
-                        123456789,
+                        authorities,
+                        "123456789",
                         "password123"));
 
         // Print a message to the terminal indicating that an exception was thrown
@@ -81,10 +84,11 @@ class UserFactoryTest {
                         "avatar.jpg",
                         "John",
                         null,
+                        "johndoe",
                         "johndoe@example.com",
                         LocalDate.parse("1990-01-01"),
-                        roles,
-                        123456789,
+                        authorities,
+                        "123456789",
                         "password123"));
 
         // Print a message to the terminal indicating that an exception was thrown
@@ -99,10 +103,11 @@ class UserFactoryTest {
                         "avatar.jpg",
                         "John",
                         "Doe",
+                        "johndoe",
                         null,
                         LocalDate.parse("1990-01-01"),
-                        roles,
-                        123456789,
+                        authorities,
+                        "123456789",
                         "password123"));
 
         // Print a message to the terminal indicating that an exception was thrown
@@ -117,10 +122,11 @@ class UserFactoryTest {
                         "avatar.jpg",
                         "John",
                         "Doe",
+                        "johndoe",
                         "johndoe@example.com",
                         LocalDate.parse("1990-01-01"),
-                        roles,
-                        123456789,
+                        authorities,
+                        "123456789",
                         null));
 
         // Print a message to the terminal indicating that an exception was thrown

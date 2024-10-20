@@ -3,13 +3,14 @@ package za.ac.cput.service;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import za.ac.cput.domain.Address;
 import za.ac.cput.domain.OrderItem;
 import za.ac.cput.domain.Orders;
+import za.ac.cput.domain.Product;
 import za.ac.cput.repository.IOrderItemRepository;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -28,13 +29,17 @@ class OrderItemServiceTest {
 
     private static Orders testOrder;
 
+    private Address address;
+    private  Product product;
+
     @BeforeEach
      void setUp() {
+        address = new Address();
+        product = new Product();
         // Setup a test order
         testOrder = new Orders.Builder()
                 .setId(55L)
-                .setUserID(1L)
-                .setAddressID(1L)
+                .setAddress(address)
                 .setStatus("Pending")
                 .setTotalPrice(100.0)
                 .setOrderDate(LocalDate.now())
@@ -54,7 +59,7 @@ class OrderItemServiceTest {
     void create() {
         System.out.println("Create");
         OrderItem orderItem = new OrderItem.Builder()
-                .setProductID(1L)
+                .setProduct(product)
                 .setQuantity(5)
                 .setPrice(100.0)
                 .setOrder(testOrder) // Link to the test order
@@ -67,7 +72,7 @@ class OrderItemServiceTest {
         System.out.println("-----------------------------");
         assertNotNull(createdOrderItem);
         assertNotNull(createdOrderItem.getId());
-        assertEquals(1L, createdOrderItem.getProductID());
+        assertEquals(1L, createdOrderItem.getProduct());
     }
 
     @Test
@@ -75,7 +80,7 @@ class OrderItemServiceTest {
     void read() {
         System.out.println("find By Id/ read");
         OrderItem orderItem = new OrderItem.Builder()
-                .setProductID(2L)
+                .setProduct(product)
                 .setQuantity(10)
                 .setPrice(200.0)
                 .setOrder(testOrder) // Link to the test order
@@ -98,7 +103,7 @@ class OrderItemServiceTest {
     void update() {
         System.out.println("Update");
         OrderItem orderItem = new OrderItem.Builder()
-                .setProductID(3L)
+                .setProduct(product)
                 .setQuantity(15)
                 .setPrice(300.0)
                 .setOrder(testOrder) // Link to the test order
@@ -108,7 +113,7 @@ class OrderItemServiceTest {
         System.out.println(createdOrderItem);
         OrderItem updatedOrderItem = new OrderItem.Builder()
                 .setId(createdOrderItem.getId())
-                .setProductID(3L) // unchanged
+                .setProduct(product) // unchanged
                 .setQuantity(20)
                 .setPrice(350.0)
                 .setOrder(testOrder) // Link to the test order
@@ -125,14 +130,14 @@ class OrderItemServiceTest {
     void findAll() {
         System.out.println("find All");
         OrderItem orderItem1 = new OrderItem.Builder()
-                .setProductID(4L)
+                .setProduct(product)
                 .setQuantity(10)
                 .setPrice(400.0)
                 .setOrder(testOrder) // Link to the test order
                 .build();
 
         OrderItem orderItem2 = new OrderItem.Builder()
-                .setProductID(5L)
+                .setProduct(product)
                 .setQuantity(5)
                 .setPrice(500.0)
                 .setOrder(testOrder) // Link to the test order
@@ -151,7 +156,7 @@ class OrderItemServiceTest {
     @Order(5)
     void findById() {
         OrderItem orderItem = new OrderItem.Builder()
-                .setProductID(7L)
+                .setProduct(product)
                 .setQuantity(8)
                 .setPrice(700.0)
                 .setOrder(testOrder) // Link to the test order
@@ -170,7 +175,7 @@ class OrderItemServiceTest {
     void deleteById() {
         System.out.println("Delete By Id");
         OrderItem orderItem = new OrderItem.Builder()
-                .setProductID(6L)
+                .setProduct(product)
                 .setQuantity(7)
                 .setPrice(600.0)
                 .setOrder(testOrder) // Link to the test order

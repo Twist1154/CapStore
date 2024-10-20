@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import za.ac.cput.domain.Images;
 import za.ac.cput.domain.Product;
+import za.ac.cput.domain.SubCategory;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -15,18 +16,20 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ProductFactoryTest {
+    private SubCategory subCategory, subCategory2;
+
     @Order(1)
     @Test
     void buildProduct() {
+        subCategory = new SubCategory();
+        subCategory2 = new SubCategory();
         Product product = ProductFactory.buildProduct(
                 1L,
                 "Golfer",
                 "White Golf t-shirt. Slim fit.",
                 150,
                 30,
-                1L,
-                LocalDate.now().atStartOfDay(),
-                LocalDate.now().atStartOfDay(),
+                List.of(subCategory,subCategory2),
                 "path/to/image1.jpg",
                 "path/to/image2.jpg",
                 "path/to/image3.jpg",
@@ -46,9 +49,7 @@ class ProductFactoryTest {
                 "White Golf t-shirt. Slim fit.",
                 -150,
                 30,
-                1L,
-                LocalDate.now().atStartOfDay(),
-                LocalDate.now().atStartOfDay(),
+                List.of(subCategory,subCategory2),
                 "path/to/image1.jpg",
                 "path/to/image2.jpg",
                 "path/to/image3.jpg",

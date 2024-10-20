@@ -9,9 +9,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import za.ac.cput.domain.Product;
-import za.ac.cput.domain.ProductReview;
+import za.ac.cput.domain.Review;
 import za.ac.cput.domain.User;
-import za.ac.cput.factory.ProductReviewFactory;
+import za.ac.cput.factory.ReviewFactory;
 import za.ac.cput.service.ProductService;
 import za.ac.cput.service.UserService;
 
@@ -19,13 +19,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class ProductReviewControllerTest {
+class ReviewControllerTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
 
     private final String BASE_URL = "http://localhost:8080/shopping_store/productReview";
-    private static ProductReview productReview;
+    private static Review review;
     private static Product product;
     private static User user;
 
@@ -39,7 +39,7 @@ class ProductReviewControllerTest {
     public static void setup(@Autowired ProductService productService, @Autowired UserService userService) {
         // Save the product and user entities first
         product = new Product.Builder()
-                .setProductId(null)
+                .setId(null)
                 .setName("Test Product")
                 .build();
         product = productService.create(product);
@@ -51,7 +51,12 @@ class ProductReviewControllerTest {
                 .build();
         user = userService.create(user);
 
-        productReview = ProductReviewFactory.buildProductReview(null, product, user, "Great product!", 5);
+        review = ReviewFactory.buildReview(
+                null,
+                product,
+                user,
+                5,
+                "Great product!");
     }
 
     @Test
@@ -59,33 +64,33 @@ class ProductReviewControllerTest {
     void create() {
         String url = BASE_URL + "/create";
         System.out.println("URL: " + url);
-        ResponseEntity<ProductReview> postResponse = restTemplate.postForEntity(url, productReview, ProductReview.class);
+        ResponseEntity<Review> postResponse = restTemplate.postForEntity(url, review, Review.class);
         assertNotNull(postResponse);
         assertNotNull(postResponse.getBody());
-        productReview = postResponse.getBody();  // Capture and reuse the created product review
-        assertNotNull(productReview.getProductReviewId());  // Ensure ID is not null after creation
-        System.out.println("Create: " + productReview);
+        review = postResponse.getBody();  // Capture and reuse the created product review
+        assertNotNull(review.getId());  // Ensure ID is not null after creation
+        System.out.println("Create: " + review);
     }
 
 
     @Test
     @Order(2)
     void read() {
-        String url = BASE_URL + "/read/" + productReview.getProductReviewId();
+        String url = BASE_URL + "/read/" + review.getId();
         System.out.println("\nURL: " + url);
-        ResponseEntity<ProductReview> response = restTemplate.getForEntity(url, ProductReview.class);
+        ResponseEntity<Review> response = restTemplate.getForEntity(url, Review.class);
         assertNotNull(response);
         assertNotNull(response.getBody());
-        assertEquals(productReview.getProductReviewId(), response.getBody().getProductReviewId());  // Compare IDs
+        assertEquals(review.getId(), response.getBody().getId());  // Compare IDs
         System.out.println("Read: " + response.getBody());
     }
 
     @Test
     @Order(3)
     void update() {
-        // Create a copy of productReview with the updated review
-        ProductReview updated = new ProductReview.Builder().copy(productReview)
-                .setReview("Updated Review")
+        // Create a copy of review with the updated review
+        Review updated = new Review.Builder().copy(review)
+                .setComment("Updated Review")
                 .build();  // Make sure productReviewID is set
 
         String url = BASE_URL + "/update";
@@ -94,22 +99,22 @@ class ProductReviewControllerTest {
 
         // Use PUT instead of POST for the update
         HttpHeaders headers = new HttpHeaders();
-        HttpEntity<ProductReview> entity = new HttpEntity<>(updated, headers);
-        ResponseEntity<ProductReview> response = restTemplate.exchange(url, HttpMethod.PUT, entity, ProductReview.class);
+        HttpEntity<Review> entity = new HttpEntity<>(updated, headers);
+        ResponseEntity<Review> response = restTemplate.exchange(url, HttpMethod.PUT, entity, Review.class);
 
         // Verify the response
         assertNotNull(response.getBody());
-        assertEquals("Updated Review", response.getBody().getReview());  // Check if the review was updated successfully
+        assertEquals("Updated Review", response.getBody().getComment());  // Check if the review was updated successfully
     }
 
     @Test
     @Disabled
     @Order(4)
      void delete() {
-         String url = BASE_URL + "/delete/" + productReview.getProductReviewId();  // Ensure correct ID is passed
+         String url = BASE_URL + "/delete/" + review.getId();  // Ensure correct ID is passed
          System.out.println("URL: " + url);
          restTemplate.delete(url);
-            System.out.println("Product review deleted: " + productReview.getProductReviewId());
+            System.out.println("Product review deleted: " + review.getId());
      }
 
     @Test
@@ -141,7 +146,7 @@ class ProductReviewControllerTest {
     @Test
     @Order(7)
     void findByProductReviewId() {
-        String url = BASE_URL + "/find/" + productReview.getProductReviewId();
+        String url = BASE_URL + "/find/" + review.getId();
         System.out.println("URL: " + url);
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
         System.out.println("Find by ID: ");
@@ -153,7 +158,7 @@ class ProductReviewControllerTest {
     @Test
     @Order(8)
     void findByProductId_ProductId() {
-        String url = BASE_URL + "/product/" + product.getProductId();
+        String url = BASE_URL + "/product/" + product.getId();
         System.out.println("URL: " + url);
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
         System.out.println("Find by product ID: ");
@@ -165,7 +170,7 @@ class ProductReviewControllerTest {
     @Test
     @Order(9)
     void findByUserId_UserID() {
-        String url = BASE_URL + "/user/" + user.getUserID();
+        String url = BASE_URL + "/user/" + user.getId();
         System.out.println("URL: " + url);
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
         System.out.println("Find by user ID: ");

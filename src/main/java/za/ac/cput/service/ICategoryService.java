@@ -13,8 +13,6 @@ import java.util.List;
 
 public interface ICategoryService extends IService<Category, Long> {
 
-    List<Category> findByCategoryId(Long categoryId);
-    List<Category> findByCategoryName(String categoryName);
 
     boolean delete(Long categoryId);
 }

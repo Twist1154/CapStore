@@ -1,6 +1,6 @@
 /**
  * E-commerce Web Application for selling T-shirts
- * ProductReviewController.java
+ * ReviewController.java
  * This class is the Product Review Controller
  * Author: Mthandeni Mbobo (218223579)
  *
@@ -11,8 +11,8 @@ package za.ac.cput.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import za.ac.cput.domain.ProductReview;
-import za.ac.cput.service.ProductReviewService;
+import za.ac.cput.domain.Review;
+import za.ac.cput.service.ReviewService;
 
 import java.util.List;
 
@@ -20,30 +20,30 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/productReview")
-public class ProductReviewController {
+public class ReviewController {
 
     //
     @Autowired
-    private ProductReviewService productReviewService;
+    private ReviewService productReviewService;
 
     @PostMapping("/create")
-    public ProductReview create(@RequestBody ProductReview productReview) {
-        return productReviewService.create(productReview);
+    public Review create(@RequestBody Review review) {
+        return productReviewService.create(review);
     }
 
     @GetMapping("/read/{productReviewId}")
-    public ResponseEntity<ProductReview> read(@PathVariable Long productReviewId) {
-        ProductReview productReview = productReviewService.read(productReviewId);
-        if (productReview != null) {
-            return ResponseEntity.ok(productReview);
+    public ResponseEntity<Review> read(@PathVariable Long productReviewId) {
+        Review review = productReviewService.read(productReviewId);
+        if (review != null) {
+            return ResponseEntity.ok(review);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
     @PutMapping("/update")
-    public ResponseEntity<ProductReview> update(@RequestBody ProductReview productReview) {
-        ProductReview updated = productReviewService.update(productReview);
+    public ResponseEntity<Review> update(@RequestBody Review review) {
+        Review updated = productReviewService.update(review);
         if (updated != null) {
             return ResponseEntity.ok(updated);
         } else {
@@ -62,31 +62,31 @@ public class ProductReviewController {
     }
 
     @GetMapping("/getAll")
-    public List<ProductReview> getAll() {
+    public List<Review> getAll() {
         return productReviewService.findAll();
     }
 
     @GetMapping("/getByRating/{rating}")
-    public List<ProductReview> getByRating(@PathVariable int rating) {
+    public List<Review> getByRating(@PathVariable int rating) {
         return productReviewService.findByRating(rating);
     }
 
     //productReviewId
     @GetMapping("/getByProductReviewId/{productReviewId}")
-    public List<ProductReview> findByProductReviewId(@PathVariable Long productReviewId) {
-        return this.productReviewService.findByProductReviewId(productReviewId);
+    public Review findByProductReviewId(@PathVariable Long productReviewId) {
+        return this.productReviewService.findById(productReviewId);
     }
 
     //productId
     @GetMapping("/getByProductId/{productId}")
-    public List<ProductReview> findByProduct_ProductId(@PathVariable Long productId) {
-        return this.productReviewService.findByProduct_ProductId(productId);
+    public List<Review> findByProduct_ProductId(@PathVariable Long productId) {
+        return this.productReviewService.findByProduct_Id(productId);
     }
 
     //userId
     @GetMapping("/getByUserId/{userId}")
-    public List<ProductReview> findByUser_UserID(@PathVariable Long userId) {
-        return this.productReviewService.findByUser_UserID(userId);
+    public List<Review> findByUser_UserID(@PathVariable Long userId) {
+        return this.productReviewService.findByUser_Id(userId);
     }
 
 }

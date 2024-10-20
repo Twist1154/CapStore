@@ -4,13 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import za.ac.cput.domain.CartItem;
 import za.ac.cput.domain.Cart;
 import za.ac.cput.service.CartService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -117,7 +116,7 @@ public class CartController {
     @GetMapping("/user/{userID}")
     public ResponseEntity<List<Cart>> getCartsByUserID(@PathVariable Long userID) {
         try {
-            List<Cart> cartList = cartService.findByUserID(userID);
+            List<Cart> cartList = cartService.findByUser_Id(userID);
             if (cartList.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
@@ -145,13 +144,13 @@ public class CartController {
 
     // Get carts by date range
     @GetMapping("/date-range")
-    public ResponseEntity<List<Cart>> getCartsByDateRange(@RequestParam LocalDate startDate,
-                                                          @RequestParam LocalDate endDate) {
+    public ResponseEntity<List<Cart>> getCartsByDateRange(@RequestParam LocalDateTime startDate,
+                                                          @RequestParam LocalDateTime endDate) {
         try {
             if (startDate == null || endDate == null || startDate.isAfter(endDate)) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
-            List<Cart> cartList = cartService.findByCartDateBetween(startDate, endDate);
+            List<Cart> cartList = cartService.findByCreatedAtBetween(startDate, endDate);
             if (cartList.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
@@ -162,20 +161,6 @@ public class CartController {
         }
     }
 
-    // Get carts by addressID
-    @GetMapping("/address/{addressID}")
-    public ResponseEntity<List<Cart>> getCartsByAddressID(@PathVariable Long addressID) {
-        try {
-            List<Cart> carts = cartService.findByAddressID(addressID);
-            if (carts.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-            return new ResponseEntity<>(carts, HttpStatus.OK);
-        } catch (Exception e) {
-            logger.error("Error fetching carts with addressID " + addressID, e);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
 
     // Get carts with a total price greater than a specified value
     @GetMapping("/total-price/{totalPrice}")
@@ -187,7 +172,7 @@ public class CartController {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
 
-            List<Cart> cartList = cartService.findByTotalPriceGreaterThan(totalPrice);
+            List<Cart> cartList = cartService.findByTotalGreaterThan(totalPrice);
             logger.info("Fetched " + cartList.size() + " carts.");
 
             if (cartList.isEmpty()) {
@@ -198,42 +183,6 @@ public class CartController {
         } catch (Exception e) {
             logger.error("Error fetching carts with totalPrice greater than " + totalPrice, e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    /**
-     * Endpoint to add an item to an existing cart and update the total price.
-     *
-     * @param cartId   The ID of the cart to which the item is to be added.
-     * @param cartItem The item to be added to the cart.
-     * @return The updated cart with the new item and recalculated total price.
-     */
-    @PostMapping("/{cartId}/add-item")
-    public ResponseEntity<Cart> addCartItem(@PathVariable Long cartId, @RequestBody CartItem cartItem) {
-        Cart updatedCart = cartService.addCartItem(cartId, cartItem);
-
-        if (updatedCart != null) {
-            return new ResponseEntity<>(updatedCart, HttpStatus.OK); // 200 OK
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // 404 Not Found
-        }
-    }
-
-    /**
-     * Endpoint to remove an item from an existing cart and update the total price.
-     *
-     * @param cartId   The ID of the cart from which the item is to be removed.
-     * @param cartItem The item to be removed from the cart.
-     * @return The updated cart with the item removed and recalculated total price.
-     */
-    @PostMapping("/{cartId}/remove-item")
-    public ResponseEntity<Cart> removeCartItem(@PathVariable Long cartId, @RequestBody CartItem cartItem) {
-        Cart updatedCart = cartService.removeCartItem(cartId, cartItem);
-
-        if (updatedCart != null) {
-            return new ResponseEntity<>(updatedCart, HttpStatus.OK); // 200 OK
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // 404 Not Found
         }
     }
 }
