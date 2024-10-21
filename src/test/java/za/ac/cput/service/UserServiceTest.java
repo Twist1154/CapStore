@@ -6,6 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import za.ac.cput.OnlineClothingStoreApp;
+import za.ac.cput.domain.Role;
 import za.ac.cput.domain.User;
 import za.ac.cput.factory.UserFactory;
 import za.ac.cput.repository.UserRepository;
@@ -40,7 +41,7 @@ class UserServiceTest {
                 .setLastName("Ntsekhe")
                 .setEmail("rethabile@gmail.com")
                 .setPassword("password")
-                .setAuthorities(Set.of("USER"))
+                .setRole(Role.valueOf(("USER")))
                 .setBirthDate(LocalDate.of(1990, 1, 1))
                 .setPhoneNumber("1234567890")
                 .build();
@@ -185,9 +186,9 @@ class UserServiceTest {
 
     @Test
     @Order(12)
-    void testFindByAuthoritiesContaining() {
+    void testFindByRole() {
         userservice.create(user);
-        List<User> users = userservice.findByAuthoritiesContaining("USER");
+        List<User> users = userservice.findByRole("USER");
         System.out.println("Found By Roles: " + users);
 
         assertFalse(users.isEmpty());

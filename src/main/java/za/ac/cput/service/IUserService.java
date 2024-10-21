@@ -5,6 +5,7 @@ import za.ac.cput.domain.User;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * IUserService defines the contract for user-related operations.
@@ -13,6 +14,7 @@ import java.util.Optional;
  * CRUD operations and custom queries such as finding users by email, name, birthdate, and more.
  */
 public interface IUserService extends IService<User, Long> {
+
 
     /**
      * Deletes a user by their unique ID.
@@ -82,14 +84,6 @@ public interface IUserService extends IService<User, Long> {
      * @param role the role to search for
      * @return a list of users that match the given role
      */
-    List<User> findByAuthoritiesContaining(String role);
-
-    /**
-     * Finds a list of users by their username.
-     *
-     * @param username the username to search for
-     * @return a list of users that match the given username
-     */
-    Optional<User> findByUsername(String username);
+    List<User> findByRole(String role);
 
 }
