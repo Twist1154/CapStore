@@ -41,7 +41,7 @@ public class UserControllerTest {
                 .setAvatar("default-avatar.png")
                 .setPhoneNumber("1234567890")
                 .setBirthDate(LocalDate.of(1990, 1, 1))
-                .setAuthorities(Collections.singleton("USER"))
+                .setRole(Role.valueOf(("USER")))
                 .build();
     }
 
@@ -80,12 +80,12 @@ public class UserControllerTest {
         User createdUser = createResponse.getBody();
 
         // Perform GET request to read the user
-        ResponseEntity<User> readResponse = restTemplate.getForEntity("/user/read/" + createdUser.getUserID(), User.class);
+        ResponseEntity<User> readResponse = restTemplate.getForEntity("/user/read/" + createdUser.getId(), User.class);
 
         // Assert the response status and read user
         assertThat(readResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(readResponse.getBody()).isNotNull();
-        assertThat(readResponse.getBody().getUserID()).isEqualTo(createdUser.getUserID());
+        assertThat(readResponse.getBody().getId()).isEqualTo(createdUser.getId());
     }
 
     @Order(3)
@@ -98,7 +98,7 @@ public class UserControllerTest {
         assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
         User createdUser = createResponse.getBody();
         assertThat(createdUser).isNotNull();
-        Long userID = createdUser.getUserID();
+        Long userID = createdUser.getId();
 
         // Step 2: Prepare the updated user data
         User updatedUser = new User.Builder()
@@ -108,9 +108,9 @@ public class UserControllerTest {
                 .setEmail("jane.doe@example.com")
                 .setPassword("newpassword")
                 .setAvatar("new-avatar.png")
-                .setPhoneNumber(987654321)
+                .setPhoneNumber("0987654321")
                 .setBirthDate(LocalDate.of(1992, 5, 10))
-                .setAuthorities(Collections.singleton("ADMIN"))
+                .setRole(Role.valueOf(("USER")))
                 .build();
 
 
@@ -128,7 +128,7 @@ public class UserControllerTest {
         assertThat(updatedResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
         assert updatedResponseBody != null;
         assertThat(updatedResponseBody.getFirstName()).isEqualTo("Jane");
-        assertThat(updatedResponseBody.getAuthorities()).isEqualTo("ADMIN");
+        assertThat(updatedResponseBody.getRole()).isEqualTo("ADMIN");
     }
 
     @Order(4)
@@ -143,7 +143,7 @@ public class UserControllerTest {
         assertThat(createdUser).isNotNull();
 
         // Then, delete the created user
-        Long userId = createdUser.getUserID();
+        Long userId = createdUser.getId();
         restTemplate.delete("/user/delete/" + userId);
 
         // Try to retrieve the deleted user (should return 404)

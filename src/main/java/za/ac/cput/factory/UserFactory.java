@@ -1,5 +1,6 @@
 package za.ac.cput.factory;
 
+import za.ac.cput.domain.Role;
 import za.ac.cput.domain.User;
 import za.ac.cput.util.Helper;
 
@@ -8,22 +9,15 @@ import java.util.Set;
 
 public class UserFactory {
 
-    public static User createUser(String avatar,
-                                  String firstName,
-                                  String lastName,
-                                  String username,
-                                  String email,
-                                  LocalDate birthDate,
-                                  Set<String> authorities,
-                                  String phoneNumber,
-                                  String password) {
+    public static User createUser(String avatar, String firstName,String username, String lastName, String email,
+                                  LocalDate birthDate, Role role, String phoneNumber, String password){
 
         if (Helper.isNullOrEmpty(firstName) ||
                 Helper.isNullOrEmpty(lastName) ||
                 Helper.isNullOrEmpty(username) ||
                 Helper.isNullOrEmpty(email) ||
                 Helper.isNullOrEmpty(password)) {
-            throw new IllegalArgumentException("First name, last name, username, email, and password cannot be null or empty");
+            throw new IllegalArgumentException("First name, last name, username, email, and password  cannot be null or empty");
         }
 
         if (birthDate == null) {
@@ -42,20 +36,19 @@ public class UserFactory {
                 .setUsername(username)
                 .setEmail(email)
                 .setBirthDate(birthDate)
-                .setAuthorities(authorities)  // Set authorities (roles)
+                .setRole(role)
                 .setPhoneNumber(phoneNumber)
                 .setPassword(password)
                 .build();
     }
-
-    public static User createUserForSignIn(String username, String password) {
+    public static User createUserForSignIn(String email, String password) {
         // Validation checks
-        if (Helper.isNullOrEmpty(username) || Helper.isNullOrEmpty(password)) {
+        if (Helper.isNullOrEmpty(email) || Helper.isNullOrEmpty(password)) {
             throw new IllegalArgumentException("Email and password cannot be null or empty");
         }
 
         return new User.Builder()
-                .setUsername(username)
+                .setEmail(email)
                 .setPassword(password)
                 .build();
     }

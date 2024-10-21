@@ -4,24 +4,18 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.Getter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
 import java.util.*;
 
-/**
- * Represents a user in the system.
- * <p>
- * This entity class is mapped to the "users" table in the database.
- *
- * @author Rethabile Ntsekhe
- * @date 25-Aug-24
- */
 
 @Entity
-@Getter
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,6 +29,8 @@ public class User {
 
     @Column(name = "last_name")
     private String lastName;
+
+
 
     @Column(nullable = false, unique = true)
     private String username;
@@ -51,10 +47,18 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "authorities", joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "authority")
-    private Set<String> authorities = new HashSet<>();
+    @Column(nullable = false)
+    private boolean enabled = true;
+
+   // @ElementCollection(fetch = FetchType.EAGER)
+    //@CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "role")
+    @Enumerated(value = EnumType.STRING)
+    private Role role;
+    //@ElementCollection(fetch = FetchType.EAGER)
+    //@CollectionTable(name = "authorities", joinColumns = @JoinColumn(name = "user_id"))
+    //@Column(name = "authority")
+    //private Set<String> authorities = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST, orphanRemoval = true)
     @JsonManagedReference("userAddressReference")
@@ -67,7 +71,6 @@ public class User {
     private List<Review> review = new ArrayList<>();
 
     public User() {
-        // Default constructor
     }
 
     // Private constructor to be used by the builder
@@ -76,14 +79,84 @@ public class User {
         this.avatar = builder.avatar;
         this.firstName = builder.firstName;
         this.lastName = builder.lastName;
+        this.username = builder.username;
         this.email = builder.email;
         this.birthDate = builder.birthDate;
-        this.username = builder.username;
         this.password = builder.password;
         this.phoneNumber = builder.phoneNumber;
+        this.role = builder.role;
         this.address = builder.address != null ? builder.address : new ArrayList<>();
         this.review = builder.review != null ? builder.review : new ArrayList<>();
-        this.authorities = new HashSet<>(builder.authorities);  // Ensure non-null authorities set
+
+    }
+
+    // Getters
+
+
+    public Long getId() {
+        return id;
+    }
+
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
+    @Override
+    public String getUsername() {
+        return "";
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public Role getRole() {
+        return role;
     }
 
     @Override
@@ -93,18 +166,38 @@ public class User {
                 ", avatar='" + avatar + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", UserName ='" + username + '\'' +
+                ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", birthDate=" + birthDate +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", password='" + password + '\'' +
                 ", ADDRESS: " + address +
                 ", REVIEW: " + review +
-                ", role=" + authorities +
-                "}\n ";
-
+                ", enabled=" + enabled +
+                ", role=" + role +
+                '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id) &&
+                Objects.equals(avatar, user.avatar) &&
+                Objects.equals(firstName, user.firstName) &&
+                Objects.equals(lastName, user.lastName) &&
+                Objects.equals(email, user.email) &&
+                Objects.equals(birthDate, user.birthDate) &&
+                Objects.equals(password, user.password) &&
+                Objects.equals(phoneNumber, user.phoneNumber) &&
+                Objects.equals(role, user.role);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, avatar, firstName, lastName, email, birthDate, password, phoneNumber, role);
+    }
 
 
     public static class Builder {
@@ -119,7 +212,7 @@ public class User {
         private String phoneNumber;
         private List<Address> address;
         private List<Review> review;
-        private Set<String> authorities = new HashSet<>();
+        private Role role;
 
         public Builder setId(Long id) {
             this.id = id;
@@ -141,6 +234,11 @@ public class User {
             return this;
         }
 
+        public Builder setUsername(String username) {
+            this.username = username;
+            return this;
+        }
+
         public Builder setEmail(String email) {
             this.email = email;
             return this;
@@ -151,10 +249,6 @@ public class User {
             return this;
         }
 
-        public Builder setUsername(String username) {
-            this.username = username;
-            return this;
-        }
 
         public Builder setPassword(String password) {
             this.password = password;
@@ -176,10 +270,12 @@ public class User {
             return this;
         }
 
-        public Builder setAuthorities(Set<String> authorities) {
-            this.authorities = authorities;
+
+        public Builder setRole(Role role) {
+            this.role = role;
             return this;
         }
+
 
         public Builder copy(User user) {
             this.id = user.getId();
@@ -191,7 +287,7 @@ public class User {
             this.username = user.getUsername();
             this.password = user.getPassword();
             this.phoneNumber = user.getPhoneNumber();
-            this.authorities = new HashSet<>(user.getAuthorities());
+            this.role =user.getRole();
             return this;
         }
 
