@@ -132,7 +132,7 @@ class ReviewControllerTest {
     @Test
     @Order(9)
     void findByProductId_ProductId() {
-        String url = BASE_URL + "/getByProductId/" + product.getProductId();
+        String url = BASE_URL + "/getByProductId/" + product.getId();
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
         assertNotNull(response.getBody());
         System.out.println("Reviews by product ID: " + response.getBody());
@@ -141,7 +141,7 @@ class ReviewControllerTest {
     @Test
     @Order(10)
     void findByUserId_UserID() {
-        String url = BASE_URL + "/getByUserId/" + user.getUserID();
+        String url = BASE_URL + "/getByUserId/" + user.getId();
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
         assertNotNull(response.getBody());
         System.out.println("Reviews by user ID: " + response.getBody());
