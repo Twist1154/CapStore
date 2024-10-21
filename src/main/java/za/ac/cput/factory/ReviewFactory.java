@@ -1,6 +1,7 @@
 /**
  * E-commerce Web Application for selling T-shirts
  * ReviewFactory.java
+ *
  * This class uses the Factory Pattern to create an instance of the Review entity
  * Author: Mthandeni Mbobo (218223579)
  * */

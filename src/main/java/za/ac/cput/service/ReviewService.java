@@ -1,6 +1,7 @@
 /**
  * E-Commerce Web Application for selling T-shirts
  * ReviewService.java
+ *
  * This class provides the service for the Review entity
  * Author: Mthandeni Mbobo - 218223579
  * */
@@ -23,30 +24,14 @@ import java.util.Optional;
 public class ReviewService implements IReviewService {
 
     private final ReviewRepository reviewRepository;
-    private final IProductRepository productRepository;
-    private final UserRepository userRepository;
 
     @Autowired
-    public ReviewService(ReviewRepository reviewRepository, IProductRepository productRepository, UserRepository userRepository) {
+    public ReviewService(ReviewRepository reviewRepository) {
         this.reviewRepository = reviewRepository;
-        this.productRepository = productRepository;
-        this.userRepository = userRepository;
     }
 
     @Override
     public Review create(Review review) {
-        // Fetch and set product if exists
-        if (review.getProduct() != null && review.getProduct().getProductId() != null) {
-            Optional<Product> product = productRepository.findById(review.getProduct().getProductId());
-            product.ifPresent(review::setProduct);
-        }
-
-        // Fetch and set user if exists
-        if (review.getUser() != null && review.getUser().getUserID() != null) {
-            Optional<User> user = userRepository.findById(review.getUser().getUserID());
-            user.ifPresent(review::setUser);
-        }
-
         return this.reviewRepository.save(review);
     }
 

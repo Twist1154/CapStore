@@ -1,6 +1,7 @@
 /**
  * E-commerce Web Application for selling T-shirts
  * Review.java
+ *
  * POJO class for the Review entity, using the Builder Pattern
  * Author: Mthandeni Mbobo (218223579)
  * */
@@ -15,7 +16,6 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Getter
-@Setter
 @Entity(name = "review")
 public class Review implements Serializable {
 

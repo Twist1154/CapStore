@@ -1,3 +1,10 @@
+/**
+ * ReviewControllerTest.java
+ * Test for the ReviewController
+ *
+ * Author: Mthandeni Mbobo (218223579)
+ * */
+
 package za.ac.cput.controller;
 
 import org.junit.jupiter.api.*;
