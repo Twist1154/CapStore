@@ -43,12 +43,6 @@ public class UserController {
         return ResponseEntity.ok(authService.authenticate(request));
     }
 
-    /**
-     * Retrieves a user by ID.
-     *
-     * @param id the ID of the user to retrieve
-     * @return the user if found, or 404 status if not
-     */
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/read/{id}")
     public ResponseEntity<User> readUser(@PathVariable Long id) {
@@ -60,7 +54,7 @@ public class UserController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.delete(id);
-        System.out.println("user deleted");
+        System.out.println("user is deleted by id");
         return ResponseEntity.noContent().build();
     }
 
@@ -69,7 +63,7 @@ public class UserController {
     public ResponseEntity<List<User>> getAllUsers() {
         System.out.println("Getting all users");
         List<User> users = userService.findAll();
-        System.out.println("Retrieved " + users.size() + " users");
+        System.out.println("Recived " + users.size() + " users");
         return ResponseEntity.ok(users);
     }
 

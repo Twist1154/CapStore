@@ -53,7 +53,7 @@ public class JwtService {
                 .builder()
                 .subject(users.getEmail())
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000)) // 24-hour validity
+                .expiration(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000)) // valid for 24-hour
                 .signWith(getSigninKey()).compact();
 
         return token;

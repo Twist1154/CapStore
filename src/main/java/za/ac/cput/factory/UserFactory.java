@@ -17,7 +17,7 @@ public class UserFactory {
                 Helper.isNullOrEmpty(username) ||
                 Helper.isNullOrEmpty(email) ||
                 Helper.isNullOrEmpty(password)) {
-            throw new IllegalArgumentException("First name, last name, username, email, and password cannot be null or empty");
+            throw new IllegalArgumentException("First name, last name, username, email, and password  cannot be null or empty");
         }
 
         if (birthDate == null) {
@@ -36,7 +36,7 @@ public class UserFactory {
                 .setUsername(username)
                 .setEmail(email)
                 .setBirthDate(birthDate)
-                .setRole(role) // Set the roles as a Set<String>
+                .setRole(role)
                 .setPhoneNumber(phoneNumber)
                 .setPassword(password)
                 .build();

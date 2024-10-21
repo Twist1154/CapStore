@@ -214,7 +214,7 @@ public class User implements UserDetails {
         private List<Review> review;
         private Role role;
 
-        public Builder setId(Long userID) {
+        public Builder setId(Long id) {
             this.id = id;
             return this;
         }

@@ -66,17 +66,12 @@ public class AuthenticationService {
         return new AuthenticationResponse(token);
     }
 
-    /**
-     * Authenticates a user by verifying their username and password, and generates a JWT token if valid.
-     *
-     * @param request the user credentials provided for authentication
-     * @return an {@link AuthenticationResponse} containing the JWT token
-     */
+
     public AuthenticationResponse authenticate(User request) {
-        // private static final String logger = Logger.getLogger(AuthenticationService.class.getName());
+
 
         try {
-            System.out.println("Attempting to authenticate user: " + request.getEmail());
+            System.out.println("trying to authenticate user: " + request.getEmail());
 
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
