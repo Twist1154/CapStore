@@ -3,6 +3,8 @@ package za.ac.cput.factory;
 import org.junit.jupiter.api.Test;
 import za.ac.cput.domain.CartItem;
 import za.ac.cput.domain.Cart;
+import za.ac.cput.domain.Product;
+import za.ac.cput.domain.User;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -22,28 +24,34 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class CartFactoryTest {
 
+    private Product product;
+    private Cart cart;
+    private CartItem cartItem;
+    private User user;
     @Test
     public void testCreateCart() {
+        product = new Product();
+        user = new User();
         // Create test CartItems with valid data
-        CartItem cartItem1 = CartItemFactory.buildCartItem(
-                1L,
-                12L,
-                12.00,
-                null
-        );
-
-        CartItem cartItem2 = CartItemFactory.buildCartItem(
-                2L,
-                5L,
-                10.00,
-                null
-        );
-
-        CartItem cartItem3 = CartItemFactory.buildCartItem(
+        CartItem cartItem1 = CartItemFactory.createCartItem(
                 null,
-                20L,
-                20.00,
-                null
+                cart,
+                product,
+                12
+        );
+
+        CartItem cartItem2 = CartItemFactory.createCartItem(
+                null,
+                cart,
+                product,
+                10
+        );
+
+        CartItem cartItem3 = CartItemFactory.createCartItem(
+                null,
+                cart,
+                product,
+                20
         );
 
         // Ensure that the CartItems were created successfully and not null
@@ -58,30 +66,28 @@ public class CartFactoryTest {
         cartItems.add(cartItem3);
 
         // Creating test data for the Cart object
-        Long cartID = 1L;
-        Long userID = 1L;
+
+
         Long addressID = 1L;
         double totalPrice = 150.0;
         String status = "Pending";
         LocalDate cartDate = LocalDate.now();
 
         // Build the Cart object
-        Cart cart = CartFactory.buildCart(
-                cartID,
-                totalPrice,
-                cartDate,
-                cartItems
+        Cart cart = CartFactory.createCart(
+                null,
+                user,
+                5000.00
         );
 
         // Asserting that the created cart is not null
         assertNotNull(cart);
 
         // Additional assertions to ensure the cart details are correct
-        assertEquals(cartID, cart.getId());
-        assertEquals(userID, cart.getUserID());
-        assertEquals(cartDate, cart.getCartDate());
+        assertEquals(cart, cart);
+        assertEquals(user, cart.getUser());
         assertEquals(cartItems, cart.getCartItems());
-        assertEquals(totalPrice, cart.getTotalPrice());
+        assertEquals(totalPrice, cart.getTotal());
 
         // Print the created cart for debugging
         System.out.println(cart);
@@ -95,19 +101,17 @@ public class CartFactoryTest {
         String status = "Pending";
         LocalDate cartDate = LocalDate.now();
 
-        // Build the Cart object with an empty cartItems list
-        List<CartItem> emptyCartItems = new ArrayList<>();
-        Cart cart = CartFactory.buildCart(
-                cartID,
-                totalPrice,
-                cartDate,
-                emptyCartItems
+
+        Cart cart = CartFactory.createCart(
+                null,
+                user,
+                800.00
         );
 
         // Asserting that the created cart is not null but has no items
         assertNotNull(cart);
         assertTrue(cart.getCartItems().isEmpty());
-        assertEquals(0.0, cart.getTotalPrice());
+        assertEquals(0.0, cart.getTotal());
     }
 
     @Test
@@ -123,11 +127,10 @@ public class CartFactoryTest {
 
         // Expecting IllegalArgumentException due to negative total price
         IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> {
-            CartFactory.buildCart(
-                    cartID,
-                    totalPrice,
-                    cartDate,
-                    cartItems
+            CartFactory.createCart(
+                    null,
+                    user,
+                    700.00
             );
         });
 

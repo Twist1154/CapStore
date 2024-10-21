@@ -6,14 +6,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RestController;
 import za.ac.cput.OnlineClothingStoreApp;
-import za.ac.cput.domain.OrderItem;
-import za.ac.cput.domain.Orders;
+import za.ac.cput.domain.*;
 import za.ac.cput.factory.OrderItemFactory;
 import za.ac.cput.service.OrderItemService;
 import za.ac.cput.service.OrderService;
+import za.ac.cput.service.ProductService;
 
 
 import java.time.LocalDate;
@@ -35,17 +33,26 @@ class OrderItemControllerTest {
 
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private ProductService productService;
 
     private Orders order;
     private OrderItem orderItem;
+    private Product product;
+    private User user;
+    private Address address;
 
     @BeforeEach
     void setUp() {
+        user = new User();
+        product = new Product();
+        address = new Address();
+
         // Setup a test order
         order = new Orders.Builder()
                 .setId(null)
-                .setUserID(1L)
-                .setAddressID(1L)
+                .setUser(user)
+                .setAddress(address)
                 .setStatus("Pending")
                 .setTotalPrice(100.0)
                 .setOrderDate(LocalDate.now())
@@ -55,7 +62,7 @@ class OrderItemControllerTest {
         // Create a new order item associated with the saved order
         orderItem = OrderItemFactory.buildOrderItem(
                 null,
-                1L,
+                product,
                 10,
                 10.00,
                 order
@@ -76,10 +83,11 @@ class OrderItemControllerTest {
     @Test
     @Order(1)
     void createOrderItem() {
+        product = productService.read(1L);
         // Arrange
         OrderItem newOrderItem = OrderItemFactory.buildOrderItem(
-                null,  // ID will be generated
-                1L,
+                null,
+                product,
                 5,
                 5.00,
                 order  // The existing order created in the setup

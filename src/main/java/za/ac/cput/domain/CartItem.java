@@ -1,49 +1,63 @@
 package za.ac.cput.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-@Getter
-@Setter
+/**
+ * Represents a cart item entry in the system.
+ * Each entry is associated with a Cart, a Product, and a ProductSkuService.
+ * <p>
+ * This entity class is mapped to the "cart_item" table in the database.
+ * Includes the necessary mappings for relationships to other entities.
+ *
+ * @author Rethabile Ntsekhe
+ * @date 25-Aug-24
+ */
 @Entity
-public class CartItem {
+@Getter
+@Table(name = "cart_item")
+public class CartItem implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cart_itemid")
     private Long id;
 
-    private Long productId;
-    private double price;
-
     @ManyToOne
-    @JoinColumn(name = "cart_id")
+    @JoinColumn(name = "cart_id", nullable = false)
+    @JsonBackReference("cartReference")
     private Cart cart;
 
-    // Default constructor
-    public CartItem() {}
 
-    // Private constructor for Builder
+    @ManyToOne
+    @JoinColumn(name = "product_id", nullable = false)
+    private Product product;
+
+
+    @Column(nullable = false)
+    private int quantity;
+
+    public CartItem() {
+    }
+
     private CartItem(Builder builder) {
         this.id = builder.id;
-        this.productId = builder.productId;
-        this.price = builder.price;
         this.cart = builder.cart;
+        this.product = builder.product;
+        this.quantity = builder.quantity;
     }
 
-
-    public Long getId() {
-        return id;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public Cart getCart() {
-        return cart;
+    @Override
+    public String toString() {
+        return "\n CartItem{" +
+                "id=" + id +
+                ", cart=" + cart +
+                ", product=" + product.getName() + '\'' +
+                ", quantity=" + quantity +
+                "}\n";
     }
 
     @Override
@@ -51,62 +65,25 @@ public class CartItem {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CartItem cartItem = (CartItem) o;
-        return Double.compare(cartItem.price, price) == 0 &&
+        return quantity == cartItem.quantity &&
                 Objects.equals(id, cartItem.id) &&
-                Objects.equals(productId, cartItem.productId) &&
-                Objects.equals(cart, cartItem.cart);
+                Objects.equals(cart, cartItem.cart) &&
+                Objects.equals(product, cartItem.product);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, productId, price, cart);
+        return Objects.hash(id, cart, product, quantity);
     }
 
-    @Override
-    public String toString() {
-        return "CartItem{" +
-                "id=" + id +
-                ", productId=" + productId +
-                ", price=" + price +
-                ", cart=" + cart +
-                '}';
-    }
-
-    public Long getProductID() {
-        return productId;
-    }
-
-
-    // Builder class
     public static class Builder {
         private Long id;
-        private Long productId;
-        private double price;
         private Cart cart;
-
-        // Default constructor for Builder
-        public Builder() {}
-
-        // Constructor to create a builder from an existing CartItem
-        private Builder(CartItem cartItem) {
-            this.id = cartItem.getId();
-            this.productId = cartItem.getProductID();
-            this.price = cartItem.getPrice();
-            this.cart = cartItem.getCart();
-        }
+        private Product product;
+        private int quantity;
 
         public Builder setId(Long id) {
             this.id = id;
-            return this;
-        }
-
-        public Builder setProductID(Long productID) {
-            this.productId = productID;
-            return this;
-        }
-
-        public Builder setPrice(double price) {
-            this.price = price;
             return this;
         }
 
@@ -115,22 +92,27 @@ public class CartItem {
             return this;
         }
 
+        public Builder setProduct(Product product) {
+            this.product = product;
+            return this;
+        }
+
+
+        public Builder setQuantity(int quantity) {
+            this.quantity = quantity;
+            return this;
+        }
+
+        public Builder copy(CartItem cartItem) {
+            this.id = cartItem.getId();
+            this.cart = cartItem.getCart();
+            this.product = cartItem.getProduct();
+            this.quantity = cartItem.getQuantity();
+            return this;
+        }
+
         public CartItem build() {
             return new CartItem(this);
         }
-
-        public CartItem.Builder copy(CartItem cartitem) {
-            this.id = cartitem.getId();
-            this.productId = cartitem.getProductID();
-            this.price = cartitem.getPrice();
-            this.cart = cartitem.getCart();
-            return this;
-        }
-        // Static copy method
-        public static Builder from(CartItem cartItem) {
-            return new Builder(cartItem);
-        }
-
-        
     }
 }

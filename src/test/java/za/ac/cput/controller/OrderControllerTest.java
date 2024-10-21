@@ -6,12 +6,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
-import za.ac.cput.domain.OrderItem;
-import za.ac.cput.domain.Orders;
+import za.ac.cput.domain.*;
 import za.ac.cput.factory.OrderFactory;
 import za.ac.cput.factory.OrderItemFactory;
+import za.ac.cput.service.AddressService;
 import za.ac.cput.service.OrderService;
+import za.ac.cput.service.ProductService;
+import za.ac.cput.service.UserService;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -30,18 +31,31 @@ class OrderControllerTest {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private AddressService addressService;
+    @Autowired
+    private ProductService productService;
+
     private Orders order;
+    private User user;
+    private Address address;
+    private Product product;
 
     @BeforeEach
     void setUp() {
+        user = userService.read(1L);
+        address = addressService.read(1L);
+        product = productService.read(1L);
+
         // Create an initial order without items
         order = OrderFactory.buildOrder(
                 1L,
-                1L,
-                1L,
+                user,
+                address,
                 "Pending",
                 150.0,
-                LocalDate.now(),
                 new ArrayList<>()
         );
 
@@ -51,7 +65,7 @@ class OrderControllerTest {
         // Create test OrderItems for the saved order
         OrderItem orderItem1 = OrderItemFactory.buildOrderItem(
                 null,
-                1L,
+                product,
                 12,
                 12.00,
                 order
@@ -59,7 +73,7 @@ class OrderControllerTest {
 
         OrderItem orderItem2 = OrderItemFactory.buildOrderItem(
                 null,
-                1L,
+                product,
                 5,
                 10.00,
                 order
@@ -67,7 +81,7 @@ class OrderControllerTest {
 
         OrderItem orderItem3 = OrderItemFactory.buildOrderItem(
                 null,
-                1L,
+                product,
                 20,
                 20.00,
                 order
@@ -81,8 +95,8 @@ class OrderControllerTest {
         // Update the order with OrderItems and save it
         order = new Orders.Builder()
                 .setId(order.getId())
-                .setUserID(order.getUserID())
-                .setAddressID(order.getAddressID())
+                .setUser(order.getUser())
+                .setAddress(order.getAddress())
                 .setTotalPrice(order.getTotalPrice())
                 .setStatus(order.getStatus())
                 .setOrderDate(order.getOrderDate())
@@ -105,18 +119,17 @@ class OrderControllerTest {
     void createOrder() {
         // Arrange
         List<OrderItem> orderItems = List.of(
-            OrderItemFactory.buildOrderItem(null, 1L, 12, 12.00, null),
-            OrderItemFactory.buildOrderItem(null, 1L, 5, 10.00, null),
-            OrderItemFactory.buildOrderItem(null, 1L, 20, 20.00, null)
+            OrderItemFactory.buildOrderItem(null, product, 12, 12.00, null),
+            OrderItemFactory.buildOrderItem(null, product, 5, 10.00, null),
+            OrderItemFactory.buildOrderItem(null, product, 20, 20.00, null)
         );
 
         Orders newOrder = OrderFactory.buildOrder(
                 null,
-                124L,
-                1L,
+                user,
+                address,
                 "pending",
                 234,
-                LocalDate.now(),
                 orderItems
         );
 
@@ -196,7 +209,7 @@ class OrderControllerTest {
     @Order(6)
     void getOrdersByUserID() {
         // Act
-        ResponseEntity<List<Orders>> response = orderController.getOrdersByUserID(order.getUserID());
+        ResponseEntity<List<Orders>> response = orderController.getOrdersByUserID(order.getUser().getId());
 
         System.out.println(response.getBody());
 
@@ -237,7 +250,7 @@ class OrderControllerTest {
     @Order(9)
     void getOrdersByAddressID() {
         // Act
-        ResponseEntity<List<Orders>> response = orderController.getOrdersByAddressID(order.getAddressID());
+        ResponseEntity<List<Orders>> response = orderController.getOrdersByAddressID(order.getAddress().getId());
         System.out.println(response.getBody());
 
         // Assert

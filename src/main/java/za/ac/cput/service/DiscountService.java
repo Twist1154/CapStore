@@ -28,7 +28,7 @@ public class DiscountService implements IDiscountService {
 
     @Override
     public Discount update(Discount discount) {
-        if(discountRepository.existsById(discount.getDiscountId())){
+        if(discountRepository.existsById(discount.getId())){
             return discountRepository.save(discount);
         }
         return null;

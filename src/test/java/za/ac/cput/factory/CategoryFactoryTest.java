@@ -18,15 +18,16 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class CategoryFactoryTest {
 
-    Long categoryId = 1L;
+    Long categoryId = null;
     String categoryName = "Men";
-    String subCategoryName = "T-shirts";
 
     @Test
     @Order(1)
     //This test will pass and print category, all parameters are not null
     void buildCategory() {
-        Category category = CategoryFactory.buildCategory(categoryId, categoryName, subCategoryName);
+        Category category = CategoryFactory.buildCategory(null,
+                categoryName
+        );
         assertNotNull(category);
         System.out.println(category);
     }
@@ -35,7 +36,8 @@ class CategoryFactoryTest {
     @Order(2)
     //This test will print null, as categoryName is null
     void buildCategoryWithNullCategoryName() {
-        Category category = CategoryFactory.buildCategory(categoryId, null, subCategoryName);
+        Category category = CategoryFactory.buildCategory(categoryId,
+                null);
         assertNull(category);
         System.out.println(category);
     }

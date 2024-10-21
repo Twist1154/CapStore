@@ -75,12 +75,12 @@ class DiscountServiceTest {
 //        Discount readDiscount1 = discountService.read(discount1.getDiscountId());
         Discount readDiscount1 = discountService.read(1L);
         assertNotNull(readDiscount1);
-        assertEquals(discount1.getDiscountId(), readDiscount1.getDiscountId());
+        assertEquals(discount1.getId(), readDiscount1.getId());
         System.out.println("Read discount 1: "+ readDiscount1);
 
-        Discount readDiscount2 = discountService.read(discount2.getDiscountId());
+        Discount readDiscount2 = discountService.read(discount2.getId());
         assertNotNull(readDiscount2);
-        assertEquals(discount2.getDiscountId(), readDiscount2.getDiscountId());
+        assertEquals(discount2.getId(), readDiscount2.getId());
         System.out.println("Read discount 1: "+ readDiscount2);
     }
 
@@ -89,7 +89,7 @@ class DiscountServiceTest {
         System.out.println("Discount 2 before update: "+ discount2);
 
         Discount updateDiscount2 = new Discount.Builder()
-                .setDiscount_id(discount2.getDiscountId())
+                .setId(discount2.getId())
                 .setCode("B2")
                 .setDescription("Discount for V-neck t-shirt.")
                 .setDiscount_percent(15)
@@ -100,14 +100,14 @@ class DiscountServiceTest {
 
         Discount result = discountService.update(updateDiscount2);
         assertNotNull(result);
-        assertEquals(updateDiscount2.getDiscountId(), result.getDiscountId());
+        assertEquals(updateDiscount2.getId(), result.getId());
         System.out.println(result);
     }
 
     @Test
     void delete() {
         System.out.println("Discount to be deleted: "+ discount3);
-        Long discount3Id = discount3.getDiscountId();
+        Long discount3Id = discount3.getId();
         discountService.delete(discount3Id);
 
         Discount deleteDiscount = discountService.read(discount3Id);

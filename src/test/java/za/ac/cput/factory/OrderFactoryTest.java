@@ -1,8 +1,7 @@
 package za.ac.cput.factory;
 
 import org.junit.jupiter.api.Test;
-import za.ac.cput.domain.OrderItem;
-import za.ac.cput.domain.Orders;
+import za.ac.cput.domain.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -11,13 +10,19 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class OrderFactoryTest {
+    private User user;
+    private Address address;
+    private Product product;
 
     @Test
     public void testCreateOrder() {
+        user = new User();
+        address = new Address();
+        product = new Product();
         // Create test OrderItems with valid data
         OrderItem orderItem1 = OrderItemFactory.buildOrderItem(
                 1L,
-                12L,
+                product,
                 2,
                 12.00,
                 null
@@ -25,7 +30,7 @@ public class OrderFactoryTest {
 
         OrderItem orderItem2 = OrderItemFactory.buildOrderItem(
                 2L,
-                5L,
+                product,
                 1,
                 10.00,
                 null
@@ -33,7 +38,7 @@ public class OrderFactoryTest {
 
         OrderItem orderItem3 = OrderItemFactory.buildOrderItem(
                 null,
-                20L,
+                product,
                 3,
                 20.00,
                 null
@@ -52,8 +57,6 @@ public class OrderFactoryTest {
 
         // Creating test data for the Orders object
         Long orderID = 1L;
-        Long userID = 1L;
-        Long addressID = 1L;
         double totalPrice = 150.0;
         String status = "Pending";
         LocalDate orderDate = LocalDate.now();
@@ -61,11 +64,10 @@ public class OrderFactoryTest {
         // Build the Orders object
         Orders order = OrderFactory.buildOrder(
                 orderID,
-                userID,
-                addressID,
+                user,
+                address,
                 status,
                 totalPrice,
-                orderDate,
                 orderItems
         );
 
@@ -74,8 +76,8 @@ public class OrderFactoryTest {
 
         // Additional assertions to ensure the order details are correct
         assertEquals(orderID, order.getId());
-        assertEquals(userID, order.getUserID());
-        assertEquals(addressID, order.getAddressID());
+        assertEquals(user.getId(), order.getUser());
+        assertEquals(address.getId(), order.getAddress());
         assertEquals(orderDate, order.getOrderDate());
         assertEquals(orderItems, order.getOrderItems());
         assertEquals(totalPrice, order.getTotalPrice());
@@ -88,9 +90,6 @@ public class OrderFactoryTest {
     @Test
     public void testCreateOrderWithEmptyItems() {
         // Creating test data for the Orders object with no order items
-        Long orderID = 2L;
-        Long userID = 1L;
-        Long addressID = 1L;
         double totalPrice = 0.0; // Assuming 0 for no items
         String status = "Pending";
         LocalDate orderDate = LocalDate.now();
@@ -98,12 +97,11 @@ public class OrderFactoryTest {
         // Build the Orders object with an empty orderItems list
         List<OrderItem> emptyOrderItems = new ArrayList<>();
         Orders order = OrderFactory.buildOrder(
-                orderID,
-                userID,
-                addressID,
+                null,
+                user,
+                address,
                 status,
                 totalPrice,
-                orderDate,
                 emptyOrderItems
         );
 
@@ -115,10 +113,7 @@ public class OrderFactoryTest {
 
     @Test
     public void testCreateOrderWithNegativeTotalPrice() {
-        // Creating test data for the Orders object with a negative total price
-        Long orderID = 3L;
-        Long userID = 1L;
-        Long addressID = 1L;
+
         double totalPrice = -50.0;
         String status = "Pending";
         LocalDate orderDate = LocalDate.now();
@@ -129,12 +124,11 @@ public class OrderFactoryTest {
         // Expecting IllegalArgumentException due to negative total price
         IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> {
             OrderFactory.buildOrder(
-                    orderID,
-                    userID,
-                    addressID,
+                    null,
+                    user,
+                    address,
                     status,
                     totalPrice,
-                    orderDate,
                     orderItems
             );
         });

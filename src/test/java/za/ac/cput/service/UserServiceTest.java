@@ -40,9 +40,9 @@ class UserServiceTest {
                 .setLastName("Ntsekhe")
                 .setEmail("rethabile@gmail.com")
                 .setPassword("password")
-                .setRole(Set.of("USER"))
+                .setAuthorities(Set.of("USER"))
                 .setBirthDate(LocalDate.of(1990, 1, 1))
-                .setPhoneNumber(1234567890)
+                .setPhoneNumber("1234567890")
                 .build();
     }
 
@@ -59,10 +59,11 @@ class UserServiceTest {
                 "avatar.jpg",
                 "Rethabile",
                 "Ntsekhe",
+                "tester",
                 "rethabile@gmail.com",
                 LocalDate.parse("1990-01-01"),
                 Set.of("USER"),
-                1234567890,  // **Change:** Ensure consistent phone number format
+                "1234567890",
                 "password123");
 
         User createdUser = userservice.create(user);
@@ -78,7 +79,7 @@ class UserServiceTest {
     void testReadUser() {
         // Reuse user from the setUp method
         User createdUser = userservice.create(user);
-        User foundUser = userservice.read(user.getUserID());
+        User foundUser = userservice.read(user.getId());
         System.out.println(foundUser);
 
         assertNotNull(foundUser);
@@ -107,7 +108,7 @@ class UserServiceTest {
     void testFindAllUsers() {
         userservice.create(user);
         List<User> users = userservice.findAll();
-        System.out.println("All Users :" + '\n' + users + '\n');
+        System.out.println("All User :" + '\n' + users + '\n');
 
         assertNotNull(users);
     }
@@ -139,7 +140,7 @@ class UserServiceTest {
         userservice.create(user);
 
         // Find by full phone number
-        List<User> users = userservice.findByPhoneNumber(1234567890);
+        List<User> users = userservice.findByPhoneNumber("1234567890");
         System.out.println("Found By Phone Number: " + users);
 
         // **Change:** Add size check to ensure only one user is returned
@@ -184,9 +185,9 @@ class UserServiceTest {
 
     @Test
     @Order(12)
-    void testFindByRole() {
+    void testFindByAuthoritiesContaining() {
         userservice.create(user);
-        List<User> users = userservice.findByRole("USER");
+        List<User> users = userservice.findByAuthoritiesContaining("USER");
         System.out.println("Found By Roles: " + users);
 
         assertFalse(users.isEmpty());

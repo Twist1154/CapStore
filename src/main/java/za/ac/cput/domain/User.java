@@ -1,340 +1,200 @@
 package za.ac.cput.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import lombok.Getter;
+
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
- * Represents a User entity in the system.
- * It is an entity class that maps to the "User" table in the database.
+ * Represents a user in the system.
+ * <p>
+ * This entity class is mapped to the "users" table in the database.
+ *
+ * @author Rethabile Ntsekhe
+ * @date 25-Aug-24
  */
+
 @Entity
+@Getter
 @Table(name = "users")
 public class User {
 
-    /**
-     * Unique identifier for the user.
-     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userID;
+    private Long id;
 
-    /**
-     * Path or URL to the user's avatar image.
-     */
+    @Column(name = "avatar")
     private String avatar;
 
-    /**
-     * User's first name.
-     */
+    @Column(name = "first_name")
     private String firstName;
 
-    /**
-     * User's last name.
-     */
+    @Column(name = "last_name")
     private String lastName;
 
-    /**
-     * User's unique email address.
-     */
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
+    private String username;
+
+    @Column(name = "email", unique = true)
     private String email;
 
-    /**
-     * User's birth date.
-     */
+    @Column(name = "birth_date")
     private LocalDate birthDate;
 
-    /**
-     * User's password for authentication.
-     */
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
+    @Column(name = "password")
     private String password;
 
-    /**
-     * User's phone number.
-     */
-    private Integer phoneNumber;
-
-    /**
-     * Collection of roles assigned to the user (e.g., ADMIN, USER).
-     */
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "role")
-    private Set<String> role = new HashSet<>();
+    @CollectionTable(name = "authorities", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "authority")
+    private Set<String> authorities = new HashSet<>();
 
-    /**
-     * Default constructor.
-     */
-    public User() {}
+    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @JsonManagedReference("userAddressReference")
+    private List<Address> address = new ArrayList<>();
 
-    /**
-     * Private constructor for use by the builder pattern.
-     * @param builder The builder instance used to construct the User object.
-     */
+    @OneToMany
+    @JoinColumn(name = "user_id")
+    @JsonBackReference("userReviewReference")
+    @JsonIgnore
+    private List<Review> review = new ArrayList<>();
+
+    public User() {
+        // Default constructor
+    }
+
+    // Private constructor to be used by the builder
     private User(Builder builder) {
-        this.userID = builder.userID;
+        this.id = builder.id;
         this.avatar = builder.avatar;
         this.firstName = builder.firstName;
         this.lastName = builder.lastName;
         this.email = builder.email;
         this.birthDate = builder.birthDate;
+        this.username = builder.username;
         this.password = builder.password;
         this.phoneNumber = builder.phoneNumber;
-        this.role.addAll(builder.role);
+        this.address = builder.address != null ? builder.address : new ArrayList<>();
+        this.review = builder.review != null ? builder.review : new ArrayList<>();
+        this.authorities = new HashSet<>(builder.authorities);  // Ensure non-null authorities set
     }
 
-    // Getters
-
-    /**
-     * Gets the user ID.
-     * @return the user ID
-     */
-    public Long getUserID() {
-        return userID;
-    }
-
-    /**
-     * Gets the avatar URL or path.
-     * @return the avatar
-     */
-    public String getAvatar() {
-        return avatar;
-    }
-
-    /**
-     * Gets the first name of the user.
-     * @return the first name
-     */
-    public String getFirstName() {
-        return firstName;
-    }
-
-    /**
-     * Gets the last name of the user.
-     * @return the last name
-     */
-    public String getLastName() {
-        return lastName;
-    }
-
-    /**
-     * Gets the email address of the user.
-     * @return the email
-     */
-    public String getEmail() {
-        return email;
-    }
-
-    /**
-     * Gets the birth date of the user.
-     * @return the birth date
-     */
-    public LocalDate getBirthDate() {
-        return birthDate;
-    }
-
-    /**
-     * Gets the password of the user.
-     * @return the password
-     */
-    public String getPassword() {
-        return password;
-    }
-
-    /**
-     * Gets the phone number of the user.
-     * @return the phone number
-     */
-    public Integer getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    /**
-     * Gets the roles assigned to the user.
-     * @return a set of roles
-     */
-    public Set<String> getRole() {
-        return role;
-    }
-
-    /**
-     * Generates a string representation of the User object.
-     * @return a string representation of the User
-     */
     @Override
     public String toString() {
-        return "'\n'+User{" +
-                "id=" + userID +
+        return "\n User{" +
+                "id=" + id +
                 ", avatar='" + avatar + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", UserName ='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", birthDate=" + birthDate +
-                ", password='" + password + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
-                ", role=" + role +
-                '\n';
+                ", password='" + password + '\'' +
+                ", ADDRESS: " + address +
+                ", REVIEW: " + review +
+                ", role=" + authorities +
+                "}\n ";
+
     }
 
-    /**
-     * Compares this User with another object.
-     * @param o the object to compare to
-     * @return true if the objects are equal, false otherwise
-     */
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return Objects.equals(userID, user.userID) &&
-                Objects.equals(avatar, user.avatar) &&
-                Objects.equals(firstName, user.firstName) &&
-                Objects.equals(lastName, user.lastName) &&
-                Objects.equals(email, user.email) &&
-                Objects.equals(birthDate, user.birthDate) &&
-                Objects.equals(password, user.password) &&
-                Objects.equals(phoneNumber, user.phoneNumber) &&
-                Objects.equals(role, user.role);
-    }
 
-    /**
-     * Generates a hash code for the User object.
-     * @return the hash code
-     */
-    @Override
-    public int hashCode() {
-        return Objects.hash(userID, avatar, firstName, lastName, email, birthDate, password, phoneNumber, role);
-    }
 
-    /**
-     * Builder class for constructing User instances using the builder pattern.
-     */
     public static class Builder {
-        private Long userID;
+        private Long id;
         private String avatar;
         private String firstName;
         private String lastName;
+        private String username;
         private String email;
         private LocalDate birthDate;
         private String password;
-        private Integer phoneNumber;
-        private Set<String> role = new HashSet<>();
+        private String phoneNumber;
+        private List<Address> address;
+        private List<Review> review;
+        private Set<String> authorities = new HashSet<>();
 
-        /**
-         * Sets the user ID.
-         * @param userID the user ID to set
-         * @return the current Builder instance
-         */
-        public Builder setId(Long userID) {
-            this.userID = userID;
+        public Builder setId(Long id) {
+            this.id = id;
             return this;
         }
 
-        /**
-         * Sets the avatar URL or path.
-         * @param avatar the avatar to set
-         * @return the current Builder instance
-         */
         public Builder setAvatar(String avatar) {
             this.avatar = avatar;
             return this;
         }
 
-        /**
-         * Sets the first name.
-         * @param firstName the first name to set
-         * @return the current Builder instance
-         */
         public Builder setFirstName(String firstName) {
             this.firstName = firstName;
             return this;
         }
 
-        /**
-         * Sets the last name.
-         * @param lastName the last name to set
-         * @return the current Builder instance
-         */
         public Builder setLastName(String lastName) {
             this.lastName = lastName;
             return this;
         }
 
-        /**
-         * Sets the email.
-         * @param email the email to set
-         * @return the current Builder instance
-         */
         public Builder setEmail(String email) {
             this.email = email;
             return this;
         }
 
-        /**
-         * Sets the birth date.
-         * @param birthDate the birth date to set
-         * @return the current Builder instance
-         */
         public Builder setBirthDate(LocalDate birthDate) {
             this.birthDate = birthDate;
             return this;
         }
 
-        /**
-         * Sets the password.
-         * @param password the password to set
-         * @return the current Builder instance
-         */
+        public Builder setUsername(String username) {
+            this.username = username;
+            return this;
+        }
+
         public Builder setPassword(String password) {
             this.password = password;
             return this;
         }
 
-        /**
-         * Sets the phone number.
-         * @param phoneNumber the phone number to set
-         * @return the current Builder instance
-         */
-        public Builder setPhoneNumber(Integer phoneNumber) {
+        public Builder setPhoneNumber(String phoneNumber) {
             this.phoneNumber = phoneNumber;
             return this;
         }
 
-        /**
-         * Sets the roles assigned to the user.
-         * @param role the roles to set
-         * @return the current Builder instance
-         */
-        public Builder setRole(Set<String> role) {
-            this.role = role;
+        public Builder setAddress(List<Address> address) {
+            this.address = address;
             return this;
         }
 
-        /**
-         * Copies an existing User object into the builder.
-         * @param user the User object to copy
-         * @return the current Builder instance
-         */
+        public Builder setReview(List<Review> review) {
+            this.review = review;
+            return this;
+        }
+
+        public Builder setAuthorities(Set<String> authorities) {
+            this.authorities = authorities;
+            return this;
+        }
+
         public Builder copy(User user) {
-            this.userID = user.getUserID();
+            this.id = user.getId();
             this.avatar = user.getAvatar();
             this.firstName = user.getFirstName();
             this.lastName = user.getLastName();
             this.email = user.getEmail();
             this.birthDate = user.getBirthDate();
+            this.username = user.getUsername();
             this.password = user.getPassword();
             this.phoneNumber = user.getPhoneNumber();
-            this.role = new HashSet<>(user.getRole());
+            this.authorities = new HashSet<>(user.getAuthorities());
             return this;
         }
 
-        /**
-         * Builds and returns a new User instance based on the builder's configuration.
-         * @return the newly created User object
-         */
         public User build() {
             return new User(this);
         }

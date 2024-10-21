@@ -2,9 +2,11 @@ package za.ac.cput.factory;
 
 import za.ac.cput.domain.Images;
 import za.ac.cput.domain.Product;
+import za.ac.cput.domain.SubCategory;
 import za.ac.cput.util.Helper;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * ProductFactory.java
@@ -13,10 +15,14 @@ import java.time.LocalDateTime;
  */
 public class ProductFactory {
 
-    public static Product buildProduct(Long productId, String name, String description,
-                                       double price, int stock, Long categoryId,
-                                       LocalDateTime createdAt, LocalDateTime updatedAt,
-                                       String imageUrl1, String imageUrl2, String imageUrl3, String imageUrl4) {
+    public static Product buildProduct(Long id,
+                                       String name,
+                                       String description,
+                                       double price,
+                                       int stock,
+                                       List<SubCategory> subCategory,
+                                       String imageUrl1, String imageUrl2, String imageUrl3, String imageUrl4
+    ) {
 
         // Validate required fields using the Helper class
         if (Helper.isNullOrEmpty(name) ||
@@ -30,14 +36,12 @@ public class ProductFactory {
 
         // Construct and return a new Product object using the builder pattern
         return new Product.Builder()
-                .setProductId(productId)
+                .setId(id)
                 .setName(name)
                 .setDescription(description)
                 .setPrice(price)
                 .setStock(stock)
-                .setCategoryId(categoryId)
-                .setCreatedAt(createdAt != null ? createdAt : LocalDateTime.now())  // Set current time if null
-                .setUpdatedAt(updatedAt != null ? updatedAt : LocalDateTime.now())  // Set current time if null
+                .setSubCategories(subCategory)
                 .setImages(images)  // Set the embedded Images object
                 .build();
     }

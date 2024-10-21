@@ -2,17 +2,19 @@ package za.ac.cput.factory;
 
 import org.junit.jupiter.api.Test;
 import za.ac.cput.domain.OrderItem;
+import za.ac.cput.domain.Product;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class OrderItemFactoryTest {
 
+    private Product product;
     @Test
     void buildOrderItem() {
         // Create test OrderItem with valid data
         OrderItem orderItem = OrderItemFactory.buildOrderItem(
                 1L,
-                12L,
+                product,
                 2,
                 12.00,
                 null
@@ -23,7 +25,7 @@ class OrderItemFactoryTest {
 
         // Additional assertions to ensure the order item details are correct
         assertEquals(1L, orderItem.getId());
-        assertEquals(12L, orderItem.getProductID());
+        assertEquals(12L, orderItem.getProduct());
         assertEquals(2, orderItem.getQuantity());
         assertEquals(12.00, orderItem.getPrice());
     }

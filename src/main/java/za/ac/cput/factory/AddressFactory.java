@@ -1,6 +1,7 @@
 package za.ac.cput.factory;
 
 import za.ac.cput.domain.Address;
+import za.ac.cput.domain.User;
 import za.ac.cput.util.Helper;
 
 import java.time.LocalDate;
@@ -18,7 +19,7 @@ public class AddressFactory {
      * Creates a {@link Address} instance from a {@link Address}.
      *
      * @param id         the ID of the address
-     * @param userId       the user associated with the address
+     * @param user       the user associated with the address
      * @param title      the title of the address
      * @param addressLine1 the first line of the address
      * @param addressLine2 the second line of the address
@@ -30,14 +31,13 @@ public class AddressFactory {
      * @param UpdatedAt  the date the address was deleted (if applicable)
      * @return a new {@link Address} object with properties set from the input parameters
      */
-    public static Address createAddress(Long id, Long userId, String title,
+    public static Address createAddress(Long id, User user, String title,
                                         String addressLine1, String addressLine2,
                                         String city, String country,
                                         String postalCode, String phoneNumber,
                                         LocalDate createdAt, LocalDate UpdatedAt) {
         // Check if any of the required parameters are null
-        if (Helper.isNullOrEmpty(userId) ||
-                Helper.isNullOrEmpty(title) ||
+        if ( Helper.isNullOrEmpty(title) ||
                 Helper.isNullOrEmpty(addressLine1) ||
                 Helper.isNullOrEmpty(addressLine2) ||
                 Helper.isNullOrEmpty(country) ||
@@ -51,15 +51,13 @@ public class AddressFactory {
         return new Address.Builder()
                 .setId(id) // Set the ID of the address
                 .setTitle(title)
-                .setUserId(userId)
+                .setUser(user)
                 .setAddressLine1(addressLine1)
                 .setAddressLine2(addressLine2)
                 .setCity(city)
                 .setCountry(country)
                 .setPostalCode(postalCode)
                 .setPhoneNumber(phoneNumber)
-                .setCreatedAt(createdAt)
-                .setUpdatedAt(LocalDate.now())
                 .build();
     }
 }

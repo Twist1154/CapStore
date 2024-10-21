@@ -7,7 +7,6 @@ import za.ac.cput.domain.OrderItem;
 import za.ac.cput.repository.IOrderItemRepository;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.logging.Logger;
 
 /**
@@ -45,7 +44,7 @@ public class OrderItemService implements IOrderItemService{
         if (existingOrderItem != null) {
             OrderItem updatedOrderItem = new OrderItem.Builder()
                     .copy(existingOrderItem)
-                    .setProductID(orderItem.getProductID())
+                    .setProduct(orderItem.getProduct())
                     .setQuantity(orderItem.getQuantity())
                     .setPrice(orderItem.getPrice())
                     .setOrder(orderItem.getOrder())

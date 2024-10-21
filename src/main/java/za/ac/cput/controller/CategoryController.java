@@ -54,15 +54,6 @@ public class CategoryController {
         return categoryService.findAll();
     }
 
-    //categoryName
-    @GetMapping("/getByCategoryName/{categoryName}")
-    public List<Category> findByCategoryName(@PathVariable String categoryName) {
-        return categoryService.findByCategoryName(categoryName);
-    }
 
-    //categoryId
-    @GetMapping("/getByCategoryId/{categoryId}")
-    public List<Category> findByCategoryId(@PathVariable Long categoryId) {
-        return categoryService.findByCategoryId(categoryId);
-    }
+
 }

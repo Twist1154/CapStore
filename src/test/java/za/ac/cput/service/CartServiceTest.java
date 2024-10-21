@@ -6,6 +6,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import za.ac.cput.domain.CartItem;
 import za.ac.cput.domain.Cart;
+import za.ac.cput.domain.Product;
+import za.ac.cput.domain.User;
 import za.ac.cput.factory.CartFactory;
 import za.ac.cput.factory.CartItemFactory;
 
@@ -19,48 +21,56 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.MethodName.class)
 class CartServiceTest {
-
     @Autowired
     private CartService cartService;
 
     @Autowired
     private CartItemService cartItemService;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private ProductService productService;
+
     private Cart cart;
+    private User user;
+    private Product product;
+    private CartItem cartItem, cartItem1, cartItem2, cartItem3;
 
     @BeforeEach
     void setUp() {
+        user = userService.read(1L);
         // Create an initial cart
-        cart = CartFactory.buildCart(
+        cart = CartFactory.createCart(
                 null,
-                150.0,
-                LocalDate.now(),
-                new ArrayList<>()
+                user,
+                150.0
         );
 
         // Save the cart to generate a cartID
         cart = cartService.create(cart);
 
         // Create CartItems
-        CartItem cartItem1 = CartItemFactory.buildCartItem(
+        CartItem cartItem1 = CartItemFactory.createCartItem(
                 null,
-                cart.getId(),
-                12.00,
-                cart
+                cart,
+                product,
+                12
         );
 
-        CartItem cartItem2 = CartItemFactory.buildCartItem(
+        CartItem cartItem2 = CartItemFactory.createCartItem(
                 null,
-                cart.getId(),
-                10.00,
-                cart
+                cart,
+                product,
+                10
         );
 
-        CartItem cartItem3 = CartItemFactory.buildCartItem(
+        CartItem cartItem3 = CartItemFactory.createCartItem(
                 null,
-                cart.getId(),
-                20.00,
-                cart
+                cart,
+                product,
+                20
         );
 
         // Save CartItems
@@ -76,7 +86,7 @@ class CartServiceTest {
 
         cart = new Cart.Builder()
                 .copy(cart)
-                .setCartItems(cartItems)  // Add CartItems
+                .setTotal(800.00)
                 .build();
 
         cart = cartService.update(cart); // Ensure the updated cart is persisted
@@ -85,11 +95,34 @@ class CartServiceTest {
     @Test
     @Order(1)
     void create() {
-        Cart newCart = CartFactory.buildCart(
+        // Arrange
+        List<CartItem> cartItems = List.of(
+                cartItem1 = CartItemFactory.createCartItem(
+                        null,
+                        cart,
+                        product,
+                        12
+                ),
+
+                cartItem2 = CartItemFactory.createCartItem(
+                        null,
+                        cart,
+                        product,
+                        10
+                ),
+
+                cartItem3 = CartItemFactory.createCartItem(
+                        null,
+                        cart,
+                        product,
+                        20
+                )
+        );
+
+        Cart newCart = CartFactory.createCart(
                 null,
-                200.0,
-                LocalDate.now(),
-                new ArrayList<>()
+                user,
+                150.0
         );
 
         Cart createdCart = cartService.create(newCart);
@@ -116,13 +149,13 @@ class CartServiceTest {
     void update() {
         Cart updatedCart = new Cart.Builder()
                 .copy(cart)
-                .setUserID(3L)
-                .setTotalPrice(300.0)
+                .setUser(user)
+                .setTotal(300.0)
                 .build();
 
         Cart result = cartService.update(updatedCart);
         assertNotNull(result);
-        assertEquals(updatedCart.getTotalPrice(), result.getTotalPrice());
+        assertEquals(updatedCart.getTotal(), result.getTotal());
 
         System.out.println("Updated: \n" + result + "\n");
     }
