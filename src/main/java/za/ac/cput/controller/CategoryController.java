@@ -29,9 +29,9 @@ public class CategoryController {
         return categoryService.create(category);
     }
 
-    @GetMapping("/read/{categoryId}")
-    public ResponseEntity<Category> read(@PathVariable Long categoryId) {
-        Category category = categoryService.read(categoryId);
+    @GetMapping("/read/{id}")
+    public ResponseEntity<Category> read(@PathVariable Long id) {
+        Category category = categoryService.read(id);
         if (category != null) {
             return ResponseEntity.ok(category);
         } else {
@@ -47,6 +47,21 @@ public class CategoryController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @DeleteMapping("/delete/{categoryId}")
+    public ResponseEntity<Void> delete(@PathVariable Long categoryId) {
+        if (categoryService.read(categoryId) != null) {
+            categoryService.delete(categoryId);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/findByName/{categoryName}")
+    public List<Category> findByName(@PathVariable String categoryName) {
+        return categoryService.findByName(categoryName);
     }
 
     @GetMapping("/getAll")

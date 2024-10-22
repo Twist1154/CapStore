@@ -92,10 +92,10 @@ class DiscountServiceTest {
                 .setId(discount2.getId())
                 .setCode("B2")
                 .setDescription("Discount for V-neck t-shirt.")
-                .setDiscount_percent(15)
-                .setStart_date(LocalDate.now())
-                .setEnd_date(LocalDate.now())
-                .setMax_uses(8)
+                .setDiscountPercent(15)
+                .setStartDate(LocalDate.now())
+                .setEndDate(LocalDate.now())
+                .setMaxUses(8)
                 .build();
 
         Discount result = discountService.update(updateDiscount2);

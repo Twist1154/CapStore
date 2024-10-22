@@ -1,11 +1,11 @@
 package za.ac.cput.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -24,13 +24,11 @@ public class SubCategory implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
-    @JsonIgnoreProperties({"subCategories"})
     private Category category;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "product_id", nullable = false)
-    @JsonBackReference("productReference")
-    private Product product;
+    @ManyToMany(mappedBy = "categories")
+    @JsonBackReference(value = "product-category")
+    private List<Product> products;
 
     public SubCategory() {
     }
@@ -38,7 +36,7 @@ public class SubCategory implements Serializable {
     public SubCategory(Builder builder) {
         this.id = builder.id;
         this.category = builder.category;
-        this.product = builder.product;
+        this.products = builder.products;
     }
 
     @Override
@@ -48,27 +46,27 @@ public class SubCategory implements Serializable {
         SubCategory that = (SubCategory) o;
         return Objects.equals(id, that.id) &&
                 Objects.equals(category, that.category) &&
-                Objects.equals(product, that.product);
+                Objects.equals(products, that.products);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, category, product);
+        return Objects.hash(id, category, products);
     }
 
     @Override
     public String toString() {
         return "SubCategory{" +
                 "ID=" + id +
-                ", Category ID=" + (category != null ? category.getName() : "null") +
-                ", Product ID=" + (product != null ? product.getName() : "null") +
+                ", Category=" + (category != null ? category.getName() : "null") +
+                ", Products=" + (products != null ? products.size() : 0) +
                 '}';
     }
 
     public static class Builder {
         private Long id;
         private Category category;
-        private Product product;
+        private List<Product> products;
 
         public Builder setId(Long id) {
             this.id = id;
@@ -80,15 +78,15 @@ public class SubCategory implements Serializable {
             return this;
         }
 
-        public Builder setProduct(Product product) {
-            this.product = product;
+        public Builder setProduct(List<Product> products) {
+            this.products = products;
             return this;
         }
 
         public Builder copy(SubCategory subCategory) {
             this.id = subCategory.id;
             this.category = subCategory.category;
-            this.product = subCategory.product;
+            this.products = subCategory.products;
             return this;
         }
 

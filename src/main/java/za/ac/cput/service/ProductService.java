@@ -38,7 +38,7 @@ public class ProductService implements IProductService {
                     .setDescription(product.getDescription())
                     .setPrice(product.getPrice())
                     .setStock(product.getStock())
-                    .setSubCategories(product.getSubCategories())
+                    .setCategories(product.getCategories())
                     .setImages(product.getImages())
                     .build();
             return productRepository.save(updatedProduct);
@@ -69,8 +69,8 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public List<Product> findBySubCategories_Id(Long categoryId) {
-        return productRepository.findBySubCategories_Id(categoryId);
+    public List<Product> findByCategories_Id(Long categoryId) {
+        return productRepository.findByCategories_Id(categoryId);
     }
 
     @Override

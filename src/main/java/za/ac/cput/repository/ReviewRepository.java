@@ -19,8 +19,8 @@ import java.util.Optional;
 public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     Optional<Review> findById (Long id);
-    List<Review> findByProduct_ProductId(Long productID);
-    List<Review> findByUser_UserID (Long userID);
+    List<Review> findByProduct_Id(Long id);
+    List<Review> findByUser_Id(Long Id);
     List<Review> findByRating (int rating);
     void deleteById(Long id);
 }

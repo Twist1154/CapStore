@@ -24,10 +24,10 @@ public class DiscountFactory {
                 .setId(id)
                 .setCode(code)
                 .setDescription(description)
-                .setDiscount_percent(discount_percent)
-                .setStart_date(start_date)
-                .setEnd_date(end_date)
-                .setMax_uses(max_uses)
+                .setDiscountPercent(discount_percent)
+                .setStartDate(start_date)
+                .setEndDate(end_date)
+                .setMaxUses(max_uses)
                 .build();
     }
 }

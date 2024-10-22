@@ -25,10 +25,10 @@ public class Discount implements Serializable {
     private Long id;
     private String code;
     private String description;
-    private double discount_percent;
-    private LocalDate start_date;
-    private LocalDate end_date;
-    private int max_uses;
+    private double discountPercent;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private int maxUses;
 
     public Discount() {
     }
@@ -37,10 +37,10 @@ public class Discount implements Serializable {
         this.id = builder.id;
         this.code = builder.code;
         this.description = builder.description;
-        this.discount_percent = builder.discount_percent;
-        this.start_date = builder.start_date;
-        this.end_date = builder.end_date;
-        this.max_uses = builder.max_uses;
+        this.discountPercent = builder.discountPercent;
+        this.startDate = builder.startDate;
+        this.endDate = builder.endDate;
+        this.maxUses = builder.maxUses;
     }
 
     @Override
@@ -48,12 +48,12 @@ public class Discount implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Discount discount = (Discount) o;
-        return id == discount.id && Double.compare(discount.discount_percent, discount_percent) == 0 && max_uses == discount.max_uses && Objects.equals(code, discount.code) && Objects.equals(description, discount.description) && Objects.equals(start_date, discount.start_date) && Objects.equals(end_date, discount.end_date);
+        return id == discount.id && Double.compare(discount.discountPercent, discountPercent) == 0 && maxUses == discount.maxUses && Objects.equals(code, discount.code) && Objects.equals(description, discount.description) && Objects.equals(startDate, discount.startDate) && Objects.equals(endDate, discount.endDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, code, description, discount_percent, start_date, end_date, max_uses);
+        return Objects.hash(id, code, description, discountPercent, startDate, endDate, maxUses);
     }
 
     @Override
@@ -62,10 +62,10 @@ public class Discount implements Serializable {
                 "discountId=" + id +
                 ", code='" + code + '\'' +
                 ", description='" + description + '\'' +
-                ", discount_percent=" + discount_percent +
-                ", start_date=" + start_date +
-                ", end_date=" + end_date +
-                ", max_uses=" + max_uses +
+                ", discount_percent=" + discountPercent +
+                ", start_date=" + startDate +
+                ", end_date=" + endDate +
+                ", max_uses=" + maxUses +
                 '}';
     }
 
@@ -73,10 +73,10 @@ public class Discount implements Serializable {
         private Long id;
         private String code;
         private String description;
-        private double discount_percent;
-        private LocalDate start_date;
-        private LocalDate end_date;
-        private int max_uses;
+        private double discountPercent;
+        private LocalDate startDate;
+        private LocalDate endDate;
+        private int maxUses;
 
         public Builder setId(Long id) {
             this.id = id;
@@ -93,23 +93,23 @@ public class Discount implements Serializable {
             return this;
         }
 
-        public Builder setDiscount_percent(double discount_percent) {
-            this.discount_percent = discount_percent;
+        public Builder setDiscountPercent(double discountPercent) {
+            this.discountPercent = discountPercent;
             return this;
         }
 
-        public Builder setStart_date(LocalDate start_date) {
-            this.start_date = start_date;
+        public Builder setStartDate(LocalDate startDate) {
+            this.startDate = startDate;
             return this;
         }
 
-        public Builder setEnd_date(LocalDate end_date) {
-            this.end_date = end_date;
+        public Builder setEndDate(LocalDate endDate) {
+            this.endDate = endDate;
             return this;
         }
 
-        public Builder setMax_uses(int max_uses) {
-            this.max_uses = max_uses;
+        public Builder setMaxUses(int maxUses) {
+            this.maxUses = maxUses;
             return this;
         }
 
@@ -117,10 +117,10 @@ public class Discount implements Serializable {
             this.id = discount.getId();
             this.code = discount.getCode();
             this.description = discount.getDescription();
-            this.discount_percent = discount.getDiscount_percent();
-            this.start_date = discount.getStart_date();
-            this.end_date = discount.getEnd_date();
-            this.max_uses = discount.getMax_uses();
+            this.discountPercent = discount.getDiscountPercent();
+            this.startDate = discount.getStartDate();
+            this.endDate = discount.getEndDate();
+            this.maxUses = discount.getMaxUses();
             return this;
         }
 

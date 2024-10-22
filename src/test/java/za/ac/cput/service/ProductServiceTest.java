@@ -160,8 +160,8 @@ class ProductServiceTest {
 
     @Order(8)
     @Test
-    void findBySubCategories_Id(){
-        List<Product> product = productService.findBySubCategories_Id(2L);
+    void findByCategories_Id(){
+        List<Product> product = productService.findByCategories_Id(2L);
         assertNotNull(product);
         System.out.println(product);
     }

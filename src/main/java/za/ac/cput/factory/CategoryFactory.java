@@ -9,6 +9,7 @@
 package za.ac.cput.factory;
 
 import za.ac.cput.domain.Category;
+import za.ac.cput.domain.SubCategory;
 import za.ac.cput.util.Helper;
 
 import java.util.Arrays;
@@ -16,35 +17,29 @@ import java.util.List;
 
 public class CategoryFactory {
 
-    public static Category buildCategory(Long categoryId, String categoryName, String subCategoryName){
-        if(Helper.isNullOrEmpty(categoryName) || Helper.isNullOrEmpty(subCategoryName))
+    public static Category buildCategory(Long id,
+                                         String Name){
+        if(Helper.isNullOrEmpty(Name))
             return null;
 
         return  new Category.Builder()
-                .setCategoryId(categoryId)
-                .setCategoryName(categoryName)
-                .setSubCategoryName(subCategoryName)
+                .setId(id)
+                .setName(Name)
                 .build();
     }
 
     public static List<Category> getDefaultCategories(){
         return Arrays.asList(
                 new Category.Builder()
-                        .setCategoryId(1L)
-                        .setCategoryName("Men")
-                        .setSubCategoryName("T-Shirts")
+                        .setId(1L)
                         .build(),
 
                 new Category.Builder()
-                        .setCategoryId(2L)
-                        .setCategoryName("Women")
-                        .setSubCategoryName("T-Shirts")
+                        .setId(2L)
                         .build(),
 
                 new Category.Builder()
-                        .setCategoryId(3L)
-                        .setCategoryName("Kids")
-                        .setSubCategoryName("T-Shirts")
+                        .setId(3L)
                         .build()
         );
     }

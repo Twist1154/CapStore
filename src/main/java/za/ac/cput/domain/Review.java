@@ -74,8 +74,8 @@ public class Review implements Serializable {
     public String toString() {
         return "Review{" +
                 "id=" + id +
-                ", product=" + (product != null ? product.getProductId() : "null") +
-                ", user=" + (user != null ? user.getUserID() : "null") +
+                ", product=" + (product != null ? product.getId() : "null") +
+                ", user=" + (user != null ? user.getId() : "null") +
                 ", review='" + review + '\'' +
                 ", rating=" + rating +
                 '}';

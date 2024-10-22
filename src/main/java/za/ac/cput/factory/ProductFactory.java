@@ -1,5 +1,6 @@
 package za.ac.cput.factory;
 
+import za.ac.cput.domain.Category;
 import za.ac.cput.domain.Images;
 import za.ac.cput.domain.Product;
 import za.ac.cput.domain.SubCategory;
@@ -20,7 +21,7 @@ public class ProductFactory {
                                        String description,
                                        double price,
                                        int stock,
-                                       List<SubCategory> subCategory,
+                                       List<SubCategory> Category,
                                        String imageUrl1, String imageUrl2, String imageUrl3, String imageUrl4
     ) {
 
@@ -41,7 +42,7 @@ public class ProductFactory {
                 .setDescription(description)
                 .setPrice(price)
                 .setStock(stock)
-                .setSubCategories(subCategory)
+                .setCategories(Category)
                 .setImages(images)  // Set the embedded Images object
                 .build();
     }

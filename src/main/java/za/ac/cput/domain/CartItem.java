@@ -1,6 +1,7 @@
 package za.ac.cput.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -29,11 +30,13 @@ public class CartItem implements Serializable {
     @ManyToOne
     @JoinColumn(name = "cart_id", nullable = false)
     @JsonBackReference("cartReference")
+    @JsonIncludeProperties("id")
     private Cart cart;
 
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
+    @JsonIncludeProperties("id")
     private Product product;
 
 

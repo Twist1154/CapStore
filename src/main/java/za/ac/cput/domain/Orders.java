@@ -1,6 +1,7 @@
 package za.ac.cput.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -27,11 +28,13 @@ public class Orders implements Serializable {
     private Long id;
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIncludeProperties("id")
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "address_id", nullable = false)
     @JsonManagedReference("addressReference")
+    @JsonIncludeProperties("id")
     private Address address;
 
     private double totalPrice;

@@ -4,6 +4,8 @@ import za.ac.cput.domain.Category;
 import za.ac.cput.domain.Product;
 import za.ac.cput.domain.SubCategory;
 
+import java.util.List;
+
 /**
  * SubCategoryFactory.java
  *
@@ -23,7 +25,7 @@ public class SubCategoryFactory {
      */
     public static SubCategory createSubCategory(Long id,
                                                 Category category,
-                                                Product product) {
+                                                List<Product> product) {
         // Define constants for the switch cases;
         final int CATEGORY_NULL = 1; // Removed DESCRIPTION_NULL since it's not in SubCategory
 

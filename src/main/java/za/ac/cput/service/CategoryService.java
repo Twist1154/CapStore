@@ -3,7 +3,7 @@
  * CategoryService.java
  * This class provides the service for the Category entity
  * Author: Mthandeni Mbobo - 218223579
- * */
+ */
 
 package za.ac.cput.service;
 
@@ -54,19 +54,24 @@ public class CategoryService implements ICategoryService {
     }
 
     @Override
-public boolean delete(Long categoryId) {
-    if (this.categoryRepository.existsById(categoryId)) {
-        this.categoryRepository.deleteById(categoryId);
-        return !this.categoryRepository.existsById(categoryId);
+    public boolean delete(Long categoryId) {
+        if (this.categoryRepository.existsById(categoryId)) {
+            this.categoryRepository.deleteById(categoryId);
+            return !this.categoryRepository.existsById(categoryId);
+        }
+        return false;
     }
-    return false;
-}
+
+
+    @Override
+    public List<Category> findByName(String categoryName) {
+        return this.categoryRepository.findByName(categoryName);
+    }
 
     @Override
     public List<Category> findAll() {
         return this.categoryRepository.findAll();
     }
-
 
 
 }

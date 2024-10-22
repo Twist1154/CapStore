@@ -10,12 +10,8 @@ package za.ac.cput.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import za.ac.cput.domain.Product;
 import za.ac.cput.domain.Review;
-import za.ac.cput.domain.User;
-import za.ac.cput.repository.IProductRepository;
 import za.ac.cput.repository.ReviewRepository;
-import za.ac.cput.repository.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -69,12 +65,12 @@ public class ReviewService implements IReviewService {
 
     @Override
     public List<Review> findByProduct_ProductId(Long productId) {
-        return this.reviewRepository.findByProduct_ProductId(productId);
+        return this.reviewRepository.findByProduct_Id(productId);
     }
 
     @Override
     public List<Review> findByUser_UserID(Long userID) {
-        return this.reviewRepository.findByUser_UserID(userID);
+        return this.reviewRepository.findByUser_Id(userID);
     }
 
     @Override

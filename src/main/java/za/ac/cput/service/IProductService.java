@@ -12,7 +12,7 @@ public interface IProductService extends IService<Product, Long>{
 
     List<Product> findByDescription(String description);
 
-    List<Product> findBySubCategories_Id(Long id);
+    List<Product> findByCategories_Id(Long id);
 
     List<Product> findByPriceBetween(double minPrice, double maxPrice);
 

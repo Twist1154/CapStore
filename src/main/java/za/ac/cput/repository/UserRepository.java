@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface    UserRepository extends JpaRepository<User, Long> {
 
     /**
      * Finds a User by their email address.

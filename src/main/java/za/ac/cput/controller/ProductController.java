@@ -82,7 +82,7 @@ public class ProductController {
 
     @GetMapping("/category/{categoryId}")
     public ResponseEntity<List<Product>> getProductByCategoryId(@PathVariable long categoryId) {
-        List<Product> products = productService.findBySubCategories_Id(categoryId);
+        List<Product> products = productService.findByCategories_Id(categoryId);
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 

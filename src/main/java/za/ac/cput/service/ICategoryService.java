@@ -15,4 +15,5 @@ public interface ICategoryService extends IService<Category, Long> {
 
 
     boolean delete(Long categoryId);
+    List<Category> findByName(String categoryName);
 }

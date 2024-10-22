@@ -1,6 +1,6 @@
 package za.ac.cput.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -32,9 +32,22 @@ public class Product implements Serializable {
     private double price;
     private int stock;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.PERSIST, orphanRemoval = true)
-    @JsonManagedReference("productReference")
-    private List<SubCategory> subCategories = new ArrayList<>();
+    @ManyToMany
+    @JoinTable(
+            name = "sub_category", // Inverse table for categories
+            joinColumns = @JoinColumn(name = "category_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
+    @JsonManagedReference(value = "product-category")
+    private List<SubCategory> categories ;
+
+    @ManyToMany
+    @JoinTable(
+            name = "product_discount", // Inverse table for discounts
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "discount_id")
+    )
+    private List<Discount> discounts = new ArrayList<>();
 
     @CreationTimestamp
     private LocalDateTime createdAt;
@@ -53,7 +66,8 @@ public class Product implements Serializable {
         this.description = builder.description;
         this.price = builder.price;
         this.stock = builder.stock;
-        this.subCategories = builder.subCategories != null ? builder.subCategories : new ArrayList<>();
+        this.categories = builder.categories != null ? builder.categories : new ArrayList<>();
+        this.discounts = builder.discounts != null ? builder.discounts : new ArrayList<>();
         this.images = builder.images;
     }
 
@@ -67,7 +81,8 @@ public class Product implements Serializable {
                 Objects.equals(id, product.id) &&
                 Objects.equals(name, product.name) &&
                 Objects.equals(description, product.description) &&
-                Objects.equals(subCategories, product.subCategories) &&
+                Objects.equals(categories, product.categories) &&
+                Objects.equals(discounts, product.discounts) &&
                 Objects.equals(createdAt, product.createdAt) &&
                 Objects.equals(updatedAt, product.updatedAt) &&
                 Objects.equals(images, product.images);
@@ -75,7 +90,7 @@ public class Product implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, price, stock, subCategories, createdAt, updatedAt, images);
+        return Objects.hash(id, name, description, price, stock, categories, discounts, createdAt, updatedAt, images);
     }
 
     @Override
@@ -86,7 +101,8 @@ public class Product implements Serializable {
                 ", description='" + description + '\'' +
                 ", price=" + price +
                 ", stock=" + stock +
-                ", SUB CATEGORIES: " + (subCategories != null ? subCategories : "[]") +
+                ", CATEGORIES: " + (categories != null ? categories : "[]") +
+                ", DISCOUNTS: " + (discounts != null ? discounts : "[]") +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 ", images=" + images +
@@ -99,7 +115,8 @@ public class Product implements Serializable {
         private String description;
         private double price;
         private int stock;
-        private List<SubCategory> subCategories;
+        private List<SubCategory> categories;
+        private List<Discount> discounts;
         private Images images;
 
         public Builder setId(Long id) {
@@ -127,8 +144,13 @@ public class Product implements Serializable {
             return this;
         }
 
-        public Builder setSubCategories(List<SubCategory> subCategories) {
-            this.subCategories = subCategories;
+        public Builder setCategories(List<SubCategory> categories) {
+            this.categories = categories;
+            return this;
+        }
+
+        public Builder setDiscounts(List<Discount> discounts) {
+            this.discounts = discounts;
             return this;
         }
 
@@ -143,7 +165,8 @@ public class Product implements Serializable {
             this.description = product.getDescription();
             this.price = product.getPrice();
             this.stock = product.getStock();
-            this.subCategories = product.getSubCategories();
+            this.categories = product.getCategories();
+            this.discounts = product.getDiscounts();
             this.images = product.getImages();
             return this;
         }
