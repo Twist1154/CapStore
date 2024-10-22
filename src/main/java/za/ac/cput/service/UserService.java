@@ -10,7 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import za.ac.cput.domain.Users;
 import za.ac.cput.factory.UserFactory;
-import za.ac.cput.repo.UserRepository;
+import za.ac.cput.repository.UserRepository;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class UserService implements UserDetailsService, IUserService {
+public class UserService implements IUserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(5);
@@ -131,29 +131,7 @@ public class UserService implements UserDetailsService, IUserService {
         return userRepository.findByAvatar(avatar);
     }
 
-    /**
-     * Loads user-specific data by username (usually email for authentication).
-     *
-     * @param username the username (or email) of the user
-     * @return the {@link UserDetails} object containing user data
-     * @throws UsernameNotFoundException if no user is found with the given username
-     */
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Users users = userRepository.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + username));
 
-        // Convert roles to SimpleGrantedAuthority
-        List<SimpleGrantedAuthority> authorities = users.getRole().stream()
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
-
-        return new org.springframework.security.core.userdetails.User(
-                users.getEmail(),
-                users.getPassword(),
-                authorities
-        );
-    }
 
     /**
      * Finds a user by their email.
@@ -206,7 +184,7 @@ public class UserService implements UserDetailsService, IUserService {
      * @return a list of users with the specified phone number
      */
     @Override
-    public List<Users> findByPhoneNumber(Integer phoneNumber) {
+    public List<Users> findByPhoneNumber(String phoneNumber) {
         return userRepository.findByPhoneNumber(phoneNumber);
     }
 

@@ -9,32 +9,36 @@ import java.util.Set;
 public class UserFactory {
 
     public static Users createUser(String avatar,
+                                   String username,
                                    String firstName,
                                    String lastName,
                                    String email,
-                                  LocalDate birthDate,
+                                   LocalDate birthDate,
                                    Set<String> role,
-                                   Integer phoneNumber,
-                                   String password){
+                                   String phoneNumber,
+                                   String password) {
 
-        if (Helper.isNullOrEmpty(firstName) ||
+        if (Helper.isNullOrEmpty(username) ||
+                Helper.isNullOrEmpty(firstName) ||
+                Helper.isNullOrEmpty(lastName) ||
                 Helper.isNullOrEmpty(lastName) ||
                 Helper.isNullOrEmpty(email) ||
                 Helper.isNullOrEmpty(password)) {
             throw new IllegalArgumentException("First name, last name, email, and password cannot be null or empty");
         }
-        // Create a new User object using the Builder pattern
         return new Users.Builder()
+                .setUsername(username)
                 .setAvatar(avatar)
                 .setFirstName(firstName)
                 .setLastName(lastName)
                 .setEmail(email)
                 .setBirthDate(birthDate)
-                .setRole(role) // Set the roles as a Set<String>
+                .setRole(role)
                 .setPhoneNumber(phoneNumber)
                 .setPassword(password)
                 .build();
     }
+
     public static Users createUserForSignIn(String email, String password) {
         // Validation checks
         if (Helper.isNullOrEmpty(email) || Helper.isNullOrEmpty(password)) {

@@ -76,7 +76,7 @@ public interface IUserService extends IService<Users, Long> {
      * @param phoneNumber the phone number to search for
      * @return a list of users that match the given phone number
      */
-    List<Users> findByPhoneNumber(Integer phoneNumber);
+    List<Users> findByPhoneNumber(String  phoneNumber);
 
     /**
      * Finds a list of users by their assigned role (e.g., "Admin", "User").

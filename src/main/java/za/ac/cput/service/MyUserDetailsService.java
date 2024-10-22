@@ -1,6 +1,7 @@
 package za.ac.cput.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -9,7 +10,9 @@ import za.ac.cput.domain.UserPrincipal;
 import za.ac.cput.domain.Users;
 import za.ac.cput.repository.UserRepository;
 
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * MyUserDetailsService.java
@@ -23,9 +26,6 @@ import java.util.Set;
 public class MyUserDetailsService implements UserDetailsService {
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
     private UserRepository usersRepository;
 
     /**
@@ -37,21 +37,25 @@ public class MyUserDetailsService implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        System.out.println("username: " + username + "from myUserDetailsService loadUserByUsername");
-        Users users = userService.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + username));
-        return new UserPrincipal(users);
+        Users user = usersRepository.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        // Log the user's roles
+        System.out.println("Loaded user: " + user.getEmail() + " with roles: " + user.getRole());
+
+        return new org.springframework.security.core.userdetails.User(
+                user.getEmail(),
+                user.getPassword(),
+                user.getRole().stream()
+                        .map(SimpleGrantedAuthority::new)
+                        .collect(Collectors.toList())
+        );
+    }
+    
+
+    public UserDetails loadUserById(Long id) {
+        Users user = usersRepository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return new UserPrincipal(user);
     }
 
-    /**
-     * Verifies a user's credentials.
-     *
-     * @param email the email address
-     * @param password the password
-     * @return the set of Users if credentials are valid, otherwise null
-     */
-    public Set<Users> verifyUser(String email, String password) {
-        System.out.println("email: " + email + " password: " + password + "from myUserDetailsService verifyUser");
-        return usersRepository.findByEmailAndPassword(email, password);
-    }
 }

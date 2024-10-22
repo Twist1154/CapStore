@@ -32,7 +32,7 @@ public class UserController {
      * @param user the user object to be created
      * @return the created user
      */
-    @PostMapping("/create")
+    @PostMapping("/register")
     public ResponseEntity<Users> createUser(@RequestBody Users user) {
         Users createdUser = userService.create(user);
         return ResponseEntity.ok(createdUser);
@@ -140,7 +140,7 @@ public class UserController {
      * @return a list of users with the specified phone number
      */
     @GetMapping("/phone/{phoneNumber}")
-    public ResponseEntity<List<Users>> findByPhoneNumber(@PathVariable Integer phoneNumber) {
+    public ResponseEntity<List<Users>> findByPhoneNumber(@PathVariable String phoneNumber) {
         List<Users> users = userService.findByPhoneNumber(phoneNumber);
         return ResponseEntity.ok(users);
     }

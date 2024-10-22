@@ -1,18 +1,21 @@
 package za.ac.cput.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import za.ac.cput.service.UserService;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+
+import java.util.List;
 
 /**
  * SecurityConfig.java
@@ -21,41 +24,85 @@ import za.ac.cput.service.UserService;
  * Student Num: 220455430
  * @date 28-Sep-24
  */
+
 @Configuration
-@EnableWebSecurity
-public class SecurityConfig{
+public class SecurityConfig {
 
-    @Autowired
-    private UserService userService;
+    private final UserDetailsService userDetailsService;
+    private final CustomLogoutSuccessHandler customLogoutSuccessHandler;
+    private final CustomLoginSuccessHandler customLoginSuccessHandler; // Inject the custom login success handler
 
-/*    @Bean
+    public SecurityConfig( UserDetailsService userDetailsService, CustomLogoutSuccessHandler customLogoutSuccessHandler, CustomLoginSuccessHandler customLoginSuccessHandler) {
+        this.userDetailsService = userDetailsService;
+        this.customLogoutSuccessHandler = customLogoutSuccessHandler;
+        this.customLoginSuccessHandler = customLoginSuccessHandler;
+    }
+
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-       http.csrf(customizer -> customizer.disable());
-        http.authorizeHttpRequests(request -> request.anyRequest().authenticated());
-        http.formLogin(Customizer.withDefaults());//disable this if you want to use basic auth for browser
-        http.httpBasic(Customizer.withDefaults());
-        http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        http
+                .cors(cors -> cors.configurationSource(request -> {
+                    var corsConfig = new CorsConfiguration();
+                    corsConfig.setAllowedOrigins(List.of("http://localhost:5173"));
+                    corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+                    corsConfig.setAllowCredentials(true);  // This allows cookies to be sent with requests
+                    corsConfig.setAllowedHeaders(List.of("*"));
+                    return corsConfig;
+                }))  // Enable CORS
+                .csrf(csrf -> csrf.disable()) // Disable CSRF for simplicity in development
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/users/register",
+                                "/api/users/login",
+                                "/",
+                                "/home",
+                                "/error").permitAll()  // Public access for register, login
+                        .requestMatchers("/public/**" ).permitAll()  // Public access for public endpoints
+                        .requestMatchers("/users/all").authenticated() // Require authentication for fetching all users
+                        .anyRequest().authenticated()  // All other endpoints require authentication
+                )
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                        .maximumSessions(1)  // Allow only one session per user
+                )
+                .formLogin(form -> form
+                        .loginPage("/login")  // Custom login page if needed
+                        //.defaultSuccessUrl("/home", true)  // This is removed, as we now use a custom handler
+                        .successHandler(customLoginSuccessHandler)  // Use the custom login success handler
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/api/auth/users/logout")  // Custom logout URL
+                        .invalidateHttpSession(true)  // Invalidate the session
+                        .deleteCookies("JSESSIONID")  // Delete the session cookie (JSESSIONID) on logout
+                        .logoutSuccessHandler(customLogoutSuccessHandler)  // Use the custom logout success handler
+                        .permitAll()
+                )
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            System.out.println("Authentication failed: " + authException.getMessage());
+                            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+                        })
+                );
+
+        // Add the custom filter to the security chain
+        http.addFilterBefore(sessionCookieAuthenticationFilter(http), UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
-    }*/
-
-    // builder Pattern but the below method works like the one above
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-       return http
-               .csrf(customizer -> customizer.disable())
-               .authorizeHttpRequests(request -> request.anyRequest().authenticated())
-               .httpBasic(Customizer.withDefaults())
-               .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .build();
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider(){
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setPasswordEncoder(new BCryptPasswordEncoder(5));
-        provider.setUserDetailsService(userService);
-        return provider;
+    public SessionCookieAuthenticationFilter sessionCookieAuthenticationFilter(HttpSecurity http) throws Exception {
+        return new SessionCookieAuthenticationFilter(authManager(http), userDetailsService);  // Return the configured filter
     }
 
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
+    @Bean
+    public AuthenticationManager authManager(HttpSecurity http) throws Exception {
+        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
+        return authenticationManagerBuilder.build();
+    }
 }
