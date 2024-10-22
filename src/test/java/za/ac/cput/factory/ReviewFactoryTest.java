@@ -1,6 +1,7 @@
 /**
  * E-commerce Web Application for selling T-shirts
  * ReviewFactoryTest.java
+ *
  * This class tests the ReviewFactory class
  * Author: Mthandeni Mbobo (218223579)
  */
@@ -20,11 +21,11 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ReviewFactoryTest {
 
-    Long productReviewID = 1L;
+    Long id = 1L;
     String review = "Great product!";
 
     Product product = new Product.Builder()
-            .setId(1L)
+            .setProductId(1L)
             .setName("Test Product")
             .build();
 
@@ -38,7 +39,7 @@ class ReviewFactoryTest {
     @Order(1)
  // This test will print productReview, all parameters are not null
     void buildReview() {
-        Review review = ReviewFactory.buildReview(productReviewID, product, user, 5,this.review );
+        Review review = ReviewFactory.buildReview(id, product, user, this.review, 5);
         assertNotNull(review);
         System.out.println(review);
     }
@@ -47,7 +48,7 @@ class ReviewFactoryTest {
     @Order(2)
 // This test will print null, as product is null
     void buildProductReviewWithNullName() {
-        Review review = ReviewFactory.buildReview(productReviewID, null, user, 5,this.review);
+        Review review = ReviewFactory.buildReview(id, null, user, this.review, 5);
         assertNull(review);
         System.out.println(review);
     }
@@ -56,7 +57,7 @@ class ReviewFactoryTest {
     @Order(3)
 // This test will print null, as rating is out of range
     void buildReviewWithInvalidRating() {
-        Review review = ReviewFactory.buildReview(productReviewID, product, user, 6,this.review );
+        Review review = ReviewFactory.buildReview(id, product, user, this.review, 6);
         assertNull(review);
         System.out.println(review);
     }

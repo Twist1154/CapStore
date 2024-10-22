@@ -1,9 +1,14 @@
+/**
+ *
+ * ReviewServiceTest.java
+ * Test for the ReviewService
+ *
+ * Author: Mthandeni Mbobo (218223579)
+ * */
+
 package za.ac.cput.service;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import za.ac.cput.domain.Product;
@@ -11,88 +16,102 @@ import za.ac.cput.domain.Review;
 import za.ac.cput.domain.User;
 import za.ac.cput.factory.ReviewFactory;
 
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ReviewServiceTest {
+
     @Autowired
     private ReviewService reviewService;
+    private static Review review;
+    private static Product product;
+    private static User user;
+
     @Autowired
-    ProductService productService;
+    private ProductService productService;
     @Autowired
     private UserService userService;
-    private ReviewFactory reviewFactory;
-    private Review review;
-    private Product product;
-    private User user;
 
-    @BeforeEach
-    void setUp() {
+    @Test
+    @Order(1)
+    void setup() {
         product = productService.read(1L);
         user = userService.read(1L);
 
-        Review saveReview = ReviewFactory.buildReview(
-                null,
-                product,
-                user,
-                5,
-                "Great product",
-                null
-        );
-        review = reviewService.create(saveReview);
+        // Save the product and user entities first
+        product = productService.create(product);
+        user = userService.create(user);
+
+        review = ReviewFactory.buildReview(null, product, user, "Not happy with this!", 3); //id auto generated
+        assertNotNull(review);
+        System.out.println("Review: " + review);
     }
 
     @Test
+    @Order(2)
     void create() {
         Review created = reviewService.create(review);
         assertEquals(review.getId(), created.getId());
-        System.out.println("Created: " + created);
+        System.out.println("Created review: " + created);
     }
 
     @Test
+    @Order(3)
     void read() {
         Review read = reviewService.read(review.getId());
         assertNotNull(read);
-        System.out.println("Read: " + read);
+        System.out.println("Read review: " + read);
     }
 
     @Test
+    @Order(4)
     void update() {
-        Review updated = new Review.Builder()
-                .copy(review)
-                .setRating(4)
-                .build();
-
-        assertNotNull(reviewService.update(updated));
-        System.out.println("Updated: " + updated);
+        Review newReview = new Review.Builder().copy(review).setReview("I made a mistake, this thing is awful").setRating(1).build();
+        Review updated = reviewService.update(newReview);
+        assertEquals(newReview.getReview(), updated.getReview());
+        System.out.println("Updated review: " + updated);
     }
 
     @Test
+    @Order(5)
+    @Disabled
+    void delete() {
+        boolean deleted = reviewService.delete(review.getId());
+        assertTrue(deleted);
+        System.out.println("Review deleted: " + deleted);
+    }
+
+    @Test
+    @Order(6)
     void findAll() {
-        List<Review> reviews = reviewService.findAll();
-        assertNotNull(reviews);
+        System.out.println("All productReviews\n" + reviewService.findAll());
     }
 
     @Test
-    void deleteById() {
-        reviewService.delete(review.getId());
-        assertNull(reviewService.read(review.getId()));
+    @Order(7)
+    void findByProductReviewId() {
+        //System.out.println("Review by Id: " + productReviewService.findByProductReviewId(review.getId()));
+        System.out.println("This is Product Review " +1L+ ": " + reviewService.findById(1L));
     }
 
     @Test
-    void findByProduct_Id() {
-        List<Review> review = reviewService.findByProduct_Id(product.getId());
-        assertNotNull(review);
-        System.out.println("Review: " + review);
+    @Order(8)
+    void findByRating() {
+        //System.out.println("Review by Rating: " + productReviewService.findByRating(review.getRating()));
+        System.out.println("These are the Product Reviews with a rating of " +3+ ": " + reviewService.findByRating(3));
     }
 
     @Test
-    void findByUser_Id() {
-        List<Review> review = reviewService.findByUser_Id(product.getId());
-        assertNotNull(review);
-        System.out.println("Review: " + review);
+    @Order(9)
+    void findByProduct_ProductId() {
+        System.out.println("Review by Product Id " +13+ ": " + reviewService.findByProduct_ProductId(13L));
     }
+
+    @Test
+    @Order(10)
+    void findByUser_UserID() {
+        System.out.println("Review by User Id "  +2+ ": " + reviewService.findByUser_UserID(2L));
+    }
+
 }

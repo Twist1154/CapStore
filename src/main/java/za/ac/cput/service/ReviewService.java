@@ -1,24 +1,26 @@
 /**
  * E-Commerce Web Application for selling T-shirts
  * ReviewService.java
+ *
  * This class provides the service for the Review entity
  * Author: Mthandeni Mbobo - 218223579
  * */
 
 package za.ac.cput.service;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import za.ac.cput.domain.Product;
 import za.ac.cput.domain.Review;
+import za.ac.cput.domain.User;
+import za.ac.cput.repository.IProductRepository;
 import za.ac.cput.repository.ReviewRepository;
+import za.ac.cput.repository.UserRepository;
 
 import java.util.List;
+import java.util.Optional;
 
-@Slf4j
 @Service
-@Transactional
 public class ReviewService implements IReviewService {
 
     private final ReviewRepository reviewRepository;
@@ -34,26 +36,15 @@ public class ReviewService implements IReviewService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public Review read(Long id) {
-        return reviewRepository.findById(id).orElse(null);
+        return this.reviewRepository.findById(id).orElse(null);
     }
 
     @Override
     public Review update(Review review) {
-        Review existingReview = read(review.getId());
-        if (existingReview != null) {
-            Review updatedReview = new Review.Builder()
-                    .copy(review)
-                    .setId(existingReview.getId())
-                    .setProduct(existingReview.getProduct())
-                    .setUser(existingReview.getUser())
-                    .setRating(review.getRating())
-                    .setComment(review.getComment())
-                    .build();
-            return reviewRepository.save(updatedReview);
+        if (this.reviewRepository.existsById(review.getId())) {
+            return this.reviewRepository.save(review);
         }
-        log.error("Review with id  not found", review.getId());
         return null;
     }
 
@@ -72,20 +63,18 @@ public class ReviewService implements IReviewService {
     }
 
     @Override
-    public Review findById(Long id) {
-        return this.reviewRepository.findById(id).orElse(null);
+    public Optional<Review> findById(Long id) {
+        return this.reviewRepository.findById(id);
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public List<Review> findByProduct_Id(Long product_id) {
-        return reviewRepository.findByProduct_Id(product_id);
+    public List<Review> findByProduct_ProductId(Long productId) {
+        return this.reviewRepository.findByProduct_ProductId(productId);
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public List<Review> findByUser_Id(Long user_id) {
-        return reviewRepository.findByUser_Id(user_id);
+    public List<Review> findByUser_UserID(Long userID) {
+        return this.reviewRepository.findByUser_UserID(userID);
     }
 
     @Override
