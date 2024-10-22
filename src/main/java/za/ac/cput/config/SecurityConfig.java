@@ -52,11 +52,11 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // Disable CSRF for simplicity in development
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/users/register",
-                                "/api/users/login",
+                                "/users/login",
                                 "/",
                                 "/home",
                                 "/error").permitAll()  // Public access for register, login
-                        .requestMatchers("/public/**" ).permitAll()  // Public access for public endpoints
+                        .requestMatchers("/shopping_store/product/**","/product/read/" ,"/shopping_store/product/getAll").permitAll()  // Public access for public endpoints
                         .requestMatchers("/users/all").authenticated() // Require authentication for fetching all users
                         .anyRequest().authenticated()  // All other endpoints require authentication
                 )
