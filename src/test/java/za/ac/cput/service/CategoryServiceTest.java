@@ -12,6 +12,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import za.ac.cput.domain.Category;
 import za.ac.cput.factory.CategoryFactory;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -25,11 +27,7 @@ class CategoryServiceTest {
     @Test
     @Order(1)
     void setup() {
-        category = CategoryFactory.buildCategory(
-                null,
-                "Shoes"
-        );
-
+        category = CategoryFactory.buildCategory(null, "Kids", "T-shirts"); //id auto generated
         assertNotNull(category);
         System.out.println("Category: " + category);
     }
@@ -38,14 +36,14 @@ class CategoryServiceTest {
     @Order(2)
     void create() {
         Category created = categoryService.create(category);
-        assertEquals(category.getId(), created.getId());
+        assertEquals(category.getCategoryId(), created.getCategoryId());
         System.out.println("Created category: " + created);
     }
 
     @Test
     @Order(3)
     void read() {
-        Category read = categoryService.read(category.getId());
+        Category read = categoryService.read(category.getCategoryId());
         assertNotNull(read);
         System.out.println("Read category: " + read);
     }
@@ -53,9 +51,9 @@ class CategoryServiceTest {
     @Test
     @Order(4)
     void update() {
-        Category newCategory = new Category.Builder().copy(category).setName("Women").setName("Tops").build();
+        Category newCategory = new Category.Builder().copy(category).setCategoryName("Women").setSubCategoryName("Tops").build();
         Category updated = categoryService.update(newCategory);
-        assertEquals(newCategory.getName(), updated.getName());
+        assertEquals(newCategory.getCategoryName(), updated.getCategoryName());
         System.out.println("Updated category: " + updated);
     }
 
@@ -63,7 +61,7 @@ class CategoryServiceTest {
     @Order(5)
     @Disabled
     void delete() {
-        boolean deleted = categoryService.delete(category.getId());
+        boolean deleted = categoryService.delete(category.getCategoryId());
         assertTrue(deleted);
         System.out.println("Category deleted: " + deleted);
     }
@@ -75,11 +73,25 @@ class CategoryServiceTest {
     }
 
     @Test
+    @Disabled
     @Order(7)
-    void findByCategoryId() {
-        System.out.println("Category by Id: " + categoryService.read(category.getId()));
+    void getDefaultCategories() {
+        List<Category> defaultCategories = CategoryFactory.getDefaultCategories();
+        assertNotNull(defaultCategories);
+        assertEquals(3, defaultCategories.size());
+        System.out.println("Default categories: " + defaultCategories);
     }
 
+    @Test
+    @Order(8)
+    void findByCategoryName() {
+        System.out.println("Category by Category Name: " + categoryService.findByCategoryName(category.getCategoryName()));
+    }
 
+    @Test
+    @Order(9)
+    void findByCategoryId() {
+        System.out.println("Category by Id: " + categoryService.findByCategoryId(category.getCategoryId()));
+    }
 
 }

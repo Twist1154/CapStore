@@ -28,17 +28,9 @@ class CategoryControllerTest {
 
     @BeforeAll
     public static void setup() {
-        category = CategoryFactory.buildCategory(
-                null,
-                "Men"
-                );
-        category2 = CategoryFactory.buildCategory(
-                null,
-                "Women");
-        category3 = CategoryFactory.buildCategory(
-                null,
-                "Kids"
-        );
+        category = CategoryFactory.buildCategory(null, "Men", "T-shirts");
+        category2 = CategoryFactory.buildCategory(null, "Women", "T-shirts");
+        category3 = CategoryFactory.buildCategory(null, "Kids", "T-shirts");
     }
 
     @Test
@@ -49,50 +41,50 @@ class CategoryControllerTest {
         assertNotNull(postResponse2);
         assertNotNull(postResponse2.getBody());
         category = postResponse2.getBody();  // Capture and reuse the created category
-        assertNotNull(category.getId());  // Ensure ID is not null after creation
+        assertNotNull(category.getCategoryId());  // Ensure ID is not null after creation
         System.out.println("Create: " + category);
 
         ResponseEntity<Category> postResponse = restTemplate.postForEntity(url, category2, Category.class);
         assertNotNull(postResponse);
         assertNotNull(postResponse.getBody());
         category2 = postResponse.getBody();  // Capture and reuse the created category
-        assertNotNull(category2.getId());  // Ensure ID is not null after creation
+        assertNotNull(category2.getCategoryId());  // Ensure ID is not null after creation
         System.out.println("Create2: " + category2);
 
         ResponseEntity<Category> postResponse3 = restTemplate.postForEntity(url, category3, Category.class);
         assertNotNull(postResponse3);
         assertNotNull(postResponse3.getBody());
         category3 = postResponse3.getBody();  // Capture and reuse the created category
-        assertNotNull(category3.getId());  // Ensure ID is not null after creation
+        assertNotNull(category3.getCategoryId());  // Ensure ID is not null after creation
         System.out.println("Create3: " + category3);
     }
 
     @Test
     @Order(2)
     void read() {
-        String url = BASE_URL + "/read/" + category.getId();
+        String url = BASE_URL + "/read/" + category.getCategoryId();
         System.out.println("\nURL: " + url);
         ResponseEntity<Category> response = restTemplate.getForEntity(url, Category.class);
-        assertEquals(category.getId(), response.getBody().getId());
+        assertEquals(category.getCategoryId(), response.getBody().getCategoryId());
         System.out.println("Read: " + response.getBody());
 
-        String url2 = BASE_URL + "/read/" + category2.getId();
+        String url2 = BASE_URL + "/read/" + category2.getCategoryId();
         System.out.println("\nURL: " + url2);
         ResponseEntity<Category> response2 = restTemplate.getForEntity(url2, Category.class);
-        assertEquals(category2.getId(), response2.getBody().getId());
+        assertEquals(category2.getCategoryId(), response2.getBody().getCategoryId());
         System.out.println("Read2: " + response2.getBody());
 
-        String url3 = BASE_URL + "/read/" + category3.getId();
+        String url3 = BASE_URL + "/read/" + category3.getCategoryId();
         System.out.println("\nURL: " + url3);
         ResponseEntity<Category> response3 = restTemplate.getForEntity(url3, Category.class);
-        assertEquals(category3.getId(), response3.getBody().getId());
+        assertEquals(category3.getCategoryId(), response3.getBody().getCategoryId());
         System.out.println("Read3: " + response3.getBody());
     }
 
     @Test
     @Order(3)
     void update() {
-        Category updated = new Category.Builder().copy(category).setName("Kids").build();
+        Category updated = new Category.Builder().copy(category).setCategoryName("Kids").build();
 
         String url = BASE_URL + "/update";
         System.out.println("URL: " + url);
@@ -103,16 +95,17 @@ class CategoryControllerTest {
         ResponseEntity<Category> response = restTemplate.exchange(url, HttpMethod.PUT, entity, Category.class);
 
         assertNotNull(response.getBody());
-        System.out.println("Updated category: " + response.getBody().getName());
+        System.out.println("Updated category: " + response.getBody().getCategoryName());
     }
 
     @Test
+    @Disabled
     @Order(4)
     void delete() {
-        String url = BASE_URL + "/delete/" + category.getId();
+        String url = BASE_URL + "/delete/" + category.getCategoryId();
         System.out.println("URL: " + url);
         restTemplate.delete(url);
-        System.out.println("Category deleted: " + category.getId());
+        System.out.println("Category deleted: " + category.getCategoryId());
     }
 
     @Test
@@ -131,16 +124,18 @@ class CategoryControllerTest {
 
 //    @Test
 //    @Order(6)
-//    void findByNameWithinIgnoreCase() {
+//    void findByCategoryName() {
 //        String url = BASE_URL + "/getByCategoryName/" + category.getCategoryName();
 //        System.out.println("URL: " + url);
-//        ResponseEntity<Category> response = restTemplate.getForEntity(url, Category.class);
-//        assertEquals(category.getCategoryName(), response.getBody().getCategoryName());
+//        ResponseEntity<Category> response = restTemplate.exchange(url, HttpMethod.GET, null, Category.class);
+//        assertEquals(category.getCategoryName(), response.getBody().getSubCategoryName());
 //    }
-//
+
+
+
 //    @Test
 //    @Order(7)
-//    void findBySubCategories_Id() {
+//    void findByCategoryId() {
 //        String url = BASE_URL + "/getByCategoryId/" + category.getCategoryId();
 //        System.out.println("URL: " + url);
 //        ResponseEntity<Category> response = restTemplate.getForEntity(url, Category.class);

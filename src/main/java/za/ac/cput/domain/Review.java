@@ -1,48 +1,38 @@
+/**
+ * E-commerce Web Application for selling T-shirts
+ * Review.java
+ *
+ * POJO class for the Review entity, using the Builder Pattern
+ * Author: Mthandeni Mbobo (218223579)
+ * */
+
 package za.ac.cput.domain;
 
-import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.Getter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.annotation.CreatedDate;
+import lombok.Setter;
 
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
-/**
- * Reviews.java
- *
- * @author Rethabile Ntsekhe
- * Student Num: 220455430
- * @date 23-Jul-24
- */
-
 @Getter
-@Entity
+@Entity(name = "review")
 public class Review implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
-    @JsonManagedReference("productReviewReference")
-    @JsonIncludeProperties("id")
+    @JoinColumn(name = "product_Id")
     private Product product;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @JsonManagedReference("userReviewReference")
-    @JsonIncludeProperties({"id", "firstName", "lastName", "avatar"})
     private User user;
 
+    private String review;
     private int rating;
-    private String comment;
-
-    @CreationTimestamp
-    private LocalDateTime createdAt;
 
     public Review() {
     }
@@ -51,38 +41,43 @@ public class Review implements Serializable {
         this.id = builder.id;
         this.product = builder.product;
         this.user = builder.user;
+        this.review = builder.review;
         this.rating = builder.rating;
-        this.comment = builder.comment;
     }
 
-    @PrePersist
-    public void prePersist() {
-        this.createdAt = LocalDateTime.now();
+    public Review(Long id, Product product, User user, String review, int rating) {
+        this.id = id;
+        this.product = product;
+        this.user = user;
+        this.review = review;
+        this.rating = rating;
     }
-
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Review review = (Review) o;
-        return id == review.id && rating == review.rating && Objects.equals(product, review.product) && Objects.equals(user, review.user) && Objects.equals(comment, review.comment) && Objects.equals(createdAt, review.createdAt);
+        Review that = (Review) o;
+        return rating == that.rating &&
+                Objects.equals(id, that.id) &&
+                Objects.equals(product, that.product) &&
+                Objects.equals(user, that.user) &&
+                Objects.equals(review, that.review);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, product, user, rating, comment, createdAt);
+        return Objects.hash(id, product, user, review, rating);
     }
 
     @Override
     public String toString() {
-        return "Reviews{" +
-                "Review ID: " + id +
-                ", PRODUCT : " + product.getName() +
-                ", USER : " + user.getFirstName() +
-                ", RATING: " + rating +
-                ", COMMENT: '" + comment + '\'' +
-                ", CREATED AT: " + createdAt +
+        return "Review{" +
+                "id=" + id +
+                ", product=" + (product != null ? product.getProductId() : "null") +
+                ", user=" + (user != null ? user.getUserID() : "null") +
+                ", review='" + review + '\'' +
+                ", rating=" + rating +
                 '}';
     }
 
@@ -90,8 +85,8 @@ public class Review implements Serializable {
         private Long id;
         private Product product;
         private User user;
+        private String review;
         private int rating;
-        private String comment;
 
         public Builder setId(Long id) {
             this.id = id;
@@ -108,22 +103,22 @@ public class Review implements Serializable {
             return this;
         }
 
+        public Builder setReview(String review) {
+            this.review = review;
+            return this;
+        }
+
         public Builder setRating(int rating) {
             this.rating = rating;
             return this;
         }
 
-        public Builder setComment(String comment) {
-            this.comment = comment;
-            return this;
-        }
-
-        public Builder copy(Review reviews) {
-            this.id = reviews.getId();
-            this.product = reviews.getProduct();
-            this.user = reviews.getUser();
-            this.rating = reviews.getRating();
-            this.comment = reviews.getComment();
+        public Builder copy(Review review) {
+            this.id = review.id;
+            this.product = review.product;
+            this.user = review.user;
+            this.review = review.review;
+            this.rating = review.rating;
             return this;
         }
 
@@ -132,4 +127,3 @@ public class Review implements Serializable {
         }
     }
 }
-

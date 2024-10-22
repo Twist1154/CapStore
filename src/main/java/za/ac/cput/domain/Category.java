@@ -1,43 +1,38 @@
+/**
+ * E-commerce Web Application for selling T-shirts
+ * Category.java
+ * POJO class for the Category entity, using the Builder Pattern
+ * Author: Mthandeni Mbobo (218223579)
+ * */
+
 package za.ac.cput.domain;
 
+
+import jakarta.persistence.*;
+import lombok.Getter;
+
+
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.*;
-import lombok.*;
-
-/**
- * Category.java
- *
- * author Rethabile Ntsekhe
- * Student Num: 220455430
- */
-
 @Getter
-@Entity
-public class Category implements Serializable {
+@Entity (name = "category")
+public class Category  implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long categoryId;
 
-    private String name;
-
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference("categoryReference")
-    @JsonIgnore
-    private List<SubCategory> subCategories = new ArrayList<>();
+    private String categoryName;
+    private String subCategoryName;
 
     public Category() {
     }
 
-    public Category(Builder builder) {
-        this.id = builder.id;
-        this.name = builder.name;
-        this.subCategories = builder.subCategories != null ? builder.subCategories : new ArrayList<>();
+    public Category (Builder builder){
+        this.categoryId = builder.categoryId;
+        this.categoryName = builder.categoryName;;
+        this.subCategoryName = builder.subCategoryName;
     }
 
     @Override
@@ -45,52 +40,53 @@ public class Category implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Category category = (Category) o;
-        return Objects.equals(id, category.id) && Objects.equals(name, category.name) && Objects.equals(subCategories, category.subCategories);
+        return Objects.equals(categoryId, category.categoryId) && Objects.equals(categoryName, category.categoryName) && Objects.equals(subCategoryName, category.subCategoryName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, subCategories);
+        return Objects.hash(categoryId, categoryName, subCategoryName);
     }
 
     @Override
     public String toString() {
         return "Category{" +
-                "Category ID: " + id +
-                ", NAME: '" + name + '\'' +
-                ", Sub Categories: " + subCategories +
+                "categoryId=" + categoryId +
+                ", categoryName='" + categoryName + '\'' +
+                ", subCategoryName='" + subCategoryName + '\'' +
                 '}';
     }
 
-    public static class Builder {
-        private Long id;
-        private String name;
-        private List<SubCategory> subCategories;
+    public static class Builder{
+        private Long categoryId;
+        private String categoryName;
+        private String subCategoryName;
 
-        public Builder setId(Long id) {
-            this.id = id;
+        public Builder setCategoryId(Long categoryId) {
+            this.categoryId = categoryId;
             return this;
         }
 
-        public Builder setName(String name) {
-            this.name = name;
+        public Builder setCategoryName(String categoryName) {
+            this.categoryName = categoryName;
             return this;
         }
 
-        public Builder setSubCategories(List<SubCategory> subCategories) {
-            this.subCategories = subCategories;
+        public Builder setSubCategoryName(String subCategoryName) {
+            this.subCategoryName = subCategoryName;
             return this;
         }
 
-        public Builder copy(Category category) {
-            this.id = category.getId();
-            this.name = category.getName();
-            this.subCategories = category.getSubCategories();
+        public Builder copy(Category category){
+            this.categoryId = category.categoryId;
+            this.categoryName = category.categoryName;
+            this.subCategoryName = category.subCategoryName;
             return this;
         }
 
-        public Category build() {
+        public Category build(){
             return new Category(this);
         }
     }
+
 }
