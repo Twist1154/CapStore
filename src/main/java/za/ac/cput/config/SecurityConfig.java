@@ -56,7 +56,13 @@ public class SecurityConfig {
                                 "/",
                                 "/home",
                                 "/error").permitAll()  // Public access for register, login
-                        .requestMatchers("/shopping_store/product/**","/product/read/" ,"/shopping_store/product/getAll").permitAll()  // Public access for public endpoints
+                        .requestMatchers("/shopping_store/product/**",
+                                "/product/read/" ,
+                                "/shopping_store/product/getAll").permitAll()// Public access for public endpoints
+                        .requestMatchers("/shopping_store/cart/**",
+                                "/shopping_store/cart/create" ,
+                                "/shopping_store/cart/user/",
+                                "/shopping_store/product/getAll").permitAll()// Public access for public endpoints
                         .requestMatchers("/users/all").authenticated() // Require authentication for fetching all users
                         .anyRequest().authenticated()  // All other endpoints require authentication
                 )
