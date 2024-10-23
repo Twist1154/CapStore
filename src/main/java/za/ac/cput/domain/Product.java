@@ -1,5 +1,6 @@
 package za.ac.cput.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -32,13 +33,9 @@ public class Product implements Serializable {
     private double price;
     private int stock;
 
-    @ManyToMany
-    @JoinTable(
-            name = "sub_category", // Inverse table for categories
-            joinColumns = @JoinColumn(name = "category_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id")
-    )
-    @JsonManagedReference(value = "product-category")
+    @OneToMany(mappedBy = "product", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @JsonManagedReference("productReference")
+    @JsonIgnore
     private List<SubCategory> categories ;
 
     @ManyToMany
@@ -47,6 +44,7 @@ public class Product implements Serializable {
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "discount_id")
     )
+    @JsonIgnore
     private List<Discount> discounts = new ArrayList<>();
 
     @CreationTimestamp

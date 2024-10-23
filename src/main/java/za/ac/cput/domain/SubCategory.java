@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -16,7 +15,7 @@ import java.util.Objects;
  * Date: 26-Sep-24
  */
 @Getter
-@Entity
+@Entity(name = "sub_category")
 public class SubCategory implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,9 +25,10 @@ public class SubCategory implements Serializable {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    @ManyToMany(mappedBy = "categories")
-    @JsonBackReference(value = "product-category")
-    private List<Product> products;
+    @ManyToOne
+    @JoinColumn(name = "product_id", nullable = false)
+    @JsonBackReference("productReference")
+    private Product product;
 
     public SubCategory() {
     }
@@ -36,7 +36,7 @@ public class SubCategory implements Serializable {
     public SubCategory(Builder builder) {
         this.id = builder.id;
         this.category = builder.category;
-        this.products = builder.products;
+        this.product = builder.product;
     }
 
     @Override
@@ -46,12 +46,12 @@ public class SubCategory implements Serializable {
         SubCategory that = (SubCategory) o;
         return Objects.equals(id, that.id) &&
                 Objects.equals(category, that.category) &&
-                Objects.equals(products, that.products);
+                Objects.equals(product, that.product);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, category, products);
+        return Objects.hash(id, category, product);
     }
 
     @Override
@@ -59,14 +59,14 @@ public class SubCategory implements Serializable {
         return "SubCategory{" +
                 "ID=" + id +
                 ", Category=" + (category != null ? category.getName() : "null") +
-                ", Products=" + (products != null ? products.size() : 0) +
+                ", Products=" + (product != null ? product.getName() : 0) +
                 '}';
     }
 
     public static class Builder {
         private Long id;
         private Category category;
-        private List<Product> products;
+        private Product product;
 
         public Builder setId(Long id) {
             this.id = id;
@@ -78,15 +78,15 @@ public class SubCategory implements Serializable {
             return this;
         }
 
-        public Builder setProduct(List<Product> products) {
-            this.products = products;
+        public Builder setProduct(Product products) {
+            this.product = products;
             return this;
         }
 
         public Builder copy(SubCategory subCategory) {
             this.id = subCategory.id;
             this.category = subCategory.category;
-            this.products = subCategory.products;
+            this.product = subCategory.product;
             return this;
         }
 

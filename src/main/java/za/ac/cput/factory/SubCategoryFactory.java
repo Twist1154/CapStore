@@ -25,7 +25,7 @@ public class SubCategoryFactory {
      */
     public static SubCategory createSubCategory(Long id,
                                                 Category category,
-                                                List<Product> product) {
+                                                Product product) {
         // Define constants for the switch cases;
         final int CATEGORY_NULL = 1; // Removed DESCRIPTION_NULL since it's not in SubCategory
 

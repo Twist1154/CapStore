@@ -42,7 +42,7 @@ private static Product  product,product2,product3;
         subCategory = SubCategoryFactory.createSubCategory(
                 null,
                 category,
-                List.of(product,product2,product3));
+                product);
         category = CategoryFactory.buildCategory(
                 null,
                 "Men"
