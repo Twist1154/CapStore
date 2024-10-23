@@ -4,28 +4,75 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c0d93e9d-ad39-47b5-845e-6598bd0efd72" name="Changes" comment="Security works but you'll have to sign in everytime you send a http request">
-      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/config/CustomLoginSuccessHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/config/CustomLogoutSuccessHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/config/SessionCookieAuthenticationFilter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/controller/AuthController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/controller/CustomErrorController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/controller/HomeController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/controller/PublicController.java" afterDir="false" />
+    <list default="true" id="c0d93e9d-ad39-47b5-845e-6598bd0efd72" name="Changes" comment="security works perfectly but uses cookies instead">
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/controller/AddressController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/controller/CartController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/controller/CartItemController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/controller/CategoryController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/controller/DiscountController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/controller/OrderController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/controller/OrderItemController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/controller/ReviewController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/controller/S3Controller.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/controller/SubCategoryController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/domain/Address.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/domain/Cart.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/domain/CartItem.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/domain/Category.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/domain/Discount.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/domain/OrderItem.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/domain/Orders.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/domain/Presigned.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/domain/Review.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/domain/SubCategory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/factory/AddressFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/factory/CartFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/factory/CartItemFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/factory/CategoryFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/factory/DiscountFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/factory/OrderFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/factory/OrderItemFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/factory/PresignedFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/factory/ReviewFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/factory/SubCategoryFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/repository/AddressRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/repository/CategoryRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/repository/ICartItemRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/repository/ICartRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/repository/IDiscountRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/repository/IOrderItemRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/repository/IOrderRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/repository/ReviewRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/repository/SubCategoryRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/AddressService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/CartItemService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/CartService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/CategoryService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/DiscountService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/IAddressService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/ICartItemService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/ICartService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/ICategoryService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/IDiscountService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/IOrderItemService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/IOrderService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/IReviewService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/ISubCategory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/OrderItemService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/OrderService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/ReviewService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/S3Service.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/SubCategoryService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/controller/HelloController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/controller/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/controller/ProductController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/controller/StudentController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/domain/Student.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/domain/Users.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/domain/Users.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/factory/UserFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/factory/UserFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/repo/UserRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/domain/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/domain/Product.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/factory/ProductFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/factory/ProductFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/repository/IProductRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/repository/IProductRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/repository/UserRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/IUserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/IUserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/MyUserDetailsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/MyUserDetailsService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/IProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/IProductService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/service/ProductService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/za/ac/cput/util/Helper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/za/ac/cput/util/Helper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -64,6 +111,9 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/pom.xml" root0="FORCE_HIGHLIGHTING" />
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 5
 }</component>
@@ -95,7 +145,7 @@
     "git-widget-placeholder": "jwt",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/retha/Documents/JetBrains Academy/CapStore/src/main/java/za/ac/cput/controller",
+    "last_opened_file_path": "C:/Users/retha/Documents/JetBrains Academy/CapStore/src/main/java/za/ac/cput/service",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -115,10 +165,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\retha\Documents\JetBrains Academy\CapStore\src\main\java\za\ac\cput\controller" />
-      <recent name="C:\Users\retha\Documents\JetBrains Academy\CapStore\src\main\java\za\ac\cput\config" />
       <recent name="C:\Users\retha\Documents\JetBrains Academy\CapStore\src\main\java\za\ac\cput\service" />
-      <recent name="C:\Users\retha\Documents\JetBrains Academy\CapStore\src\main\java\ac\za\cput\domain" />
+      <recent name="C:\Users\retha\Documents\JetBrains Academy\CapStore\src\main\java\za\ac\cput\controller" />
+      <recent name="C:\Users\retha\Documents\JetBrains Academy\CapStore\src\main\java\za\ac\cput\repository" />
+      <recent name="C:\Users\retha\Documents\JetBrains Academy\CapStore\src\main\java\za\ac\cput\factory" />
+      <recent name="C:\Users\retha\Documents\JetBrains Academy\CapStore\src\main\java\za\ac\cput\domain" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\retha\Documents\JetBrains Academy\CapStore\src\main\java\ac\za\cput\domain" />
@@ -126,15 +177,18 @@
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />
     </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="za.ac.cput.repository" />
+    </key>
     <key name="CreateTestDialog.RecentsKey">
       <recent name="za.ac.cput.service" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="za.ac.cput.config" />
+      <recent name="za.ac.cput.controller" />
       <recent name="za.ac.cput.service" />
-      <recent name="za.ac.cput.repo" />
-      <recent name="za.ac.cput.util" />
       <recent name="za.ac.cput.factory" />
+      <recent name="za.ac.cput.domain" />
+      <recent name="za.ac.cput.config" />
     </key>
   </component>
   <component name="RunManager" selected="Spring Boot.Application">
@@ -148,7 +202,7 @@
       <module name="CapStore" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="za.ac.cput.service.*" />
+          <option name="PATTERN" value="za.ac.cput.repository.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -163,7 +217,7 @@
       <module name="CapStore" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="za.ac.cput.service.*" />
+          <option name="PATTERN" value="za.ac.cput.repository.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -221,7 +275,8 @@
       <workItem from="1729358050044" duration="848000" />
       <workItem from="1729423177704" duration="1093000" />
       <workItem from="1729425908053" duration="811000" />
-      <workItem from="1729618274749" duration="4580000" />
+      <workItem from="1729618274749" duration="13214000" />
+      <workItem from="1729680079965" duration="4577000" />
     </task>
     <task id="LOCAL-00001" summary="initial">
       <option name="closed" value="true" />
@@ -239,7 +294,23 @@
       <option name="project" value="LOCAL" />
       <updated>1729292330613</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="security works perfectly but uses cookies instead">
+      <option name="closed" value="true" />
+      <created>1729623568260</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1729623568260</updated>
+    </task>
+    <task id="LOCAL-00004" summary="security works perfectly but uses cookies instead">
+      <option name="closed" value="true" />
+      <created>1729626295373</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1729626295373</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -248,6 +319,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="initial" />
     <MESSAGE value="Security works but you'll have to sign in everytime you send a http request" />
-    <option name="LAST_COMMIT_MESSAGE" value="Security works but you'll have to sign in everytime you send a http request" />
+    <MESSAGE value="security works perfectly but uses cookies instead" />
+    <option name="LAST_COMMIT_MESSAGE" value="security works perfectly but uses cookies instead" />
   </component>
 </project>

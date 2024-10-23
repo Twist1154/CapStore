@@ -1,88 +1,71 @@
 package za.ac.cput.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
  * Product.java
  *
- * @author Zachariah Matsimella
+ * Author: Zachariah Matsimella
  * Student Num: 220097429
- * @date 06-Sep-24
+ * Date: 06-Sep-24
  */
 @Getter
 @Entity
-public class Product {
+public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long productId;
+    private Long id;
+
     private String name;
     private String description;
     private double price;
     private int stock;
-    private Long categoryId;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @JsonManagedReference("productReference")
+    @JsonIgnore
+    private List<SubCategory> categories ;
+
+    @ManyToMany
+    @JoinTable(
+            name = "product_discount", // Inverse table for discounts
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "discount_id")
+    )
+    @JsonIgnore
+    private List<Discount> discounts = new ArrayList<>();
+
     @CreationTimestamp
     private LocalDateTime createdAt;
+
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
     @Embedded
     private Images images;
 
-    public Product() {
-    }
+    public Product() {}
 
-    public Product(Builder builder){
-        this.productId = builder.productId;
+    public Product(Builder builder) {
+        this.id = builder.id;
         this.name = builder.name;
         this.description = builder.description;
         this.price = builder.price;
         this.stock = builder.stock;
-        this.categoryId = builder.categoryId;
-        this.createdAt = builder.createdAt;
-        this.updatedAt = builder.updatedAt;
+        this.categories = builder.categories != null ? builder.categories : new ArrayList<>();
+        this.discounts = builder.discounts != null ? builder.discounts : new ArrayList<>();
         this.images = builder.images;
-    }
-
-    public Long getProductId() {
-        return productId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public int getStock() {
-        return stock;
-    }
-
-    public Long getCategoryId() {
-        return categoryId;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public Images getImages() {  // Getter for images
-        return images;
     }
 
     @Override
@@ -92,105 +75,100 @@ public class Product {
         Product product = (Product) o;
         return Double.compare(product.price, price) == 0 &&
                 stock == product.stock &&
-                Objects.equals(productId, product.productId) &&
+                Objects.equals(id, product.id) &&
                 Objects.equals(name, product.name) &&
                 Objects.equals(description, product.description) &&
-                Objects.equals(categoryId, product.categoryId) &&
+                Objects.equals(categories, product.categories) &&
+                Objects.equals(discounts, product.discounts) &&
                 Objects.equals(createdAt, product.createdAt) &&
                 Objects.equals(updatedAt, product.updatedAt) &&
-                Objects.equals(images, product.images);  // Compare embedded images
+                Objects.equals(images, product.images);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(productId, name, description, price, stock, categoryId, createdAt, updatedAt, images);
+        return Objects.hash(id, name, description, price, stock, categories, discounts, createdAt, updatedAt, images);
     }
 
     @Override
     public String toString() {
         return "Product{" +
-                "productId=" + productId +
+                "productId=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", price=" + price +
                 ", stock=" + stock +
-                ", categoryId=" + categoryId +
+                ", CATEGORIES: " + (categories != null ? categories : "[]") +
+                ", DISCOUNTS: " + (discounts != null ? discounts : "[]") +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
-                ", images=" + images +  // Display images in the toString method
+                ", images=" + images +
                 '}';
     }
 
-    public static class Builder{
-        private Long productId;
+    public static class Builder {
+        private Long id;
         private String name;
         private String description;
         private double price;
         private int stock;
-        private Long categoryId;
-        private LocalDateTime createdAt;
-        private LocalDateTime updatedAt;
-        private Images images; // Use Images in the builder
+        private List<SubCategory> categories;
+        private List<Discount> discounts;
+        private Images images;
 
-        public Builder setProductId(Long productId){
-            this.productId = productId;
+        public Builder setId(Long id) {
+            this.id = id;
             return this;
         }
 
-        public Builder setName(String name){
+        public Builder setName(String name) {
             this.name = name;
             return this;
         }
 
-        public Builder setDescription(String description){
+        public Builder setDescription(String description) {
             this.description = description;
             return this;
         }
 
-        public Builder setPrice(double price){
+        public Builder setPrice(double price) {
             this.price = price;
             return this;
         }
 
-        public Builder setStock(int stock){
+        public Builder setStock(int stock) {
             this.stock = stock;
             return this;
         }
 
-        public Builder setCategoryId(Long categoryId){
-            this.categoryId = categoryId;
+        public Builder setCategories(List<SubCategory> categories) {
+            this.categories = categories;
             return this;
         }
 
-        public Builder setCreatedAt(LocalDateTime createdAt){
-            this.createdAt = createdAt;
+        public Builder setDiscounts(List<Discount> discounts) {
+            this.discounts = discounts;
             return this;
         }
 
-        public Builder setUpdatedAt(LocalDateTime updatedAt){
-            this.updatedAt = updatedAt;
-            return this;
-        }
-
-        public Builder setImages(Images images) { // Set the images in the builder
+        public Builder setImages(Images images) {
             this.images = images;
             return this;
         }
 
         public Builder copy(Product product) {
-            this.productId = product.getProductId();
+            this.id = product.getId();
             this.name = product.getName();
             this.description = product.getDescription();
             this.price = product.getPrice();
             this.stock = product.getStock();
-            this.categoryId = product.getCategoryId();
-            this.createdAt = product.getCreatedAt();
-            this.updatedAt = product.getUpdatedAt();
+            this.categories = product.getCategories();
+            this.discounts = product.getDiscounts();
             this.images = product.getImages();
             return this;
         }
 
-        public Product build(){
+        public Product build() {
             return new Product(this);
         }
     }

@@ -10,6 +10,12 @@ import za.ac.cput.service.IProductService;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/*
+ *Product:java
+ *Product: Controller Class
+ * Author: Zachariah Matsimella
+ * Date: 19 May 2024
+ */
 
 @RestController
 @RequestMapping("/product")
@@ -38,7 +44,7 @@ public class ProductController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product product) {
-        if (!id.equals(product.getProductId())) {
+        if (!id.equals(product.getId())) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         Product updatedProduct = productService.update(product);
@@ -76,7 +82,7 @@ public class ProductController {
 
     @GetMapping("/category/{categoryId}")
     public ResponseEntity<List<Product>> getProductByCategoryId(@PathVariable long categoryId) {
-        List<Product> products = productService.findByCategoryId(categoryId);
+        List<Product> products = productService.findByCategories_Id(categoryId);
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
